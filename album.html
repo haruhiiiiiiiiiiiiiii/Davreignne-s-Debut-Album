@@ -888,8 +888,12 @@ document.querySelector('.lightbox-details')?.style.display = 'none';
 }
 
             
-    const allAlbums = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
-    allPhotos = (allAlbums[currentAlbumId] || []).sort((a, b) => b.timestamp - a.timestamp);
+    allPhotos = JSON.parse(
+    localStorage.getItem('album_' + currentAlbumId)
+) || [];
+
+allPhotos.sort((a, b) => b.timestamp - a.timestamp);
+
 
     if (allPhotos.length === 0) {
         noPhotos.style.display = 'block';
