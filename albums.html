@@ -9,7 +9,13 @@
         
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #001a4d 0%, #0d3b66 100%);
+            background-image: 
+                linear-gradient(135deg, rgba(0, 26, 77, 0.5) 0%, rgba(13, 59, 102, 0.6) 100%),
+                url('https://raw.githubusercontent.com/haruhiiiiiiiiiiiiiii/Davreignne-s-Debut-Album/main/MOT04452.JPG');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
             min-height: 100vh;
             padding: 20px;
             position: relative;
@@ -35,7 +41,8 @@
         .container {
             max-width: 1100px;
             margin: 0 auto;
-            background: white;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
             border-radius: 25px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), 0 0 40px rgba(192, 192, 192, 0.2);
             padding: 40px;
@@ -71,7 +78,6 @@
             margin-bottom: 40px;
         }
         
-        /* SECTION DIVIDER */
         .section-divider {
             margin: 50px 0;
             text-align: center;
@@ -90,7 +96,7 @@
         
         .section-divider h2 {
             display: inline-block;
-            background: white;
+            background: rgba(255, 255, 255, 0.95);
             padding: 10px 30px;
             position: relative;
             z-index: 1;
@@ -106,7 +112,8 @@
         }
         
         .album-card {
-            background: white;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
             border-radius: 18px;
             padding: 25px;
             text-decoration: none;
@@ -237,6 +244,7 @@
         .btn-icon-small { width: 20px; height: 20px; display: inline-block; flex-shrink: 0; }
         
         @media (max-width: 768px) {
+            body { background-attachment: scroll; }
             .container { padding: 20px; }
             h1 { font-size: 2.2em; }
             .albums-grid { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
@@ -297,7 +305,6 @@
     <script>
         const STORAGE_KEY = 'qr_photo_albums';
         
-        // Main Tables Albums (1-14)
         const albums = [
             { id: 1, name: 'Table 1', description: 'Family' },
             { id: 2, name: 'Table 2', description: 'Guests' },
@@ -315,7 +322,6 @@
             { id: 14, name: 'Table 14', description: 'Guests' }
         ];
         
-        // Special 18 Collection Albums (15-19)
         const specialAlbums = [
             { id: 15, name: '18 Roses', description: 'Rose dance moments' },
             { id: 16, name: '18 Candles', description: 'Candle ceremony' },
@@ -324,7 +330,6 @@
             { id: 19, name: '18 Shots', description: 'Photo booth shots' }
         ];
         
-        // Sparkle icons for Tables 1-14
         const albumIcons = {
             1: '<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g fill="#001a4d"><path d="M32 8 L36 18 L47 20 L39 28 L41 39 L32 35 L23 39 L25 28 L17 20 L28 18 Z" fill="#001a4d"/><circle cx="32" cy="32" r="3" fill="#e8e8e8"/><circle cx="28" cy="26" r="2" fill="#e8e8e8"/><circle cx="36" cy="26" r="2" fill="#e8e8e8"/></g></svg>',
             2: '<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g fill="#001a4d"><path d="M32 8 L36 18 L47 20 L39 28 L41 39 L32 35 L23 39 L25 28 L17 20 L28 18 Z" fill="#001a4d"/><circle cx="32" cy="32" r="3" fill="#e8e8e8"/><circle cx="28" cy="26" r="2" fill="#e8e8e8"/><circle cx="36" cy="26" r="2" fill="#e8e8e8"/></g></svg>',
@@ -340,7 +345,6 @@
             12: '<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g fill="#001a4d"><path d="M32 8 L36 18 L47 20 L39 28 L41 39 L32 35 L23 39 L25 28 L17 20 L28 18 Z" fill="#001a4d"/><circle cx="32" cy="32" r="3" fill="#e8e8e8"/><circle cx="28" cy="26" r="2" fill="#e8e8e8"/><circle cx="36" cy="26" r="2" fill="#e8e8e8"/></g></svg>',
             13: '<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g fill="#001a4d"><path d="M32 8 L36 18 L47 20 L39 28 L41 39 L32 35 L23 39 L25 28 L17 20 L28 18 Z" fill="#001a4d"/><circle cx="32" cy="32" r="3" fill="#e8e8e8"/><circle cx="28" cy="26" r="2" fill="#e8e8e8"/><circle cx="36" cy="26" r="2" fill="#e8e8e8"/></g></svg>',
             14: '<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g fill="#001a4d"><path d="M32 8 L36 18 L47 20 L39 28 L41 39 L32 35 L23 39 L25 28 L17 20 L28 18 Z" fill="#001a4d"/><circle cx="32" cy="32" r="3" fill="#e8e8e8"/><circle cx="28" cy="26" r="2" fill="#e8e8e8"/><circle cx="36" cy="26" r="2" fill="#e8e8e8"/></g></svg>',
-            // Rose icons for 18 Collection (15-19) - Navy Blue
             15: '<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g fill="#001a4d"><ellipse cx="32" cy="20" rx="5" ry="3" fill="#001a4d"/><ellipse cx="32" cy="18" rx="7" ry="4" opacity="0.7"/><ellipse cx="32" cy="16" rx="9" ry="5" opacity="0.5"/><path d="M32 22 Q30 28 28 35 Q27 40 28 45 L36 45 Q37 40 36 35 Q34 28 32 22 Z" fill="#001a4d" opacity="0.8"/><path d="M28 45 L28 50 L36 50 L36 45" fill="#001a4d"/><path d="M30 38 Q28 40 26 45 M34 38 Q36 40 38 45" stroke="#001a4d" stroke-width="1" fill="none" opacity="0.6"/></g></svg>',
             16: '<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g fill="#001a4d"><ellipse cx="32" cy="20" rx="5" ry="3" fill="#001a4d"/><ellipse cx="32" cy="18" rx="7" ry="4" opacity="0.7"/><ellipse cx="32" cy="16" rx="9" ry="5" opacity="0.5"/><path d="M32 22 Q30 28 28 35 Q27 40 28 45 L36 45 Q37 40 36 35 Q34 28 32 22 Z" fill="#001a4d" opacity="0.8"/><path d="M28 45 L28 50 L36 50 L36 45" fill="#001a4d"/><path d="M30 38 Q28 40 26 45 M34 38 Q36 40 38 45" stroke="#001a4d" stroke-width="1" fill="none" opacity="0.6"/></g></svg>',
             17: '<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g fill="#001a4d"><ellipse cx="32" cy="20" rx="5" ry="3" fill="#001a4d"/><ellipse cx="32" cy="18" rx="7" ry="4" opacity="0.7"/><ellipse cx="32" cy="16" rx="9" ry="5" opacity="0.5"/><path d="M32 22 Q30 28 28 35 Q27 40 28 45 L36 45 Q37 40 36 35 Q34 28 32 22 Z" fill="#001a4d" opacity="0.8"/><path d="M28 45 L28 50 L36 50 L36 45" fill="#001a4d"/><path d="M30 38 Q28 40 26 45 M34 38 Q36 40 38 45" stroke="#001a4d" stroke-width="1" fill="none" opacity="0.6"/></g></svg>',
