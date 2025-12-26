@@ -256,38 +256,40 @@
         const STORAGE_KEY = 'qr_photo_albums';
         
         const albums = [
-            { id: 1, name: 'Celebration', description: 'Parties & events' },
-            { id: 2, name: 'Nature', description: 'Outdoor moments' },
-            { id: 3, name: 'Friends', description: 'Group photos' },
-            { id: 4, name: 'Food', description: 'Meals & recipes' },
-            { id: 5, name: 'Travel', description: 'Adventures' },
-            { id: 6, name: 'Family', description: 'Family time' },
-            { id: 7, name: 'Selfies', description: 'Self portraits' },
-            { id: 8, name: 'Work', description: 'Professional' },
-            { id: 9, name: 'Art', description: 'Creative work' },
-            { id: 10, name: 'Pets', description: 'Animal friends' },
-            { id: 11, name: 'Sports', description: 'Athletic moments' },
-            { id: 12, name: 'Fashion', description: 'Style & outfits' },
-            { id: 13, name: 'Music', description: 'Concerts & shows' },
-            { id: 14, name: 'Other', description: 'Miscellaneous' }
-        ];
+    { id: 1, name: 'Table 1', description: 'Parties & events' },
+    { id: 2, name: 'Table 2', description: 'Outdoor moments' },
+    { id: 3, name: 'Table 3', description: 'Group photos' },
+    { id: 4, name: 'Table 4', description: 'Meals & recipes' },
+    { id: 5, name: 'Table 5', description: 'Adventures' },
+    { id: 6, name: 'Table 6', description: 'Family time' },
+    { id: 7, name: 'Table 7', description: 'Self portraits' },
+    { id: 8, name: 'Table 8', description: 'Professional' },
+    { id: 9, name: 'Table 9', description: 'Creative work' },
+    { id: 10, name: 'Table 10', description: 'Animal friends' },
+    { id: 11, name: 'Table 11', description: 'Athletic moments' },
+    { id: 12, name: 'Table 12', description: 'Style & outfits' },
+    { id: 13, name: 'Table 13', description: 'Concerts & shows' },
+    { id: 14, name: 'Table 14', description: 'Miscellaneous' }
+];
+
         
         const albumIcons = {
-            1: '<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><circle cx="32" cy="20" r="3"/><path d="M20 28 Q20 24 24 24 L40 24 Q44 24 44 28 L44 48 Q44 52 40 52 L24 52 Q20 52 20 48 Z" fill="none" stroke="currentColor" stroke-width="2"/><path d="M20 40 L26 32 L40 44 L44 40" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></g></svg>',
-            2: '<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><path d="M32 10 L50 20 L50 50 Q50 54 46 54 L18 54 Q14 54 14 50 L14 20 Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M32 32 L42 22 M32 32 L24 22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></g></svg>',
-            3: '<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><circle cx="24" cy="28" r="7" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="40" cy="24" r="8" fill="none" stroke="currentColor" stroke-width="2"/><path d="M18 45 Q18 40 24 40 Q30 40 30 45" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M34 48 Q34 42 40 42 Q46 42 46 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></g></svg>',
-            4: '<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><rect x="18" y="20" width="28" height="32" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="32" cy="32" r="6" fill="none" stroke="currentColor" stroke-width="2"/></g></svg>',
-            5: '<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><path d="M32 14 L44 26 L44 52 Q44 54 42 54 L22 54 Q20 54 20 52 L20 26 Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M28 32 L36 32 M28 40 L36 40" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></g></svg>',
-            6: '<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><circle cx="22" cy="28" r="6" fill="currentColor"/><circle cx="42" cy="28" r="6" fill="currentColor"/><circle cx="32" cy="40" r="5" fill="currentColor"/><path d="M22 36 L26 50 Q26 54 30 54 L34 54 Q38 54 38 50 L42 36" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></g></svg>',
-            7: '<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><circle cx="32" cy="24" r="8" fill="none" stroke="currentColor" stroke-width="2"/><path d="M20 42 Q20 36 26 36 L38 36 Q44 36 44 42 L44 50 Q44 54 40 54 L24 54 Q20 54 20 50 Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></g></svg>',
-            8: '<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><rect x="14" y="12" width="36" height="40" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M20 28 L32 18 L44 28 M32 18 L32 52" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/></g></svg>',
-            9: '<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><path d="M32 12 L40 32 L62 38 L45 54 L50 76 L32 64 L14 76 L19 54 L2 38 L24 32 Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></g></svg>',
-            10: '<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><circle cx="32" cy="20" r="7" fill="currentColor"/><ellipse cx="32" cy="42" rx="12" ry="10" fill="currentColor" opacity="0.7"/><path d="M24 48 L20 58 M40 48 L44 58" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></g></svg>',
-            11: '<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><circle cx="32" cy="18" r="6" fill="currentColor"/><rect x="26" y="26" width="12" height="20" rx="2" fill="currentColor"/><path d="M20 46 L18 58 M44 46 L46 58" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></g></svg>',
-            12: '<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><path d="M20 24 L28 14 L36 24 L44 14 L52 24 L52 52 Q52 54 50 54 L14 54 Q12 54 12 52 L12 24 Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="20" cy="34" r="3" fill="currentColor"/><circle cx="44" cy="36" r="2.5" fill="currentColor"/></g></svg>',
-            13: '<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><path d="M28 16 L28 50 Q28 54 32 54 Q36 54 36 50 L36 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><ellipse cx="28" cy="14" rx="3" ry="2.5" fill="currentColor"/><ellipse cx="36" cy="14" rx="3" ry="2.5" fill="currentColor"/><path d="M20 50 L44 50" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></g></svg>',
-            14: '<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><rect x="12" y="12" width="40" height="40" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><line x1="32" y1="12" x2="32" y2="52" stroke="currentColor" stroke-width="1.5"/><line x1="12" y1="32" x2="52" y2="32" stroke="currentColor" stroke-width="1.5"/></g></svg>'
-        };
+    1: '<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g fill="#001a4d"><path d="M32 8 L36 18 L47 20 L39 28 L41 39 L32 35 L23 39 L25 28 L17 20 L28 18 Z" fill="#001a4d"/><circle cx="32" cy="32" r="3" fill="#e8e8e8"/><circle cx="28" cy="26" r="2" fill="#e8e8e8"/><circle cx="36" cy="26" r="2" fill="#e8e8e8"/></g></svg>',
+    2: '<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g fill="#001a4d"><path d="M32 8 L36 18 L47 20 L39 28 L41 39 L32 35 L23 39 L25 28 L17 20 L28 18 Z" fill="#001a4d"/><circle cx="32" cy="32" r="3" fill="#e8e8e8"/><circle cx="28" cy="26" r="2" fill="#e8e8e8"/><circle cx="36" cy="26" r="2" fill="#e8e8e8"/></g></svg>',
+    3: '<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g fill="#001a4d"><path d="M32 8 L36 18 L47 20 L39 28 L41 39 L32 35 L23 39 L25 28 L17 20 L28 18 Z" fill="#001a4d"/><circle cx="32" cy="32" r="3" fill="#e8e8e8"/><circle cx="28" cy="26" r="2" fill="#e8e8e8"/><circle cx="36" cy="26" r="2" fill="#e8e8e8"/></g></svg>',
+    4: '<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g fill="#001a4d"><path d="M32 8 L36 18 L47 20 L39 28 L41 39 L32 35 L23 39 L25 28 L17 20 L28 18 Z" fill="#001a4d"/><circle cx="32" cy="32" r="3" fill="#e8e8e8"/><circle cx="28" cy="26" r="2" fill="#e8e8e8"/><circle cx="36" cy="26" r="2" fill="#e8e8e8"/></g></svg>',
+    5: '<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g fill="#001a4d"><path d="M32 8 L36 18 L47 20 L39 28 L41 39 L32 35 L23 39 L25 28 L17 20 L28 18 Z" fill="#001a4d"/><circle cx="32" cy="32" r="3" fill="#e8e8e8"/><circle cx="28" cy="26" r="2" fill="#e8e8e8"/><circle cx="36" cy="26" r="2" fill="#e8e8e8"/></g></svg>',
+    6: '<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g fill="#001a4d"><path d="M32 8 L36 18 L47 20 L39 28 L41 39 L32 35 L23 39 L25 28 L17 20 L28 18 Z" fill="#001a4d"/><circle cx="32" cy="32" r="3" fill="#e8e8e8"/><circle cx="28" cy="26" r="2" fill="#e8e8e8"/><circle cx="36" cy="26" r="2" fill="#e8e8e8"/></g></svg>',
+    7: '<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g fill="#001a4d"><path d="M32 8 L36 18 L47 20 L39 28 L41 39 L32 35 L23 39 L25 28 L17 20 L28 18 Z" fill="#001a4d"/><circle cx="32" cy="32" r="3" fill="#e8e8e8"/><circle cx="28" cy="26" r="2" fill="#e8e8e8"/><circle cx="36" cy="26" r="2" fill="#e8e8e8"/></g></svg>',
+    8: '<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g fill="#001a4d"><path d="M32 8 L36 18 L47 20 L39 28 L41 39 L32 35 L23 39 L25 28 L17 20 L28 18 Z" fill="#001a4d"/><circle cx="32" cy="32" r="3" fill="#e8e8e8"/><circle cx="28" cy="26" r="2" fill="#e8e8e8"/><circle cx="36" cy="26" r="2" fill="#e8e8e8"/></g></svg>',
+    9: '<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g fill="#001a4d"><path d="M32 8 L36 18 L47 20 L39 28 L41 39 L32 35 L23 39 L25 28 L17 20 L28 18 Z" fill="#001a4d"/><circle cx="32" cy="32" r="3" fill="#e8e8e8"/><circle cx="28" cy="26" r="2" fill="#e8e8e8"/><circle cx="36" cy="26" r="2" fill="#e8e8e8"/></g></svg>',
+    10: '<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g fill="#001a4d"><path d="M32 8 L36 18 L47 20 L39 28 L41 39 L32 35 L23 39 L25 28 L17 20 L28 18 Z" fill="#001a4d"/><circle cx="32" cy="32" r="3" fill="#e8e8e8"/><circle cx="28" cy="26" r="2" fill="#e8e8e8"/><circle cx="36" cy="26" r="2" fill="#e8e8e8"/></g></svg>',
+    11: '<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g fill="#001a4d"><path d="M32 8 L36 18 L47 20 L39 28 L41 39 L32 35 L23 39 L25 28 L17 20 L28 18 Z" fill="#001a4d"/><circle cx="32" cy="32" r="3" fill="#e8e8e8"/><circle cx="28" cy="26" r="2" fill="#e8e8e8"/><circle cx="36" cy="26" r="2" fill="#e8e8e8"/></g></svg>',
+    12: '<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g fill="#001a4d"><path d="M32 8 L36 18 L47 20 L39 28 L41 39 L32 35 L23 39 L25 28 L17 20 L28 18 Z" fill="#001a4d"/><circle cx="32" cy="32" r="3" fill="#e8e8e8"/><circle cx="28" cy="26" r="2" fill="#e8e8e8"/><circle cx="36" cy="26" r="2" fill="#e8e8e8"/></g></svg>',
+    13: '<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g fill="#001a4d"><path d="M32 8 L36 18 L47 20 L39 28 L41 39 L32 35 L23 39 L25 28 L17 20 L28 18 Z" fill="#001a4d"/><circle cx="32" cy="32" r="3" fill="#e8e8e8"/><circle cx="28" cy="26" r="2" fill="#e8e8e8"/><circle cx="36" cy="26" r="2" fill="#e8e8e8"/></g></svg>',
+    14: '<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g fill="#001a4d"><path d="M32 8 L36 18 L47 20 L39 28 L41 39 L32 35 L23 39 L25 28 L17 20 L28 18 Z" fill="#001a4d"/><circle cx="32" cy="32" r="3" fill="#e8e8e8"/><circle cx="28" cy="26" r="2" fill="#e8e8e8"/><circle cx="36" cy="26" r="2" fill="#e8e8e8"/></g></svg>'
+};
+
 
         function getAlbumPhotoCount(albumId) {
             const allAlbums = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
