@@ -408,10 +408,12 @@
             
             specialAlbums.forEach(album => {
                 const count = getAlbumPhotoCount(album.id);
-                const iconSvg = albumIcons[album.id];
+                const iconSvg = albumIcons[album.id] || albumIcons[15];
+
                 const card = document.createElement('a');
                 card.href = `album.html?album=${album.id}`;
-                card.className = 'album-card';
+                card.className = `album-card ${album.id === 20 ? 'debut-album' : ''}`;
+
                 card.innerHTML = `
                     <div class="album-icon">${iconSvg}</div>
                     <div class="album-title">${album.name}</div>
