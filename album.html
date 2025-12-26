@@ -839,23 +839,27 @@
         });
 
         window.onload = () => {
-            const allAlbums = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
-            allPhotos = (allAlbums[currentAlbumId] || []).sort((a, b) => b.timestamp - a.timestamp);
-            
-          if (allPhotos.length === 0) {
-            noPhotos.style.display = 'block';
-            updateStorageInfo(0);
-            return;
-        }
+    const allAlbums = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+    allPhotos = (allAlbums[currentAlbumId] || []).sort((a, b) => b.timestamp - a.timestamp);
 
-            }
-            
-            allPhotos.forEach(photo => {
-                addPhotoThumbnail(photo.name, photo.dataUrl, photo.uploader, photo.timestamp, photo.id);
-            });
-            
-            updateStorageInfo(allPhotos.length);
-        };
+    if (allPhotos.length === 0) {
+        noPhotos.style.display = 'block';
+        updateStorageInfo(0);
+        return;
+    }
+
+    allPhotos.forEach(photo => {
+        addPhotoThumbnail(
+            photo.name,
+            photo.dataUrl,
+            photo.uploader,
+            photo.timestamp,
+            photo.id
+        );
+    });
+
+    updateStorageInfo(allPhotos.length);
+};
     </script>
 </body>
 </html>
