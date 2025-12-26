@@ -671,7 +671,7 @@
         const currentAlbumId = parseInt(urlParams.get('album')) || 1;
         
         const albumsList = [
-            { id: 1, name: 'Table 1', description: 'Family' },
+    { id: 1, name: 'Table 1', description: 'Family' },
     { id: 2, name: 'Table 2', description: 'Guests' },
     { id: 3, name: 'Table 3', description: 'Guests' },
     { id: 4, name: 'Table 4', description: 'Guests' },
@@ -685,6 +685,12 @@
     { id: 12, name: 'Table 12', description: 'Guests' },
     { id: 13, name: 'Table 13', description: 'Guests' },
     { id: 14, name: 'Table 14', description: 'Guests' }
+
+    { id: 15, name: '18 Roses', description: 'Rose dance moments' },
+    { id: 16, name: '18 Candles', description: 'Candle ceremony' },
+    { id: 17, name: '18 Blue Bills', description: 'Blue bills collection' },
+    { id: 18, name: '18 Treasures', description: 'Wisdom & gifts' },
+    { id: 19, name: '18 Shots', description: 'Photo booth shots' }
         ];
         
         const currentAlbum = albumsList.find(a => a.id === currentAlbumId);
@@ -702,7 +708,10 @@
         let allPhotos = [];
         let currentPhotoIndex = 0;
 
-        albumInfo.textContent = `${currentAlbum.name} Album`;
+       albumInfo.textContent = currentAlbum
+    ? currentAlbum.name
+    : `Album ${albumId}`;
+
         uploadLink.href = `index.html?album=${currentAlbumId}`;
 
         function addPhotoThumbnail(name, src, uploader, timestamp, photoId) {
