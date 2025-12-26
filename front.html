@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📸 QR Photo Album</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            padding: 0;
+            overflow-x: hidden;
+        }
+        
+        .hero {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #001a4d 0%, #0d3b66 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(192, 192, 192, 0.3) 0%, rgba(192, 192, 192, 0.1) 70%);
+            border-radius: 50%;
+            top: -50px;
+            left: -50px;
+            animation: float 6s ease-in-out infinite, sparkle 3s ease-in-out infinite;
+            filter: blur(1px);
+        }
+        
+        .hero::after {
+            content: '';
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, rgba(192, 192, 192, 0.1) 70%);
+            border-radius: 50%;
+            bottom: -30px;
+            right: -30px;
+            animation: float 8s ease-in-out infinite reverse, sparkle 4s ease-in-out infinite reverse;
+            filter: blur(1px);
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(30px); }
+        }
+        
+        @keyframes sparkle {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .container {
+            max-width: 900px;
+            width: 100%;
+            z-index: 1;
+            text-align: center;
+        }
+        
+        .hero-image {
+            width: 100%;
+            max-width: 500px;
+            height: auto;
+            margin: 0 auto 40px;
+            border-radius: 25px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), 0 0 30px rgba(192, 192, 192, 0.4);
+            border: 4px solid;
+            border-image: linear-gradient(135deg, #c0c0c0 0%, #e8e8e8 50%, #c0c0c0 100%) 1;
+            animation: slideDown 0.8s ease-out;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(192, 192, 192, 0.1) 100%);
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        h1 {
+            font-size: 3.5em;
+            background: linear-gradient(135deg, #c0c0c0 0%, #e8e8e8 50%, #c0c0c0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            animation: slideDown 0.8s ease-out 0.2s backwards;
+            filter: drop-shadow(0 0 10px rgba(192, 192, 192, 0.3));
+        }
+        
+        .subtitle {
+            font-size: 1.5em;
+            color: rgba(255, 255, 255, 0.95);
+            margin-bottom: 50px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+            animation: slideDown 0.8s ease-out 0.4s backwards;
+        }
+        
+        .buttons-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            max-width: 600px;
+            margin: 0 auto;
+            animation: slideDown 0.8s ease-out 0.6s backwards;
+        }
+        
+        .btn-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px 25px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2), 0 0 20px rgba(192, 192, 192, 0.2);
+            border: 3px solid;
+            border-image: linear-gradient(135deg, #c0c0c0 0%, #e8e8e8 50%, #c0c0c0 100%) 1;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 280px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shimmer 3s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        
+        .btn-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3), 0 0 30px rgba(192, 192, 192, 0.5);
+            border-image: linear-gradient(135deg, #e8e8e8 0%, #ffffff 50%, #e8e8e8 100%) 1;
+        }
+        
+        .btn-card.upload-btn {
+            background: linear-gradient(135deg, #001a4d 0%, #0d3b66 100%);
+            color: white;
+            border: 3px solid transparent;
+        }
+        
+        .btn-card.upload-btn:hover {
+            background: linear-gradient(135deg, #0d3b66 0%, #1a5490 100%);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3), 0 0 30px rgba(192, 192, 192, 0.5);
+        }
+        
+        .btn-card.gallery-btn {
+            background: linear-gradient(135deg, #e8e8e8 0%, #f5f5f5 50%, #e8e8e8 100%);
+            color: #001a4d;
+            border: 3px solid;
+            border-image: linear-gradient(135deg, #c0c0c0 0%, #e8e8e8 50%, #c0c0c0 100%) 1;
+        }
+        
+        .btn-card.gallery-btn:hover {
+            background: linear-gradient(135deg, #ffffff 0%, #f5f5f5 50%, #ffffff 100%);
+        }
+        
+        .btn-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 2;
+            animation: bounce 2s infinite;
+            display: inline-block;
+            width: 60px;
+            height: 60px;
+        }
+        
+        .btn-card:hover .btn-icon {
+            animation: bounce 1s infinite;
+        }
+        
+        .btn-title {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .btn-description {
+            font-size: 0.95em;
+            opacity: 0.9;
+            line-height: 1.4;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .stats {
+            margin-top: 60px;
+            padding: 30px;
+            background: rgba(192, 192, 192, 0.15);
+            border-radius: 20px;
+            color: white;
+            backdrop-filter: blur(10px);
+            border: 2px solid;
+            border-image: linear-gradient(135deg, rgba(192, 192, 192, 0.5) 0%, rgba(255, 255, 255, 0.5) 50%, rgba(192, 192, 192, 0.5) 100%) 1;
+            box-shadow: 0 8px 32px rgba(192, 192, 192, 0.1), inset 0 0 20px rgba(255, 255, 255, 0.1);
+        }
+        
+        .stat-item {
+            display: inline-block;
+            margin: 0 30px;
+        }
+        
+        .stat-icon {
+            font-size: 2em;
+            margin-bottom: 10px;
+            display: inline-block;
+            animation: float 3s ease-in-out infinite;
+            width: 40px;
+            height: 40px;
+        }
+        
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            display: block;
+            background: linear-gradient(135deg, #c0c0c0 0%, #e8e8e8 50%, #c0c0c0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .stat-label {
+            font-size: 0.95em;
+            opacity: 0.9;
+        }
+        
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5em; }
+            .subtitle { font-size: 1.2em; margin-bottom: 40px; }
+            .buttons-container { grid-template-columns: 1fr; gap: 20px; }
+            .btn-card { padding: 30px 20px; min-height: 240px; }
+        }
+        
+        @media (max-width: 480px) {
+            body { padding: 10px; }
+            .hero { padding: 15px; }
+            h1 { font-size: 2em; }
+            .subtitle { font-size: 1em; margin-bottom: 30px; }
+            .buttons-container { gap: 15px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <div class="container">
+            <img src="https://via.placeholder.com/500x400?text=Photo+Album" alt="Photo Album" class="hero-image">
+            
+            <h1>QR Photo Album</h1>
+            <p class="subtitle">Capture memories together instantly</p>
+            
+            <div class="buttons-container">
+                <a href="albums.html" class="btn-card upload-btn">
+                    <svg class="btn-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                        <defs><style>.cute-icon { fill: currentColor; }</style></defs>
+                        <rect class="cute-icon" x="8" y="8" width="48" height="48" rx="4" ry="4" fill="white" stroke="white" stroke-width="2"/>
+                        <path class="cute-icon" d="M32 28 L20 40 L44 40 Z" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+                        <circle class="cute-icon" cx="22" cy="24" r="3" fill="currentColor"/>
+                    </svg>
+                    <div class="btn-title">Upload Now</div>
+                    <div class="btn-description">Share your photos & videos instantly</div>
+                </a>
+                
+                <a href="albums.html" class="btn-card gallery-btn">
+                    <svg class="btn-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                        <defs><style>.cute-icon { fill: currentColor; }</style></defs>
+                        <g class="cute-icon">
+                            <path d="M12 12 Q12 10 14 10 L50 10 Q52 10 52 12 L52 52 Q52 54 50 54 L14 54 Q12 54 12 52 Z" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/>
+                            <circle cx="28" cy="28" r="8" fill="none" stroke="currentColor" stroke-width="2"/>
+                            <circle cx="42" cy="20" r="3" fill="currentColor"/>
+                            <path d="M12 42 L24 30 L38 42 L52 28 L52 52" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                        </g>
+                    </svg>
+                    <div class="btn-title">View Gallery</div>
+                    <div class="btn-description">See all the saved memories</div>
+                </a>
+            </div>
+            
+            <div class="stats" id="statsSection">
+                <div class="stat-item">
+                    <svg class="stat-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                        <g fill="currentColor">
+                            <rect x="8" y="12" width="16" height="20" rx="2" ry="2"/>
+                            <rect x="28" y="8" width="16" height="24" rx="2" ry="2"/>
+                            <rect x="48" y="16" width="8" height="16" rx="1" ry="1"/>
+                            <rect x="8" y="36" width="48" height="4" rx="2"/>
+                        </g>
+                    </svg>
+                    <span class="stat-number" id="photoCount">0</span>
+                    <span class="stat-label">Photos Saved</span>
+                </div>
+                <div class="stat-item">
+                    <svg class="stat-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                        <g fill="currentColor">
+                            <rect x="14" y="10" width="36" height="44" rx="3" ry="3" fill="none" stroke="currentColor" stroke-width="2"/>
+                            <path d="M24 20 L40 20 M24 28 L40 28 M24 36 L40 36 M24 44 L40 44" stroke="currentColor" stroke-width="1.5"/>
+                        </g>
+                    </svg>
+                    <span class="stat-number" id="storageUsed">0 KB</span>
+                    <span class="stat-label">Storage Used</span>
+                </div>
+                <div class="stat-item">
+                    <svg class="stat-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                        <g fill="currentColor">
+                            <circle cx="22" cy="22" r="10" fill="none" stroke="currentColor" stroke-width="2"/>
+                            <circle cx="42" cy="22" r="10" fill="none" stroke="currentColor" stroke-width="2"/>
+                            <path d="M32 32 Q32 36 28 40 L36 40 Q32 36 32 32" fill="currentColor"/>
+                        </g>
+                    </svg>
+                    <span class="stat-number" id="uploaderCount">0</span>
+                    <span class="stat-label">Contributors</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const STORAGE_KEY = 'qr_photo_albums';
+        
+        function updateStats() {
+            try {
+                const allAlbums = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+                let totalPhotos = 0;
+                let totalSize = 0;
+                const uploaders = new Set();
+                
+                Object.values(allAlbums).forEach(album => {
+                    totalPhotos += album.length;
+                    album.forEach(p => uploaders.add(p.uploader));
+                });
+                
+                totalSize = localStorage.getItem(STORAGE_KEY)?.length || 0;
+                
+                document.getElementById('photoCount').textContent = totalPhotos;
+                document.getElementById('storageUsed').textContent = Math.round(totalSize / 1024) + ' KB';
+                document.getElementById('uploaderCount').textContent = uploaders.size;
+            } catch (e) {
+                console.error('Stats error:', e);
+            }
+        }
+        
+        updateStats();
+        setInterval(updateStats, 2000);
+    </script>
+</body>
+</html>

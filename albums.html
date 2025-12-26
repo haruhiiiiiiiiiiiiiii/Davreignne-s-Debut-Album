@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Album</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #001a4d 0%, #0d3b66 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 25px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), 0 0 40px rgba(192, 192, 192, 0.2);
+            padding: 40px;
+            border: 3px solid;
+            border-image: linear-gradient(135deg, #c0c0c0 0%, #e8e8e8 50%, #c0c0c0 100%) 1;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(192, 192, 192, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: drift 20s linear infinite;
+        }
+        
+        @keyframes drift {
+            0%, 100% { transform: translate(0, 0); }
+            25% { transform: translate(-30px, -30px); }
+            50% { transform: translate(0, -50px); }
+            75% { transform: translate(30px, -30px); }
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        h1 {
+            text-align: center;
+            color: #001a4d;
+            margin-bottom: 15px;
+            font-size: 2.8em;
+            background: linear-gradient(135deg, #001a4d 0%, #c0c0c0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #555;
+            margin-bottom: 40px;
+            font-size: 1.1em;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .albums-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .album-card {
+            background: white;
+            border-radius: 18px;
+            padding: 25px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1), 0 0 15px rgba(192, 192, 192, 0.15);
+            border: 3px solid;
+            border-image: linear-gradient(135deg, #c0c0c0 0%, #e8e8e8 50%, #c0c0c0 100%) 1;
+            cursor: pointer;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 260px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .album-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, transparent 70%);
+            animation: sparkleMove 3s ease-in-out infinite;
+            pointer-events: none;
+        }
+        
+        @keyframes sparkleMove {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(50px, 50px); }
+        }
+        
+        .album-icon {
+            font-size: 3.5em;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 2;
+            animation: bounce 2s infinite;
+            display: inline-block;
+            width: 70px;
+            height: 70px;
+        }
+        
+        .album-card:hover .album-icon {
+            animation: bounce 1s infinite;
+        }
+        
+        .album-title {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #001a4d;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .album-subtitle {
+            font-size: 0.95em;
+            color: #666;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .album-count {
+            background: linear-gradient(135deg, #001a4d 0%, #0d3b66 100%);
+            color: #c0c0c0;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+            position: relative;
+            z-index: 2;
+            box-shadow: 0 0 10px rgba(192, 192, 192, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        
+        .count-icon {
+            width: 16px;
+            height: 16px;
+            display: inline-block;
+        }
+        
+        .album-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.2), 0 0 30px rgba(192, 192, 192, 0.4);
+            border-image: linear-gradient(135deg, #e8e8e8 0%, #ffffff 50%, #e8e8e8 100%) 1;
+        }
+        
+        .button-group {
+            text-align: center;
+            margin-top: 30px;
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .btn-link {
+            padding: 12px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .back-button a {
+            background: linear-gradient(135deg, #001a4d 0%, #0d3b66 100%);
+            color: #c0c0c0;
+            box-shadow: 0 5px 15px rgba(0, 26, 77, 0.4), 0 0 10px rgba(192, 192, 192, 0.2);
+        }
+        
+        .back-button a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            animation: shimmerBtn 3s infinite;
+            border-radius: 50px;
+        }
+        
+        @keyframes shimmerBtn {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        
+        .back-button a:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 26, 77, 0.6), 0 0 15px rgba(192, 192, 192, 0.3);
+        }
+        
+        .upload-button a {
+            background: linear-gradient(135deg, #e8e8e8 0%, #f5f5f5 50%, #e8e8e8 100%);
+            color: #001a4d;
+            box-shadow: 0 5px 15px rgba(192, 192, 192, 0.4), 0 0 10px rgba(192, 192, 192, 0.3);
+            border: 2px solid rgba(192, 192, 192, 0.5);
+        }
+        
+        .upload-button a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shimmerBtn 3s infinite;
+            border-radius: 50px;
+        }
+        
+        .upload-button a:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(192, 192, 192, 0.6), 0 0 15px rgba(192, 192, 192, 0.4);
+        }
+        
+        .btn-icon-small {
+            width: 20px;
+            height: 20px;
+            display: inline-block;
+            flex-shrink: 0;
+        }
+        
+        @media (max-width: 768px) {
+            .container { padding: 20px; }
+            h1 { font-size: 2.2em; }
+            .albums-grid { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
+        }
+        
+        @media (max-width: 480px) {
+            body { padding: 10px; }
+            .container { padding: 15px; }
+            h1 { font-size: 1.8em; }
+            .albums-grid { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Choose Album</h1>
+        <p class="subtitle">Select which album to view or upload to</p>
+        
+        <div class="albums-grid" id="albumsGrid"></div>
+        
+        <div class="button-group">
+            <div class="upload-button">
+                <a href="index.html" class="btn-link">
+                    <svg class="btn-icon-small" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M32 10 L32 44 M20 32 L32 10 L44 32" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+                        <rect x="12" y="50" width="40" height="6" rx="2" fill="currentColor"/>
+                    </svg>
+                    Upload Only
+                </a>
+            </div>
+            <div class="back-button">
+                <a href="front.html" class="btn-link">
+                    <svg class="btn-icon-small" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M44 54 L20 32 L44 10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+                    </svg>
+                    Back to Home
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const STORAGE_KEY = 'qr_photo_albums';
+        
+        const albums = [
+            { id: 1, name: 'Celebration', description: 'Parties & events' },
+            { id: 2, name: 'Nature', description: 'Outdoor moments' },
+            { id: 3, name: 'Friends', description: 'Group photos' },
+            { id: 4, name: 'Food', description: 'Meals & recipes' },
+            { id: 5, name: 'Travel', description: 'Adventures' },
+            { id: 6, name: 'Family', description: 'Family time' },
+            { id: 7, name: 'Selfies', description: 'Self portraits' },
+            { id: 8, name: 'Work', description: 'Professional' },
+            { id: 9, name: 'Art', description: 'Creative work' },
+            { id: 10, name: 'Pets', description: 'Animal friends' },
+            { id: 11, name: 'Sports', description: 'Athletic moments' },
+            { id: 12, name: 'Fashion', description: 'Style & outfits' },
+            { id: 13, name: 'Music', description: 'Concerts & shows' },
+            { id: 14, name: 'Other', description: 'Miscellaneous' }
+        ];
+        
+        const albumIcons = {
+            1: '<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><circle cx="32" cy="20" r="3"/><path d="M20 28 Q20 24 24 24 L40 24 Q44 24 44 28 L44 48 Q44 52 40 52 L24 52 Q20 52 20 48 Z" fill="none" stroke="currentColor" stroke-width="2"/><path d="M20 40 L26 32 L40 44 L44 40" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></g></svg>',
+            2: '<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><path d="M32 10 L50 20 L50 50 Q50 54 46 54 L18 54 Q14 54 14 50 L14 20 Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M32 32 L42 22 M32 32 L24 22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></g></svg>',
+            3: '<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><circle cx="24" cy="28" r="7" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="40" cy="24" r="8" fill="none" stroke="currentColor" stroke-width="2"/><path d="M18 45 Q18 40 24 40 Q30 40 30 45" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M34 48 Q34 42 40 42 Q46 42 46 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></g></svg>',
+            4: '<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><rect x="18" y="20" width="28" height="32" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="32" cy="32" r="6" fill="none" stroke="currentColor" stroke-width="2"/></g></svg>',
+            5: '<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><path d="M32 14 L44 26 L44 52 Q44 54 42 54 L22 54 Q20 54 20 52 L20 26 Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M28 32 L36 32 M28 40 L36 40" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></g></svg>',
+            6: '<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><circle cx="22" cy="28" r="6" fill="currentColor"/><circle cx="42" cy="28" r="6" fill="currentColor"/><circle cx="32" cy="40" r="5" fill="currentColor"/><path d="M22 36 L26 50 Q26 54 30 54 L34 54 Q38 54 38 50 L42 36" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></g></svg>'
+        };
+
+        function getAlbumPhotoCount(albumId) {
+            const allAlbums = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+            return (allAlbums[albumId] || []).length;
+        }
+
+        function renderAlbums() {
+            const grid = document.getElementById('albumsGrid');
+            grid.innerHTML = '';
+            
+            albums.forEach(album => {
+                const count = getAlbumPhotoCount(album.id);
+                const iconSvg = albumIcons[album.id] || albumIcons[1];
+                const card = document.createElement('a');
+                card.href = `album.html?album=${album.id}`;
+                card.className = 'album-card';
+                card.innerHTML = `
+                    <div class="album-icon">${iconSvg}</div>
+                    <div class="album-title">${album.name}</div>
+                    <div class="album-subtitle">${album.description}</div>
+                    <div class="album-count">
+                        <svg class="count-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="12" y="20" width="16" height="20" rx="2" ry="2" fill="currentColor" opacity="0.7"/>
+                            <rect x="32" y="16" width="16" height="24" rx="2" ry="2" fill="currentColor" opacity="0.9"/>
+                            <rect x="52" y="24" width="8" height="16" rx="1" ry="1" fill="currentColor" opacity="0.6"/>
+                        </svg>
+                        ${count}
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        renderAlbums();
+    </script>
+</body>
+</html>
