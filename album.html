@@ -720,7 +720,9 @@ const lockedVideo = document.getElementById('lockedVideo');
     ? currentAlbum.name
     : `Album ${currentAlbumId}`
 
-
+if (currentAlbumId === 20) {
+    uploadLink.style.display = 'none';
+}
        if (currentAlbum && currentAlbum.locked) {
     uploadLink.style.display = 'none';
 } else {
