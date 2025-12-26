@@ -888,9 +888,11 @@ document.querySelector('.lightbox-details')?.style.display = 'none';
 }
 
             
-    allPhotos = JSON.parse(
-    localStorage.getItem('album_' + currentAlbumId)
-) || [];
+    const allAlbums = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+allAlbums[currentAlbumId] = photosArray;
+localStorage.setItem(STORAGE_KEY, JSON.stringify(allAlbums));
+
+
 
 allPhotos.sort((a, b) => b.timestamp - a.timestamp);
 
