@@ -16,15 +16,13 @@
         }
         
         .hero {
-            min-height: 100vh;
-            background: linear-gradient(135deg, #001a4d 0%, #0d3b66 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            position: relative;
-            overflow: hidden;
-        }
+    min-height: 100vh;
+    background: linear-gradient(135deg, #001a4d 0%, #0d3b66 100%);
+    padding: 20px;
+    position: relative;
+    overflow-y: auto;  /* ← Enable scroll */
+}
+
         
         /* GLITTERY BACKGROUND EFFECTS */
         .hero::before {
@@ -96,11 +94,12 @@
         }
         
         .container {
-            max-width: 900px;
-            width: 100%;
-            z-index: 10;
-            text-align: center;
-        }
+    max-width: 900px;
+    width: 100%;
+    z-index: 10;
+    text-align: center;
+    padding-bottom: 40px;  /* ← Space for scroll */
+}
         
  h1 {
     font-family: 'Brush Script MT', 'Brush Script Std', 'Edwardian Script ITC', cursive, 'Segoe Script', serif;
@@ -203,17 +202,18 @@
 
         
         .video-label {
-            text-align: center;
-            color: rgba(220, 220, 220, 0.98);
-            font-size: 1.1em;
-            margin-top: 30px;
-            margin-bottom: 30px;
-            font-style: italic;
-            letter-spacing: 1px;
-            animation: slideDown 0.8s ease-out 0.6s backwards;
-            text-shadow: 0 0 10px rgba(192, 192, 192, 0.5);
-            font-weight: 500;
-        }
+    text-align: center;
+    color: rgba(220, 220, 220, 0.98);
+    font-size: 1.1em;
+    margin-top: 20px;     /* ← More space from video */
+    margin-bottom: 40px;  /* ← Keep bottom space */
+    font-style: italic;
+    letter-spacing: 1px;
+    animation: slideDown 0.8s ease-out 0.6s backwards;
+    text-shadow: 0 0 10px rgba(192, 192, 192, 0.5);
+    font-weight: 500;
+}
+
         
         .buttons-container {
             display: grid;
@@ -278,16 +278,17 @@
         }
         
         .btn-card.gallery-btn {
-            background: linear-gradient(135deg, #e8e8e8 0%, #f5f5f5 50%, #e8e8e8 100%);
-            color: #001a4d;
-            border: 3px transparent;
-            border-image: linear-gradient(135deg, #c0c0c0 0%, #e8e8e8 50%, #c0c0c0 100%) 1;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2), 0 0 25px rgba(192, 192, 192, 0.3);
-        }
-        
-        .btn-card.gallery-btn:hover {
-            background: linear-gradient(135deg, #ffffff 0%, #f5f5f5 50%, #ffffff 100%);
-        }
+    background: linear-gradient(135deg, #e8e8e8 0%, #ffffff 50%, #e8e8e8 100%);
+    color: #001a4d;
+    border: 3px solid transparent;  /* ← Same as upload */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 0 25px rgba(192, 192, 192, 0.3);  /* ← Same shadow */
+}
+
+.btn-card.gallery-btn:hover {
+    background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 50%, #ffffff 100%);
+    transform: translateY(-15px) scale(1.02);  /* ← Same hover transform */
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3), 0 0 40px rgba(192, 192, 192, 0.5);  /* ← Same hover shadow */
+}
         
         .btn-icon {
             font-size: 3em;
@@ -400,13 +401,13 @@
             
             <!-- VIDEO SECTION -->
             <div class="video-section">
-                <div class="video-container">
-                    <video controls autoplay muted playsinline>
-                        <source src="https://raw.githubusercontent.com/haruhiiiiiiiiiiiiiii/Davreignne-s-Debut-Album/main/debut-video.mp4" type="video/mp4">
-                    </video>
-                </div>
-                <p class="video-label">Welcome to Davreignne's Gallery!</p>
-            </div>
+    <div class="video-container">
+        <video controls autoplay muted playsinline>
+            <source src="https://raw.githubusercontent.com/haruhiiiiiiiiiiiiiii/Davreignne-s-Debut-Album/main/debut-video.mp4" type="video/mp4">
+        </video>
+    </div>
+    <p class="video-label">Welcome to Davreignne's Gallery!</p>
+    
             
             <div class="buttons-container">
                 <a href="albums.html" class="btn-card upload-btn">
