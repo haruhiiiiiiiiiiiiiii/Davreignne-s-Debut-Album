@@ -293,59 +293,67 @@
         fileInput.addEventListener('change', handleFiles);
 
         function handleFiles() {
-            const files = Array.from(fileInput.files);
-            if (files.length === 0) return;
+    const files = Array.from(fileInput.files);
+    if (files.length === 0) return;
 
-            const nameValue = uploaderName.value.trim();
-            if (!nameValue) {
-                showError('Please enter your name before uploading.');
-                fileInput.value = '';
+    const nameValue = uploaderName.value.trim();
+    if (!nameValue) {
+        showError('Please enter your name before uploading.');
+        fileInput.value = '';
+        return;
+    }
+
+    loading.style.display = 'block';
+    uploadArea.style.display = 'none';
+    chooseBtn.disabled = true;
+
+    let processed = 0;
+    const allAlbums = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+    const currentPhotos = allAlbums[currentAlbumId] || [];
+
+    files.forEach(file => {
+        if (!file.type.startsWith('image/') && !file.type.startsWith('video/')) {
+            showError('Only photos and videos are allowed');
+            processed++;
             return;
-            }
-            loading.style.display = 'block';
-            uploadArea.style.display = 'none';
-            chooseBtn.disabled = true;
-
-            let processed = 0;
-            const allAlbums = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
-            const currentPhotos = allAlbums[currentAlbumId] || [];
-            const uploaderNameValue = nameValue;
-
-            files.forEach(file => {
-                if (!file.type.startsWith('image/') && !file.type.startsWith('video/')) {
-                    showError('Only photos and videos are allowed');
-                    processed++;
-                    return;
-                }
-
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    currentPhotos.push({
-                        name: file.name,
-                        dataUrl: e.target.result,
-                        timestamp: Date.now(),
-                        uploader: uploaderNameValue,
-                        size: file.size,
-                        type: file.type,
-                        id: Date.now() + Math.random()
-                    });
-
-                    processed++;
-                    if (processed === files.length) {
-                        savePhotos(currentPhotos);
-                        loading.style.display = 'none';
-                        uploadArea.style.display = 'block';
-                        chooseBtn.disabled = false;
-                        fileInput.value = '';
-                        
-                        successMsg.textContent = `${files.length} file(s) uploaded successfully!`;
-                        successMsg.style.display = 'block';
-                        setTimeout(() => { successMsg.style.display = 'none'; }, 4000);
-                    }
-                };
-                reader.readAsDataURL(file);
-            });
         }
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            currentPhotos.push({
+                name: file.name,
+                dataUrl: e.target.result,
+                timestamp: Date.now(),
+                uploader: nameValue,
+                size: file.size,
+                type: file.type,
+                id: Date.now() + Math.random()
+            });
+
+            processed++;
+            if (processed === files.length) {
+                const albums = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+                albums[currentAlbumId] = currentPhotos;
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(albums));
+
+                updatePhotoCount();
+
+                loading.style.display = 'none';
+                uploadArea.style.display = 'block';
+                chooseBtn.disabled = false;
+                fileInput.value = '';
+
+                successMsg.textContent = `${files.length} file(s) uploaded successfully!`;
+                successMsg.style.display = 'block';
+                setTimeout(() => {
+                    successMsg.style.display = 'none';
+                }, 4000);
+            }
+        };
+
+        reader.readAsDataURL(file);
+    });
+}
 
         renderAlbumSelector();
         selectAlbum(1, 'Table 1');
