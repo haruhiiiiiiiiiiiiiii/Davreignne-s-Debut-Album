@@ -92,14 +92,6 @@
     <div class="container">
         <h1>Upload Photos & Videos</h1>
         <p class="subtitle">Share your memories from the celebration</p>
-        <div class="unlimited-badge">
-            <svg class="badge-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-                <g fill="currentColor">
-                    <path d="M32 8 L36 18 L47 20 L39 28 L41 39 L32 35 L23 39 L25 28 L17 20 L28 18 Z" fill="currentColor"/>
-                </g>
-            </svg>
-            UNLIMITED UPLOADS
-        </div>
         
         <div class="album-selector">
             <label class="album-selector-label">
@@ -173,7 +165,7 @@
             <div style="font-size: 1.5em; color: #001a4d; font-weight: bold;">Uploading...</div>
         </div>
         
-        <input type="text" class="name-input" id="uploaderName" placeholder="Your name (optional)">
+<input type="text" class="name-input" id="uploaderName" placeholder="Your name" required>
         
         <div class="stats">
             <div class="stat-number" id="photoCount">0</div>
@@ -304,6 +296,12 @@
             const files = Array.from(fileInput.files);
             if (files.length === 0) return;
 
+            const nameValue = uploaderName.value.trim();
+            if (!nameValue) {
+                showError('Please enter your name before uploading.');
+                fileInput.value = '';
+            return;
+
             loading.style.display = 'block';
             uploadArea.style.display = 'none';
             chooseBtn.disabled = true;
@@ -311,7 +309,7 @@
             let processed = 0;
             const allAlbums = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
             const currentPhotos = allAlbums[currentAlbumId] || [];
-            const uploaderNameValue = uploaderName.value.trim() || 'Anonymous';
+            const uploaderNameValue = nameValue;
 
             files.forEach(file => {
                 if (!file.type.startsWith('image/') && !file.type.startsWith('video/')) {
@@ -340,7 +338,7 @@
                         chooseBtn.disabled = false;
                         fileInput.value = '';
                         
-                        successMsg.textContent = `${files.length} file(s) uploaded successfully! (UNLIMITED)`;
+                        successMsg.textContent = `${files.length} file(s) uploaded successfully!`;
                         successMsg.style.display = 'block';
                         setTimeout(() => { successMsg.style.display = 'none'; }, 4000);
                     }
