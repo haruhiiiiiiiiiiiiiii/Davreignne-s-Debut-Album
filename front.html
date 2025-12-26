@@ -73,30 +73,6 @@
             text-align: center;
         }
         
-        .hero-image {
-            width: 100%;
-            max-width: 500px;
-            height: auto;
-            margin: 0 auto 40px;
-            border-radius: 25px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), 0 0 30px rgba(192, 192, 192, 0.4);
-            border: 4px solid;
-            border-image: linear-gradient(135deg, #c0c0c0 0%, #e8e8e8 50%, #c0c0c0 100%) 1;
-            animation: slideDown 0.8s ease-out;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(192, 192, 192, 0.1) 100%);
-        }
-        
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
         h1 {
             font-size: 3.5em;
             background: linear-gradient(135deg, #c0c0c0 0%, #e8e8e8 50%, #c0c0c0 100%);
@@ -112,9 +88,44 @@
         .subtitle {
             font-size: 1.5em;
             color: rgba(255, 255, 255, 0.95);
-            margin-bottom: 50px;
+            margin-bottom: 40px;
             text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
             animation: slideDown 0.8s ease-out 0.4s backwards;
+        }
+        
+        /* VIDEO SECTION */
+        .video-section {
+            margin-bottom: 50px;
+            animation: slideDown 0.8s ease-out 0.5s backwards;
+        }
+        
+        .video-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            margin: 0 auto 30px;
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 0 40px rgba(192, 192, 192, 0.3);
+            border: 4px solid;
+            border-image: linear-gradient(135deg, #c0c0c0 0%, #e8e8e8 50%, #c0c0c0 100%) 1;
+            background: #1a1a1a;
+        }
+        
+        .video-container video {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 21px;
+        }
+        
+        .video-label {
+            text-align: center;
+            color: rgba(192, 192, 192, 0.95);
+            font-size: 0.95em;
+            margin-bottom: 30px;
+            font-style: italic;
+            letter-spacing: 0.5px;
         }
         
         .buttons-container {
@@ -194,14 +205,9 @@
             margin-bottom: 15px;
             position: relative;
             z-index: 2;
-            animation: bounce 2s infinite;
             display: inline-block;
             width: 60px;
             height: 60px;
-        }
-        
-        .btn-card:hover .btn-icon {
-            animation: bounce 1s infinite;
         }
         
         .btn-title {
@@ -241,7 +247,6 @@
             font-size: 2em;
             margin-bottom: 10px;
             display: inline-block;
-            animation: float 3s ease-in-out infinite;
             width: 40px;
             height: 40px;
         }
@@ -261,11 +266,23 @@
             opacity: 0.9;
         }
         
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
         @media (max-width: 768px) {
             h1 { font-size: 2.5em; }
             .subtitle { font-size: 1.2em; margin-bottom: 40px; }
             .buttons-container { grid-template-columns: 1fr; gap: 20px; }
             .btn-card { padding: 30px 20px; min-height: 240px; }
+            .video-container { max-width: 100%; }
         }
         
         @media (max-width: 480px) {
@@ -280,10 +297,18 @@
 <body>
     <div class="hero">
         <div class="container">
-            <img src="https://via.placeholder.com/500x400?text=Photo+Album" alt="Photo Album" class="hero-image">
+            <h1>Debut Celebration</h1>
+            <p class="subtitle">A Special Day to Remember</p>
             
-            <h1>QR Photo Album</h1>
-            <p class="subtitle">Capture memories together instantly</p>
+            <!-- VIDEO SECTION -->
+            <div class="video-section">
+                <div class="video-container">
+                    <video controls muted>
+                        <source src="https://raw.githubusercontent.com/haruhiiiiiiiiiiiiiii/Davreignne-s-Debut-Album/main/NTEASER%20Davreignne%20%4018%20PRE%20DEBUT.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <p class="video-label">✨ Highlight Video ✨</p>
+            </div>
             
             <div class="buttons-container">
                 <a href="albums.html" class="btn-card upload-btn">
