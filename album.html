@@ -537,9 +537,8 @@
         
         <div id="photosGrid" class="photos-grid"></div>
         
-        <div id="loading">
-            <div class="spinner"></div> Loading photos...
-        </div>
+        <div id="loading" style="display:none;"></div>
+        
         <div id="noPhotos">
             <h3>No photos yet</h3>
             <p>Be the first to upload! <a href="index.html" style="color: #001a4d; font-weight: bold;">Upload now →</a></p>
@@ -810,7 +809,6 @@
                 
                 if (allPhotos.length === 0) {
                     closeLightbox();
-                    loading.style.display = 'none';
                     noPhotos.style.display = 'block';
                     updateStorageInfo(0);
                 } else {
@@ -844,11 +842,12 @@
             const allAlbums = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
             allPhotos = (allAlbums[currentAlbumId] || []).sort((a, b) => b.timestamp - a.timestamp);
             
-            if (allPhotos.length === 0) {
-                loading.style.display = 'none';
-                noPhotos.style.display = 'block';
-                updateStorageInfo(0);
-                return;
+          if (allPhotos.length === 0) {
+            noPhotos.style.display = 'block';
+            updateStorageInfo(0);
+            return;
+        }
+
             }
             
             allPhotos.forEach(photo => {
@@ -856,7 +855,6 @@
             });
             
             updateStorageInfo(allPhotos.length);
-            loading.style.display = 'none';
         };
     </script>
 </body>
