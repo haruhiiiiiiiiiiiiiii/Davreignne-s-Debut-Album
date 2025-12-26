@@ -709,6 +709,9 @@
         const lightboxImageContainer = document.getElementById('lightboxImageContainer');
         const albumInfo = document.getElementById('albumInfo');
         const uploadLink = document.getElementById('uploadLink');
+        const lockedVideoContainer = document.getElementById('lockedVideoContainer');
+const lockedVideo = document.getElementById('lockedVideo');
+
         
         let allPhotos = [];
         let currentPhotoIndex = 0;
@@ -718,7 +721,11 @@
     : `Album ${currentAlbumId}`
 
 
-        uploadLink.href = `index.html?album=${currentAlbumId}`;
+       if (currentAlbum && currentAlbum.locked) {
+    uploadLink.style.display = 'none';
+} else {
+    uploadLink.href = `index.html?album=${currentAlbumId}`;
+}
 
         function addPhotoThumbnail(name, src, uploader, timestamp, photoId) {
             const thumbnail = document.createElement('div');
@@ -770,7 +777,7 @@
                 const video = document.createElement('video');
                 video.src = photo.dataUrl;
                 video.controls = true;
-                video.muted = true;
+                video.muted = false;
                 lightboxImageContainer.appendChild(video);
             } else {
                 const img = document.createElement('img');
@@ -809,6 +816,8 @@
         }
 
         function deleteLightboxPhoto() {
+            if (currentAlbum && currentAlbum.locked) return;
+
             if (confirm('Are you sure you want to delete this photo?')) {
                 const photo = allPhotos[currentPhotoIndex];
                 allPhotos.splice(currentPhotoIndex, 1);
@@ -854,6 +863,23 @@
         });
 
         window.onload = () => {
+document.querySelector('.lightbox-details')?.style.display = 'none';
+
+            if (currentAlbum && currentAlbum.locked && currentAlbumId === 20) {
+    photosGrid.style.display = 'none';
+    noPhotos.style.display = 'none';
+    storageInfo.style.display = 'none';
+
+    lockedVideo.querySelector('source').src =
+    'https://raw.githubusercontent.com/haruhiiiiiiiiiiiiiii/Davreignne-s-Debut-Album/main/DAVREIGNNE%20DEBUT.mp4';
+
+
+    lockedVideo.load();
+    lockedVideoContainer.style.display = 'block';
+    return;
+}
+
+            
     const allAlbums = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
     allPhotos = (allAlbums[currentAlbumId] || []).sort((a, b) => b.timestamp - a.timestamp);
 
