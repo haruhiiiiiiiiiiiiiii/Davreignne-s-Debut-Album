@@ -194,7 +194,20 @@
             justify-content: center;
             gap: 6px;
         }
-        
+        .debut-album {
+    background: linear-gradient(135deg, #0a1a3a, #0f2b5c);
+    border: 2px solid #c0c0c0;
+    color: #e6e6e6;
+    box-shadow: 0 14px 35px rgba(0, 0, 0, 0.45);
+    margin-left: auto;
+    margin-right: auto;
+    }
+
+    .debut-album h3,
+    .debut-album p {
+        color: #e6e6e6;
+    }
+
         .count-icon { width: 16px; height: 16px; display: inline-block; }
         
         .button-group {
@@ -364,6 +377,13 @@
             grid.innerHTML = '';
             
             albums.forEach(album => {
+                albumsContainer.innerHTML += `
+        <a href="album.html?album=${album.id}"    class="album-card ${album.id === 20 ? 'debut-album' : ''}">
+            <h3>${album.name}</h3>
+            <p>${album.description}</p>
+        </a>
+    `;
+
                 const count = getAlbumPhotoCount(album.id);
                 const iconSvg = albumIcons[album.id] || albumIcons[1];
                 const card = document.createElement('a');
