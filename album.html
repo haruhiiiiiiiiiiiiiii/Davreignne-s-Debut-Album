@@ -684,8 +684,10 @@
     { id: 11, name: 'Table 11', description: 'Guests' },
     { id: 12, name: 'Table 12', description: 'Guests' },
     { id: 13, name: 'Table 13', description: 'Guests' },
-    { id: 14, name: 'Table 14', description: 'Guests' }
+    { id: 14, name: 'Table 14', description: 'Guests' },
 
+
+            
     { id: 15, name: '18 Roses', description: 'Rose dance moments' },
     { id: 16, name: '18 Candles', description: 'Candle ceremony' },
     { id: 17, name: '18 Blue Bills', description: 'Blue bills collection' },
@@ -710,7 +712,8 @@
 
        albumInfo.textContent = currentAlbum
     ? currentAlbum.name
-    : `Album ${albumId}`;
+    : `Album ${currentAlbumId}`
+
 
         uploadLink.href = `index.html?album=${currentAlbumId}`;
 
