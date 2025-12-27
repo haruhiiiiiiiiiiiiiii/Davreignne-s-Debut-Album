@@ -440,7 +440,7 @@
     <div class="sparkle-4"></div>
     
     <div class="container">
-        <h1>✨ Official Debut Gallery ✨</h1>
+        <h1>Official Debut Gallery</h1>
         <p class="subtitle">Watch the video and browse exclusive photos</p>
         
         <!-- VIDEO SECTION -->
@@ -454,9 +454,9 @@
         
         <!-- ADMIN CONTROLS -->
         <div class="admin-controls" id="adminControls" style="display:none;">
-            <div class="admin-badge">🔐 Admin Mode Active</div>
+            <div class="admin-badge">Admin Mode Active</div>
             <div class="upload-area" onclick="document.getElementById('fileInput').click()">
-                <div style="font-size:3em; margin-bottom:10px;">📸</div>
+                <div style="font-size:3em; margin-bottom:10px;">+</div>
                 <div style="font-size:1.2em;">Click to Upload Photos/Videos</div>
                 <input type="file" id="fileInput" multiple accept="image/*,video/*">
             </div>
@@ -465,7 +465,7 @@
         
         <div style="text-align:center; margin: 20px 0;" id="adminLoginBtn">
             <button class="admin-btn" onclick="showAdminLogin()">
-                🔐 Admin Login
+                Add More to This Album
             </button>
         </div>
         
@@ -474,7 +474,7 @@
         
         <div class="button-group">
             <a href="albums.html" class="btn-link">
-                ← Back to Albums
+                Back to Albums
             </a>
         </div>
         
@@ -489,7 +489,7 @@
     <!-- ADMIN LOGIN MODAL -->
     <div class="modal" id="adminModal">
         <div class="modal-content">
-            <h2>🔐 Admin Login</h2>
+            <h2>Admin Login</h2>
             <input type="password" id="adminPassword" placeholder="Enter admin password">
             <div class="modal-buttons">
                 <button class="btn-confirm" onclick="checkAdminPassword()">Login</button>
@@ -515,8 +515,8 @@
     <script>
         const STORAGE_KEY = 'qr_photo_albums';
         const ADMIN_KEY = 'debut_admin_logged_in';
-        const ADMIN_PASSWORD = 'admin123'; // CHANGE THIS TO YOUR PASSWORD
-        const ALBUM_ID = 20; // Debut album ID
+        const ADMIN_PASSWORD = '01082008';
+        const ALBUM_ID = 20;
         
         let allPhotos = [];
         let currentPhotoIndex = 0;
