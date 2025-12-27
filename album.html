@@ -3,28 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Photo Gallery</title>
+    <title>Photo Gallery - Debug</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body { 
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-image: 
-        linear-gradient(135deg, rgba(0, 26, 77, 0.35) 0%, rgba(13, 59, 102, 0.45) 100%),
-        url('https://raw.githubusercontent.com/haruhiiiiiiiiiiiiiii/Davreignne-s-Debut-Album/main/MOT04452.JPG');
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    background-repeat: no-repeat;
-    min-height: 100vh;
-    padding: 15px;
-}
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-image: 
+                linear-gradient(135deg, rgba(0, 26, 77, 0.35) 0%, rgba(13, 59, 102, 0.45) 100%),
+                url('https://raw.githubusercontent.com/haruhiiiiiiiiiiiiiii/Davreignne-s-Debut-Album/main/MOT04452.JPG');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            min-height: 100vh;
+            padding: 15px;
+        }
 
         .container { 
             max-width: 1200px; 
             margin: 0 auto; 
             background: rgba(255, 255, 255, 0.88);
-    backdrop-filter: blur(8px);
+            backdrop-filter: blur(8px);
             border-radius: 25px; 
             box-shadow: 0 20px 60px rgba(0,0,0,0.3), 0 0 40px rgba(192, 192, 192, 0.2); 
             padding: 30px;
@@ -43,28 +43,19 @@
             background-clip: text;
         }
         
-        .subtitle { 
-            text-align: center; 
-            color: #666; 
-            margin-bottom: 10px;
-            font-size: 1.1em;
+        .debug-info {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 10px;
+            font-family: monospace;
+            font-size: 0.9em;
         }
         
-        .album-info {
-            text-align: center;
-    background: linear-gradient(
-        135deg,
-        rgba(0, 26, 77, 0.55) 0%,
-        rgba(13, 59, 102, 0.55) 100%
-    );
-    color: #c0c0c0;
-    padding: 16px;
-    border-radius: 12px;
-    margin-bottom: 25px;
-    font-size: 1.3em;
-    font-weight: bold;
-    box-shadow: 0 0 15px rgba(192, 192, 192, 0.2);
-    backdrop-filter: blur(6px);
+        .debug-info h3 {
+            color: #856404;
+            margin-bottom: 10px;
         }
         
         .photos-grid { 
@@ -83,13 +74,12 @@
             transition: all 0.3s ease;
             background: linear-gradient(135deg, #e8e8e8 0%, #c0c0c0 100%);
             padding: 4px;
-            box-shadow: 0 10px 30px rgba(192, 192, 192, 0.2), 0 0 20px rgba(192, 192, 192, 0.15);
+            box-shadow: 0 10px 30px rgba(192, 192, 192, 0.2);
         }
         
         .photo-thumbnail:hover {
             transform: scale(1.08) translateY(-8px);
-            box-shadow: 0 20px 50px rgba(192, 192, 192, 0.4), 0 0 30px rgba(192, 192, 192, 0.3);
-            padding: 5px;
+            box-shadow: 0 20px 50px rgba(192, 192, 192, 0.4);
         }
         
         .photo-thumbnail-inner {
@@ -106,256 +96,11 @@
             height: 100%;
             object-fit: cover;
             display: block;
-            transition: transform 0.3s ease;
-        }
-        
-        .photo-thumbnail:hover img,
-        .photo-thumbnail:hover video {
-            transform: scale(1.05);
-        }
-        
-        .eye-icon {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 40px;
-            height: 40px;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            z-index: 10;
-        }
-        
-        .photo-thumbnail:hover .eye-icon {
-            opacity: 1;
-        }
-        
-        .lightbox {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.95);
-            z-index: 1000;
-            animation: fadeIn 0.3s ease;
-            padding: 20px;
-            overflow-y: auto;
-        }
-        
-        .lightbox.active {
-            display: flex;
-            align-items: flex-start;
-            justify-content: center;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        .lightbox-content {
-            position: relative;
-            width: 90%;
-            height: auto;
-            max-width: 1000px;
-            display: flex;
-            flex-direction: column;
-            animation: slideUp 0.3s ease;
-            margin: 20px auto;
-        }
-        
-        @keyframes slideUp {
-            from {
-                transform: translateY(50px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-        
-        .close-btn-container {
-            text-align: right;
-            margin-bottom: 15px;
-        }
-        
-        .btn-close {
-            width: 50px;
-            height: 50px;
-            border: none;
-            border-radius: 50%;
-            font-size: 1.5em;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(100, 100, 100, 0.9);
-            color: white;
-            padding: 0;
-        }
-        
-        .btn-close:hover {
-            background: rgba(50, 50, 50, 1);
-            transform: scale(1.1) rotate(90deg);
-        }
-        
-        .close-icon {
-            width: 24px;
-            height: 24px;
-        }
-        
-        .lightbox-image-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            border-radius: 20px;
-            margin-bottom: 20px;
-            background: #1a1a1a;
-            max-height: 70vh;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-            position: relative;
-        }
-        
-        .lightbox-image-container img,
-        .lightbox-image-container video {
-            max-width: 100%;
-            max-height: 70vh;
-            object-fit: contain;
-            border-radius: 15px;
-        }
-        
-        .nav-arrow {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            border: none;
-            font-size: 2em;
-            padding: 10px 15px;
-            cursor: pointer;
-            border-radius: 8px;
-            transition: all 0.2s ease;
-            z-index: 999;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 50px;
-            height: 50px;
-        }
-        
-        .nav-arrow:hover {
-            background: rgba(255, 255, 255, 0.4);
-        }
-        
-        .nav-icon {
-            width: 24px;
-            height: 24px;
-        }
-        
-        .nav-prev { left: 10px; }
-        .nav-next { right: 10px; }
-        
-        .lightbox-details {
-            background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(10px);
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255, 255, 255, 0.5);
-            border: 2px solid;
-            border-image: linear-gradient(135deg, rgba(192, 192, 192, 0.5) 0%, rgba(255, 255, 255, 0.5) 50%, rgba(192, 192, 192, 0.5) 100%) 1;
-            animation: slideUp 0.4s ease 0.1s backwards;
-        }
-        
-        .details-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 25px;
-        }
-        
-        .detail-item {
-            padding: 15px;
-            background: linear-gradient(135deg, rgba(192, 192, 192, 0.1) 0%, rgba(192, 192, 192, 0.05) 100%);
-            border-radius: 12px;
-            border: 1px solid rgba(192, 192, 192, 0.3);
-        }
-        
-        .detail-label {
-            font-weight: bold;
-            color: #001a4d;
-            font-size: 0.9em;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .detail-icon {
-            width: 18px;
-            height: 18px;
-            flex-shrink: 0;
-        }
-        
-        .detail-value {
-            color: #333;
-            word-break: break-all;
-            font-size: 1.05em;
-            font-weight: 500;
-        }
-        
-        .delete-section {
-            margin-top: 25px;
-            padding-top: 25px;
-            border-top: 2px solid rgba(192, 192, 192, 0.3);
-            text-align: center;
-        }
-        
-        .btn-delete {
-            width: 60px;
-            height: 60px;
-            border: none;
-            border-radius: 50%;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(255, 0, 0, 0.3);
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, rgba(255, 0, 0, 0.8) 0%, rgba(220, 0, 0, 0.9) 100%);
-            color: white;
-            padding: 0;
-        }
-        
-        .btn-delete:hover {
-            background: linear-gradient(135deg, rgba(255, 0, 0, 1) 0%, rgba(200, 0, 0, 1) 100%);
-            transform: scale(1.15);
-            box-shadow: 0 8px 25px rgba(255, 0, 0, 0.5);
-        }
-        
-        .trash-icon {
-            width: 32px;
-            height: 32px;
-        }
-        
-        .delete-text {
-            display: block;
-            margin-top: 12px;
-            color: #666;
-            font-size: 0.95em;
         }
         
         .view-gallery { 
             text-align: center; 
-            margin-top: 25px; 
+            margin: 25px 0; 
             display: flex;
             gap: 12px;
             justify-content: center;
@@ -373,57 +118,13 @@
             align-items: center;
             gap: 8px;
             transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(192, 192, 192, 0.4), 0 0 10px rgba(192, 192, 192, 0.2);
+            box-shadow: 0 5px 15px rgba(192, 192, 192, 0.4);
             border: 2px solid rgba(192, 192, 192, 0.5);
-            position: relative;
-        }
-        
-        .view-gallery a::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            animation: shimmer 3s infinite;
-            border-radius: 50px;
-        }
-        
-        @keyframes shimmer {
-            0% { left: -100%; }
-            100% { left: 100%; }
         }
         
         .view-gallery a:hover {
             transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(192, 192, 192, 0.6), 0 0 15px rgba(192, 192, 192, 0.3);
-        }
-        
-        .btn-icon-small {
-            width: 20px;
-            height: 20px;
-            flex-shrink: 0;
-        }
-        
-        #loading {
-            text-align: center;
-            padding: 40px;
-        }
-        
-        .spinner { 
-            border: 5px solid #f3f3f3; 
-            border-top: 5px solid #001a4d; 
-            border-radius: 50%; 
-            width: 50px; 
-            height: 50px; 
-            animation: spin 1s linear infinite; 
-            margin: 0 auto 15px; 
-        }
-        
-        @keyframes spin { 
-            0% { transform: rotate(0deg); } 
-            100% { transform: rotate(360deg); } 
+            box-shadow: 0 8px 25px rgba(192, 192, 192, 0.6);
         }
         
         #noPhotos {
@@ -437,230 +138,27 @@
             margin-bottom: 15px;
             font-size: 1.5em;
         }
-        
-        #noPhotos p {
-            color: #666;
-            font-size: 1.1em;
-        }
-        
-        .storage-info { 
-            text-align: center; 
-            color: #666; 
-            font-size: 0.95em; 
-            margin-top: 20px;
-            padding-top: 15px;
-            border-top: 2px solid rgba(192, 192, 192, 0.3);
-        }
-        
-        .success { 
-            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
-            color: #155724; 
-            padding: 15px; 
-            border-radius: 12px; 
-            margin: 20px 0; 
-            display: none;
-            border: 2px solid #28a745;
-        }
-        
-        @media (max-width: 768px) {
-            .photos-grid {
-                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            }
-            
-            .lightbox-image-container {
-                max-height: 50vh;
-            }
-            
-            .lightbox-image-container img,
-            .lightbox-image-container video {
-                max-height: 50vh;
-            }
-            
-            .details-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            body { padding: 10px; }
-            .container { padding: 15px; }
-            .photos-grid {
-                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-                gap: 12px;
-            }
-            
-            .lightbox-details {
-                padding: 20px;
-            }
-            
-            .details-grid {
-                gap: 12px;
-            }
-            
-            .detail-item {
-                padding: 12px;
-            }
-        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Photo Gallery</h1>
-        <p class="subtitle">Click any photo to view full details</p>
+        <h1>Photo Gallery - Debug Mode</h1>
         
-        <div class="album-info" id="albumInfo">Loading album...</div>
-        
-        <div class="success" id="successMsg"></div>
+        <div class="debug-info">
+            <h3>Debug Information:</h3>
+            <div id="debugOutput">Loading...</div>
+        </div>
         
         <div class="view-gallery">
-            <a href="index.html" id="uploadLink">
-                <svg class="btn-icon-small" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-                    <g fill="currentColor">
-                        <path d="M32 10 L32 44 M20 32 L32 10 L44 32" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
-                        <rect x="12" y="50" width="40" height="6" rx="2" fill="currentColor"/>
-                    </g>
-                </svg>
-                Upload More
-            </a>
-            <a href="albums.html">
-                <svg class="btn-icon-small" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-                    <g fill="currentColor">
-                        <rect x="10" y="14" width="20" height="20" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
-                        <rect x="34" y="14" width="20" height="20" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
-                        <rect x="10" y="38" width="20" height="20" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
-                        <rect x="34" y="38" width="20" height="20" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
-                    </g>
-                </svg>
-                Change Album
-            </a>
+            <a href="index.html" id="uploadLink">Upload More</a>
+            <a href="albums.html">Change Album</a>
         </div>
         
         <div id="photosGrid" class="photos-grid"></div>
         
-        <div id="loading" style="display:none;"></div>
-        
         <div id="noPhotos">
             <h3>No photos yet</h3>
             <p>Be the first to upload! <a href="index.html" style="color: #001a4d; font-weight: bold;">Upload now →</a></p>
-        </div>
-        
-        <div class="storage-info" id="storageInfo"></div>
-    </div>
-
-    <div class="lightbox" id="lightbox">
-        <div class="lightbox-content">
-            <div class="close-btn-container">
-                <button class="btn-close" onclick="closeLightbox()" title="Close">
-                    <svg class="close-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-                        <g stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round">
-                            <line x1="18" y1="18" x2="46" y2="46"/>
-                            <line x1="46" y1="18" x2="18" y2="46"/>
-                        </g>
-                    </svg>
-                </button>
-            </div>
-            
-            <div class="lightbox-image-container" id="lightboxImageContainer">
-                <button class="nav-arrow nav-prev" onclick="prevPhoto()">
-                    <svg class="nav-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-                        <g fill="currentColor">
-                            <path d="M40 12 L20 32 L40 52" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
-                        </g>
-                    </svg>
-                </button>
-                <button class="nav-arrow nav-next" onclick="nextPhoto()">
-                    <svg class="nav-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-                        <g fill="currentColor">
-                            <path d="M24 12 L44 32 L24 52" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
-                        </g>
-                    </svg>
-                </button>
-            </div>
-            
-            <div class="lightbox-details">
-                <div class="details-grid">
-                    <div class="detail-item">
-                        <span class="detail-label">
-                            <svg class="detail-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-                                <g fill="currentColor">
-                                    <rect x="16" y="12" width="36" height="42" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
-                                    <path d="M24 22 L48 22 M24 30 L48 30 M24 38 L40 38" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                                </g>
-                            </svg>
-                            File Name
-                        </span>
-                        <span class="detail-value" id="detailName">-</span>
-                    </div>
-                    <div class="detail-item">
-                        <span class="detail-label">
-                            <svg class="detail-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-                                <g fill="currentColor">
-                                    <circle cx="22" cy="28" r="6" fill="none" stroke="currentColor" stroke-width="2"/>
-                                    <path d="M10 50 Q10 44 16 44 Q22 44 22 50" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                                    <circle cx="42" cy="26" r="7" fill="none" stroke="currentColor" stroke-width="2"/>
-                                    <path d="M30 50 Q30 42 42 42 Q54 42 54 50" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                                </g>
-                            </svg>
-                            Uploaded By
-                        </span>
-                        <span class="detail-value" id="detailUploader">-</span>
-                    </div>
-                    <div class="detail-item">
-                        <span class="detail-label">
-                            <svg class="detail-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-                                <g fill="currentColor">
-                                    <rect x="14" y="14" width="36" height="38" rx="2" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                                    <line x1="14" y1="24" x2="50" y2="24" stroke="currentColor" stroke-width="1.5"/>
-                                    <path d="M28 32 L32 36 L40 28 M32 48 L32 40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                </g>
-                            </svg>
-                            Date
-                        </span>
-                        <span class="detail-value" id="detailDate">-</span>
-                    </div>
-                    <div class="detail-item">
-                        <span class="detail-label">
-                            <svg class="detail-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-                                <g fill="currentColor">
-                                    <circle cx="32" cy="32" r="16" fill="none" stroke="currentColor" stroke-width="2"/>
-                                    <path d="M32 20 L32 32 L40 40" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                </g>
-                            </svg>
-                            Time
-                        </span>
-                        <span class="detail-value" id="detailTime">-</span>
-                    </div>
-                    <div class="detail-item">
-                        <span class="detail-label">
-                            <svg class="detail-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-                                <g fill="currentColor">
-                                    <rect x="14" y="10" width="36" height="44" rx="2" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                                    <path d="M20 24 L32 24 L32 32 L20 32 Z" fill="none" stroke="currentColor" stroke-width="1.5"/>
-                                    <line x1="20" y1="38" x2="44" y2="38" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                                    <line x1="20" y1="44" x2="44" y2="44" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                                </g>
-                            </svg>
-                            File Size
-                        </span>
-                        <span class="detail-value" id="detailSize">-</span>
-                    </div>
-                </div>
-                
-                <div class="delete-section" id="deleteSection">
-                    <button class="btn-delete" onclick="deleteLightboxPhoto()" title="Delete photo">
-                        <svg class="trash-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-                            <g fill="currentColor">
-                                <path d="M20 12 L20 8 Q20 6 22 6 L42 6 Q44 6 44 8 L44 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                                <rect x="16" y="14" width="32" height="38" rx="2" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                                <line x1="26" y1="22" x2="26" y2="46" stroke="currentColor" stroke-width="2"/>
-                                <line x1="32" y1="22" x2="32" y2="46" stroke="currentColor" stroke-width="2"/>
-                                <line x1="38" y1="22" x2="38" y2="46" stroke="currentColor" stroke-width="2"/>
-                            </g>
-                        </svg>
-                    </button>
-                    <span class="delete-text">Delete this photo</span>
-                </div>
-            </div>
         </div>
     </div>
 
@@ -670,234 +168,85 @@
         const urlParams = new URLSearchParams(window.location.search);
         const currentAlbumId = parseInt(urlParams.get('album')) || 1;
         
-        const albumsList = [
-    { id: 1, name: 'Table 1', description: 'Family' },
-    { id: 2, name: 'Table 2', description: 'Guests' },
-    { id: 3, name: 'Table 3', description: 'Guests' },
-    { id: 4, name: 'Table 4', description: 'Guests' },
-    { id: 5, name: 'Table 5', description: 'Guests' },
-    { id: 6, name: 'Table 6', description: 'Guests' },
-    { id: 7, name: 'Table 7', description: 'Guests' },
-    { id: 8, name: 'Table 8', description: 'Guests' },
-    { id: 9, name: 'Table 9', description: 'Guests' },
-    { id: 10, name: 'Table 10', description: 'Guests' },
-    { id: 11, name: 'Table 11', description: 'Guests' },
-    { id: 12, name: 'Table 12', description: 'Guests' },
-    { id: 13, name: 'Table 13', description: 'Guests' },
-    { id: 14, name: 'Table 14', description: 'Guests' },
-    { id: 15, name: '18 Roses', description: 'Rose dance moments' },
-    { id: 16, name: '18 Candles', description: 'Candle ceremony' },
-    { id: 17, name: '18 Blue Bills', description: 'Blue bills collection' },
-    { id: 18, name: '18 Treasures', description: 'Wisdom & gifts' },
-    { id: 19, name: '18 Shots', description: 'Photo booth shots' },
-    { id: 20, name: 'Debut Video', description: 'Official Video' }
-        ];
-        
-        const currentAlbum = albumsList.find(a => a.id === currentAlbumId);
-        
         const photosGrid = document.getElementById('photosGrid');
-        const loading = document.getElementById('loading');
         const noPhotos = document.getElementById('noPhotos');
-        const storageInfo = document.getElementById('storageInfo');
-        const successMsg = document.getElementById('successMsg');
-        const lightbox = document.getElementById('lightbox');
-        const lightboxImageContainer = document.getElementById('lightboxImageContainer');
-        const albumInfo = document.getElementById('albumInfo');
+        const debugOutput = document.getElementById('debugOutput');
         const uploadLink = document.getElementById('uploadLink');
-        const deleteSection = document.getElementById('deleteSection');
         
-        let allPhotos = [];
-        let currentPhotoIndex = 0;
-
-       albumInfo.textContent = currentAlbum
-    ? currentAlbum.name
-    : `Album ${currentAlbumId}`;
-
-
         uploadLink.href = `index.html?album=${currentAlbumId}`;
 
         function addPhotoThumbnail(name, src, uploader, timestamp, photoId) {
             const thumbnail = document.createElement('div');
             thumbnail.className = 'photo-thumbnail';
             thumbnail.id = `thumb-${photoId}`;
-            thumbnail.onclick = () => openLightbox(allPhotos.findIndex(p => p.id === photoId));
-            const isVideo = src.startsWith('video') || src.startsWith('data:video');
+            
+            const isVideo = (src && (src.startsWith('video') || src.startsWith('data:video')));
             
             thumbnail.innerHTML = `
                 <div class="photo-thumbnail-inner">
-                    ${isVideo ? `<video src="${src}" muted preload="metadata"></video>` : `<img src="${src}" alt="${name}" loading="lazy">`}
+                    ${isVideo ? 
+                        `<video src="${src}" muted preload="metadata"></video>` : 
+                        `<img src="${src}" alt="${name}" loading="lazy">`
+                    }
                 </div>
-                <svg class="eye-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-                    <g fill="currentColor">
-                        <path d="M32 20 C20 20 10 32 10 32 C10 32 20 44 32 44 C44 44 54 32 54 32 C54 32 44 20 32 20 Z" fill="none" stroke="currentColor" stroke-width="2"/>
-                        <circle cx="32" cy="32" r="6" fill="currentColor"/>
-                    </g>
-                </svg>
             `;
             photosGrid.appendChild(thumbnail);
         }
 
-        function openLightbox(index) {
-            currentPhotoIndex = index;
-            displayLightboxPhoto();
-            lightbox.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeLightbox() {
-            lightbox.classList.remove('active');
-            document.body.style.overflow = 'auto';
-        }
-
-        function displayLightboxPhoto() {
-            const photo = allPhotos[currentPhotoIndex];
-            if (!photo) return;
-
-            const isVideo = photo.dataUrl.startsWith('video') || photo.dataUrl.startsWith('data:video');
-            
-            // Save nav buttons
-            const prevBtn = lightboxImageContainer.querySelector('.nav-prev');
-            const nextBtn = lightboxImageContainer.querySelector('.nav-next');
-            
-            // Clear container
-            lightboxImageContainer.innerHTML = '';
-            
-            if (isVideo) {
-                const video = document.createElement('video');
-                video.src = photo.dataUrl;
-                video.controls = true;
-                video.muted = true;
-                lightboxImageContainer.appendChild(video);
-            } else {
-                const img = document.createElement('img');
-                img.src = photo.dataUrl;
-                img.alt = photo.name;
-                lightboxImageContainer.appendChild(img);
-            }
-            
-            // Reattach buttons
-            lightboxImageContainer.appendChild(prevBtn);
-            lightboxImageContainer.appendChild(nextBtn);
-
-            const date = new Date(photo.timestamp);
-            const fullDate = date.toLocaleDateString('en-US', { 
-                weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' 
-            });
-            const fullTime = date.toLocaleTimeString('en-US', { 
-                hour: '2-digit', minute: '2-digit', second: '2-digit' 
-            });
-
-            document.getElementById('detailName').textContent = photo.name;
-            document.getElementById('detailUploader').textContent = photo.uploader || 'Anonymous';
-            document.getElementById('detailDate').textContent = fullDate;
-            document.getElementById('detailTime').textContent = fullTime;
-            document.getElementById('detailSize').textContent = Math.round(photo.size / 1024) + ' KB';
-            
-            // Hide delete button for album 20 (Debut Video)
-            if (currentAlbumId === 20) {
-                deleteSection.style.display = 'none';
-            } else {
-                deleteSection.style.display = 'block';
-            }
-        }
-
-        function nextPhoto() {
-            currentPhotoIndex = (currentPhotoIndex + 1) % allPhotos.length;
-            displayLightboxPhoto();
-        }
-
-        function prevPhoto() {
-            currentPhotoIndex = (currentPhotoIndex - 1 + allPhotos.length) % allPhotos.length;
-            displayLightboxPhoto();
-        }
-
-        function deleteLightboxPhoto() {
-            if (currentAlbumId === 20) {
-                alert('Cannot delete videos from the Debut Video album.');
-                return;
-            }
-            
-            if (confirm('Are you sure you want to delete this photo?')) {
-                const photo = allPhotos[currentPhotoIndex];
-                allPhotos.splice(currentPhotoIndex, 1);
-                
-                const allAlbums = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
-                allAlbums[currentAlbumId] = allPhotos;
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(allAlbums));
-                
-                const thumbElement = document.getElementById(`thumb-${photo.id}`);
-                if (thumbElement) {
-                    thumbElement.remove();
-                }
-                
-                if (allPhotos.length === 0) {
-                    closeLightbox();
-                    noPhotos.style.display = 'block';
-                    updateStorageInfo(0);
-                } else {
-                    currentPhotoIndex = Math.min(currentPhotoIndex, allPhotos.length - 1);
-                    displayLightboxPhoto();
-                    updateStorageInfo(allPhotos.length);
-                }
-                
-                successMsg.textContent = '✓ Photo deleted successfully!';
-                successMsg.style.display = 'block';
-                setTimeout(() => { successMsg.style.display = 'none'; }, 3000);
-            }
-        }
-
-        function updateStorageInfo(count) {
-            const storageSize = localStorage.getItem(STORAGE_KEY)?.length || 0;
-            storageInfo.textContent = `${count} photos • ${Math.round(storageSize / 1024)} KB storage used`;
-        }
-
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') closeLightbox();
-            if (e.key === 'ArrowRight') nextPhoto();
-            if (e.key === 'ArrowLeft') prevPhoto();
-        });
-
-        lightbox.addEventListener('click', (e) => {
-            if (e.target === lightbox) closeLightbox();
-        });
-
         window.onload = () => {
-    const allAlbums = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
-    
-    // Special handling for Debut Video album
-    if (currentAlbumId === 20) {
-        // Create debut video entry
-        allPhotos = [{
-            name: 'DAVREIGNNE DEBUT.mp4',
-            dataUrl: 'https://raw.githubusercontent.com/haruhiiiiiiiiiiiiiii/Davreignne-s-Debut-Album/main/DAVREIGNNE%20DEBUT.mp4',
-            timestamp: Date.now(),
-            uploader: 'Official',
-            size: 0,
-            type: 'video/mp4',
-            id: 'debut-video-official'
-        }];
-    } else {
-        allPhotos = (allAlbums[currentAlbumId] || []).sort((a, b) => b.timestamp - a.timestamp);
-    }
-
-    if (allPhotos.length === 0 && currentAlbumId !== 20) {
-        noPhotos.style.display = 'block';
-        updateStorageInfo(0);
-        return;
-    }
-
-    allPhotos.forEach(photo => {
-        addPhotoThumbnail(
-            photo.name,
-            photo.dataUrl,
-            photo.uploader,
-            photo.timestamp,
-            photo.id
-        );
-    });
-
-    updateStorageInfo(allPhotos.length);
-};
+            try {
+                // Get all storage data
+                const allAlbums = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+                
+                // Debug output
+                let debugText = `Current Album ID: ${currentAlbumId}<br>`;
+                debugText += `Storage Key: ${STORAGE_KEY}<br>`;
+                debugText += `Total Albums in Storage: ${Object.keys(allAlbums).length}<br><br>`;
+                
+                // Show all albums
+                debugText += `Albums found:<br>`;
+                for (let albumId in allAlbums) {
+                    debugText += `- Album ${albumId}: ${allAlbums[albumId].length} items<br>`;
+                }
+                debugText += `<br>`;
+                
+                // Get current album photos
+                const currentPhotos = allAlbums[currentAlbumId] || [];
+                debugText += `Photos in current album (${currentAlbumId}): ${currentPhotos.length}<br><br>`;
+                
+                if (currentPhotos.length > 0) {
+                    debugText += `Sample photo data:<br>`;
+                    const sample = currentPhotos[0];
+                    debugText += `- Name: ${sample.name}<br>`;
+                    debugText += `- Uploader: ${sample.uploader}<br>`;
+                    debugText += `- Has dataUrl: ${!!sample.dataUrl}<br>`;
+                    debugText += `- DataUrl starts with: ${sample.dataUrl ? sample.dataUrl.substring(0, 30) + '...' : 'N/A'}<br>`;
+                    debugText += `- Type: ${sample.type}<br>`;
+                    debugText += `- Size: ${sample.size} bytes<br>`;
+                }
+                
+                debugOutput.innerHTML = debugText;
+                
+                // Display photos
+                if (currentPhotos.length === 0) {
+                    noPhotos.style.display = 'block';
+                } else {
+                    currentPhotos.forEach(photo => {
+                        addPhotoThumbnail(
+                            photo.name,
+                            photo.dataUrl,
+                            photo.uploader,
+                            photo.timestamp,
+                            photo.id
+                        );
+                    });
+                }
+                
+            } catch (e) {
+                debugOutput.innerHTML = `ERROR: ${e.message}<br><br>${e.stack}`;
+                console.error('Error loading photos:', e);
+            }
+        };
     </script>
 </body>
 </html>
