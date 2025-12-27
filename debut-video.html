@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Debut Video</title>
+    <title>Official Debut Gallery</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
@@ -18,48 +18,68 @@
             background-repeat: no-repeat;
             min-height: 100vh;
             padding: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            position: relative;
+            overflow-x: hidden;
         }
+        
+        /* GLITTER SPARKLES */
+        .sparkle-1 { position: fixed; width: 8px; height: 8px; background: radial-gradient(circle, #ffffff 0%, rgba(255,255,255,0.3) 70%); border-radius: 50%; top: 15%; left: 5%; animation: twinkle 2s ease-in-out infinite, float-random 6s ease-in-out infinite; box-shadow: 0 0 15px rgba(192, 192, 192, 0.8); z-index: 1; }
+        .sparkle-2 { position: fixed; width: 6px; height: 6px; background: radial-gradient(circle, #e8e8e8 0%, rgba(192,192,192,0.3) 70%); border-radius: 50%; top: 30%; right: 8%; animation: twinkle 2.5s ease-in-out infinite 0.5s, float-random 7s ease-in-out infinite; box-shadow: 0 0 12px rgba(200, 200, 200, 0.7); z-index: 1; }
+        .sparkle-3 { position: fixed; width: 7px; height: 7px; background: radial-gradient(circle, #f0f0f0 0%, rgba(192,192,192,0.2) 70%); border-radius: 50%; bottom: 20%; left: 10%; animation: twinkle 3s ease-in-out infinite 1s, float-random 8s ease-in-out infinite; box-shadow: 0 0 14px rgba(192, 192, 192, 0.8); z-index: 1; }
+        .sparkle-4 { position: fixed; width: 5px; height: 5px; background: radial-gradient(circle, #ffffff 0%, rgba(255,255,255,0.3) 70%); border-radius: 50%; top: 60%; right: 5%; animation: twinkle 2.2s ease-in-out infinite 0.8s, float-random 9s ease-in-out infinite; box-shadow: 0 0 11px rgba(200, 200, 200, 0.6); z-index: 1; }
+        
+        @keyframes twinkle { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+        @keyframes float-random {
+            0% { transform: translateY(0px) translateX(0px); }
+            25% { transform: translateY(-15px) translateX(10px); }
+            50% { transform: translateY(-30px) translateX(-10px); }
+            75% { transform: translateY(-15px) translateX(15px); }
+            100% { transform: translateY(0px) translateX(0px); }
+        }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
 
         .container { 
-            max-width: 1400px;
-            width: 100%;
+            max-width: 1400px; 
             margin: 0 auto; 
             background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(12px);
-            border-radius: 30px; 
-            box-shadow: 0 30px 80px rgba(0,0,0,0.4), 0 0 60px rgba(192, 192, 192, 0.3); 
-            padding: 50px;
-            border: 4px solid;
+            backdrop-filter: blur(10px);
+            border-radius: 25px; 
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3), 0 0 40px rgba(192, 192, 192, 0.2); 
+            padding: 40px;
+            border: 3px solid;
             border-image: linear-gradient(135deg, #c0c0c0 0%, #e8e8e8 50%, #c0c0c0 100%) 1;
+            position: relative;
+            animation: slideDown 0.8s ease-out;
+            z-index: 10;
         }
         
         h1 { 
             text-align: center; 
             color: #001a4d; 
             margin-bottom: 15px; 
-            font-size: 3em;
+            font-size: 2.8em;
             background: linear-gradient(135deg, #001a4d 0%, #c0c0c0 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
         }
         
         .subtitle { 
             text-align: center; 
-            color: #666; 
-            margin-bottom: 40px;
-            font-size: 1.3em;
-            font-style: italic;
+            color: #555; 
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+        
+        /* VIDEO SECTION */
+        .video-section {
+            margin-bottom: 50px;
         }
         
         .video-wrapper {
             width: 100%;
             max-width: 1200px;
-            margin: 0 auto 40px;
+            margin: 0 auto 30px;
             border-radius: 25px;
             overflow: hidden;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 50px rgba(192, 192, 192, 0.4);
@@ -69,118 +89,633 @@
             background: #000;
         }
         
-        .video-wrapper::before {
-            content: '';
-            position: absolute;
-            top: -10px;
-            left: -10px;
-            right: -10px;
-            bottom: -10px;
-            background: linear-gradient(135deg, transparent 0%, rgba(192, 192, 192, 0.3) 25%, transparent 50%, rgba(220, 220, 220, 0.2) 75%, transparent 100%);
-            border-radius: 30px;
-            animation: rotate-border 8s linear infinite;
-            z-index: -1;
-            pointer-events: none;
-        }
-        
-        @keyframes rotate-border {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
         .video-wrapper video {
             width: 100%;
             height: auto;
             display: block;
-            min-height: 500px;
-            max-height: 80vh;
+            min-height: 400px;
+            max-height: 70vh;
         }
         
-        .back-button {
+        /* ADMIN CONTROLS */
+        .admin-controls {
             text-align: center;
-            margin-top: 30px;
+            margin: 30px 0;
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(0, 26, 77, 0.1) 0%, rgba(13, 59, 102, 0.1) 100%);
+            border-radius: 15px;
+            border: 2px solid rgba(192, 192, 192, 0.3);
         }
         
-        .back-button a {
-            background: linear-gradient(135deg, #e8e8e8 0%, #f5f5f5 50%, #e8e8e8 100%);
-            color: #001a4d;
-            padding: 16px 40px;
+        .admin-btn {
+            background: linear-gradient(135deg, #001a4d 0%, #0d3b66 100%);
+            color: #c0c0c0;
+            padding: 12px 30px;
+            border: none;
             border-radius: 50px;
-            text-decoration: none;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0, 26, 77, 0.4);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin: 5px;
+        }
+        
+        .admin-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 26, 77, 0.6);
+        }
+        
+        .admin-badge {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+        
+        /* MODAL */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+        
+        .modal-content h2 {
+            color: #001a4d;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .modal-content input {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border: 2px solid #c0c0c0;
+            border-radius: 10px;
+            font-size: 1em;
+        }
+        
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .modal-buttons button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1em;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .btn-confirm {
+            background: linear-gradient(135deg, #001a4d 0%, #0d3b66 100%);
+            color: white;
+        }
+        
+        .btn-cancel {
+            background: #ccc;
+            color: #333;
+        }
+        
+        /* UPLOAD AREA */
+        .upload-area {
+            border: 4px dashed #001a4d;
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            margin: 20px 0;
+            background: rgba(250, 250, 250, 0.8);
+            cursor: pointer;
+        }
+        
+        .upload-area:hover {
+            background: rgba(245, 245, 245, 0.9);
+        }
+        
+        #fileInput {
+            display: none;
+        }
+        
+        .photos-grid { 
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+        
+        .photo-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 18px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            border: 3px solid;
+            border-image: linear-gradient(135deg, #c0c0c0 0%, #e8e8e8 50%, #c0c0c0 100%) 1;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .photo-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.2);
+        }
+        
+        .photo-thumbnail-wrapper {
+            width: 100%;
+            aspect-ratio: 1;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #f0f0f0;
+            margin-bottom: 12px;
+        }
+        
+        .photo-thumbnail-wrapper img,
+        .photo-thumbnail-wrapper video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        
+        .photo-info {
+            text-align: center;
+        }
+        
+        .photo-name {
+            font-size: 1em;
+            font-weight: bold;
+            color: #001a4d;
+            margin-bottom: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 1000;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        .lightbox.active {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+        }
+        
+        .lightbox-content {
+            position: relative;
+            width: 90%;
+            max-width: 1000px;
+            display: flex;
+            flex-direction: column;
+            margin: 20px auto;
+        }
+        
+        .btn-close {
+            width: 50px;
+            height: 50px;
+            border: none;
+            border-radius: 50%;
+            background: rgba(100, 100, 100, 0.9);
+            color: white;
+            cursor: pointer;
+            margin-bottom: 15px;
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .lightbox-image-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            background: #1a1a1a;
+            max-height: 70vh;
+        }
+        
+        .lightbox-image-container img,
+        .lightbox-image-container video {
+            max-width: 100%;
+            max-height: 70vh;
+            object-fit: contain;
+            border-radius: 15px;
+        }
+        
+        .lightbox-details {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 20px;
+        }
+        
+        .delete-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid #ccc;
+            text-align: center;
+        }
+        
+        .btn-delete {
+            background: linear-gradient(135deg, rgba(255, 0, 0, 0.8) 0%, rgba(220, 0, 0, 0.9) 100%);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .button-group { 
+            text-align: center; 
+            margin: 30px 0; 
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn-link { 
+            background: linear-gradient(135deg, #e8e8e8 0%, #f5f5f5 50%, #e8e8e8 100%);
+            color: #001a4d; 
+            padding: 14px 30px; 
+            border-radius: 50px; 
+            text-decoration: none; 
             font-weight: bold;
             display: inline-flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             transition: all 0.3s ease;
-            box-shadow: 0 5px 20px rgba(192, 192, 192, 0.4);
+            box-shadow: 0 5px 15px rgba(192, 192, 192, 0.4);
             border: 2px solid rgba(192, 192, 192, 0.5);
-            font-size: 1.1em;
         }
         
-        .back-button a:hover {
+        .btn-link:hover {
             transform: translateY(-3px);
-            box-shadow: 0 8px 30px rgba(192, 192, 192, 0.6);
+            box-shadow: 0 8px 25px rgba(192, 192, 192, 0.6);
         }
         
-        .btn-icon {
-            width: 24px;
-            height: 24px;
+        .success {
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+            color: #155724;
+            padding: 15px;
+            border-radius: 12px;
+            margin: 20px 0;
+            display: none;
+            border: 2px solid #28a745;
+        }
+        
+        .error {
+            background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+            color: #721c24;
+            padding: 15px;
+            border-radius: 12px;
+            margin: 20px 0;
+            display: none;
+            border: 2px solid #f5365c;
+        }
+        
+        #noPhotos {
+            text-align: center;
+            padding: 60px 20px;
+            display: none;
         }
         
         @media (max-width: 768px) {
-            body { 
-                background-attachment: scroll;
-                padding: 15px;
-            }
-            .container { 
-                padding: 30px 20px; 
-            }
-            h1 { 
-                font-size: 2em; 
-            }
-            .subtitle {
-                font-size: 1.1em;
-            }
-            .video-wrapper video {
-                min-height: 300px;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .container { 
-                padding: 20px 15px; 
-            }
-            h1 { 
-                font-size: 1.6em; 
-            }
-            .subtitle {
-                font-size: 1em;
+            body { background-attachment: scroll; }
+            .container { padding: 30px 20px; }
+            h1 { font-size: 2.2em; }
+            .photos-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             }
         }
     </style>
 </head>
 <body>
+    <div class="sparkle-1"></div>
+    <div class="sparkle-2"></div>
+    <div class="sparkle-3"></div>
+    <div class="sparkle-4"></div>
+    
     <div class="container">
-        <h1>✨ Davreignne's Debut Video ✨</h1>
-        <p class="subtitle">Official Debut Celebration</p>
+        <h1>✨ Official Debut Gallery ✨</h1>
+        <p class="subtitle">Watch the video and browse exclusive photos</p>
         
-        <div class="video-wrapper">
-            <video controls autoplay>
-                <source src="https://raw.githubusercontent.com/haruhiiiiiiiiiiiiiii/Davreignne-s-Debut-Album/main/DAVREIGNNE%20DEBUT.mp4" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
+        <!-- VIDEO SECTION -->
+        <div class="video-section">
+            <div class="video-wrapper">
+                <video controls autoplay>
+                    <source src="https://raw.githubusercontent.com/haruhiiiiiiiiiiiiiii/Davreignne-s-Debut-Album/main/DAVREIGNNE%20DEBUT.mp4" type="video/mp4">
+                </video>
+            </div>
         </div>
         
-        <div class="back-button">
-            <a href="albums.html">
-                <svg class="btn-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-                    <g fill="currentColor">
-                        <path d="M44 54 L20 32 L44 10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
-                    </g>
-                </svg>
-                Back to Albums
+        <!-- ADMIN CONTROLS -->
+        <div class="admin-controls" id="adminControls" style="display:none;">
+            <div class="admin-badge">Admin Mode Active</div>
+            <div class="upload-area" onclick="document.getElementById('fileInput').click()">
+                <div style="font-size:3em; margin-bottom:10px;">📸</div>
+                <div style="font-size:1.2em;">Click to Upload Photos/Videos</div>
+                <input type="file" id="fileInput" multiple accept="image/*,video/*">
+            </div>
+            <button class="admin-btn" onclick="logoutAdmin()">Logout Admin</button>
+        </div>
+        
+        <div style="text-align:center; margin: 20px 0;" id="adminLoginBtn">
+            <button class="admin-btn" onclick="showAdminLogin()">
+                Add More to This Album
+            </button>
+        </div>
+        
+        <div class="success" id="successMsg"></div>
+        <div class="error" id="errorMsg"></div>
+        
+        <div class="button-group">
+            <a href="albums.html" class="btn-link">
+                ← Back to Albums
             </a>
         </div>
+        
+        <div id="photosGrid" class="photos-grid"></div>
+        
+        <div id="noPhotos">
+            <h3>No photos yet</h3>
+            <p>Photos will appear here once uploaded by admin</p>
+        </div>
     </div>
+
+    <!-- ADMIN LOGIN MODAL -->
+    <div class="modal" id="adminModal">
+        <div class="modal-content">
+            <h2>Admin Login</h2>
+            <input type="password" id="adminPassword" placeholder="Enter admin password">
+            <div class="modal-buttons">
+                <button class="btn-confirm" onclick="checkAdminPassword()">Login</button>
+                <button class="btn-cancel" onclick="closeAdminModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- LIGHTBOX -->
+    <div class="lightbox" id="lightbox">
+        <div class="lightbox-content">
+            <button class="btn-close" onclick="closeLightbox()">✕</button>
+            <div class="lightbox-image-container" id="lightboxImageContainer"></div>
+            <div class="lightbox-details">
+                <div id="detailInfo"></div>
+                <div class="delete-section" id="deleteSection" style="display:none;">
+                    <button class="btn-delete" onclick="deletePhoto()">Delete Photo</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const STORAGE_KEY = 'qr_photo_albums';
+        const ADMIN_KEY = 'debut_admin_logged_in';
+        const ADMIN_PASSWORD = '01082008';
+        const ALBUM_ID = 20; // Debut album ID
+        
+        let allPhotos = [];
+        let currentPhotoIndex = 0;
+        let isAdmin = false;
+        
+        const fileInput = document.getElementById('fileInput');
+        const adminControls = document.getElementById('adminControls');
+        const adminLoginBtn = document.getElementById('adminLoginBtn');
+        const successMsg = document.getElementById('successMsg');
+        const errorMsg = document.getElementById('errorMsg');
+        const photosGrid = document.getElementById('photosGrid');
+        const noPhotos = document.getElementById('noPhotos');
+        const lightbox = document.getElementById('lightbox');
+        const deleteSection = document.getElementById('deleteSection');
+
+        function checkAdminStatus() {
+            isAdmin = sessionStorage.getItem(ADMIN_KEY) === 'true';
+            if (isAdmin) {
+                adminControls.style.display = 'block';
+                adminLoginBtn.style.display = 'none';
+                deleteSection.style.display = 'block';
+            } else {
+                adminControls.style.display = 'none';
+                adminLoginBtn.style.display = 'block';
+                deleteSection.style.display = 'none';
+            }
+        }
+
+        function showAdminLogin() {
+            document.getElementById('adminModal').classList.add('active');
+        }
+
+        function closeAdminModal() {
+            document.getElementById('adminModal').classList.remove('active');
+            document.getElementById('adminPassword').value = '';
+        }
+
+        function checkAdminPassword() {
+            const password = document.getElementById('adminPassword').value;
+            if (password === ADMIN_PASSWORD) {
+                sessionStorage.setItem(ADMIN_KEY, 'true');
+                isAdmin = true;
+                checkAdminStatus();
+                closeAdminModal();
+                showSuccess('Admin logged in successfully!');
+            } else {
+                showError('Incorrect password!');
+            }
+        }
+
+        function logoutAdmin() {
+            sessionStorage.removeItem(ADMIN_KEY);
+            isAdmin = false;
+            checkAdminStatus();
+            showSuccess('Logged out successfully!');
+        }
+
+        function showSuccess(msg) {
+            successMsg.textContent = msg;
+            successMsg.style.display = 'block';
+            setTimeout(() => { successMsg.style.display = 'none'; }, 3000);
+        }
+
+        function showError(msg) {
+            errorMsg.textContent = msg;
+            errorMsg.style.display = 'block';
+            setTimeout(() => { errorMsg.style.display = 'none'; }, 3000);
+        }
+
+        fileInput.addEventListener('change', handleFiles);
+
+        function handleFiles() {
+            if (!isAdmin) {
+                showError('Only admin can upload photos!');
+                return;
+            }
+
+            const files = Array.from(fileInput.files);
+            if (files.length === 0) return;
+
+            let processed = 0;
+            const allAlbums = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+            const currentPhotos = allAlbums[ALBUM_ID] || [];
+
+            files.forEach(file => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    currentPhotos.push({
+                        name: file.name,
+                        dataUrl: e.target.result,
+                        timestamp: Date.now(),
+                        uploader: 'Admin',
+                        size: file.size,
+                        type: file.type,
+                        id: Date.now() + Math.random()
+                    });
+
+                    processed++;
+                    if (processed === files.length) {
+                        const albums = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+                        albums[ALBUM_ID] = currentPhotos;
+                        localStorage.setItem(STORAGE_KEY, JSON.stringify(albums));
+
+                        fileInput.value = '';
+                        loadPhotos();
+                        showSuccess(`${files.length} file(s) uploaded successfully!`);
+                    }
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function loadPhotos() {
+            const allAlbums = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+            allPhotos = (allAlbums[ALBUM_ID] || []).sort((a, b) => b.timestamp - a.timestamp);
+
+            photosGrid.innerHTML = '';
+            
+            if (allPhotos.length === 0) {
+                noPhotos.style.display = 'block';
+                return;
+            }
+
+            noPhotos.style.display = 'none';
+            
+            allPhotos.forEach((photo, index) => {
+                const card = document.createElement('div');
+                card.className = 'photo-card';
+                card.onclick = () => openLightbox(index);
+                
+                const isVideo = photo.dataUrl && photo.dataUrl.startsWith('data:video');
+                
+                card.innerHTML = `
+                    <div class="photo-thumbnail-wrapper">
+                        ${isVideo ? 
+                            `<video src="${photo.dataUrl}" muted preload="metadata"></video>` : 
+                            `<img src="${photo.dataUrl}" alt="${photo.name}">`
+                        }
+                    </div>
+                    <div class="photo-info">
+                        <div class="photo-name">${photo.name}</div>
+                    </div>
+                `;
+                photosGrid.appendChild(card);
+            });
+        }
+
+        function openLightbox(index) {
+            currentPhotoIndex = index;
+            const photo = allPhotos[index];
+            const isVideo = photo.dataUrl && photo.dataUrl.startsWith('data:video');
+            
+            const container = document.getElementById('lightboxImageContainer');
+            container.innerHTML = isVideo ?
+                `<video src="${photo.dataUrl}" controls style="max-width:100%; max-height:70vh;"></video>` :
+                `<img src="${photo.dataUrl}" alt="${photo.name}" style="max-width:100%; max-height:70vh;">`;
+            
+            const date = new Date(photo.timestamp);
+            document.getElementById('detailInfo').innerHTML = `
+                <h3>${photo.name}</h3>
+                <p>Uploaded: ${date.toLocaleDateString()} ${date.toLocaleTimeString()}</p>
+                <p>Size: ${Math.round(photo.size / 1024)} KB</p>
+            `;
+            
+            deleteSection.style.display = isAdmin ? 'block' : 'none';
+            lightbox.classList.add('active');
+        }
+
+        function closeLightbox() {
+            lightbox.classList.remove('active');
+        }
+
+        function deletePhoto() {
+            if (!isAdmin) {
+                showError('Only admin can delete photos!');
+                return;
+            }
+            
+            if (confirm('Are you sure you want to delete this photo?')) {
+                allPhotos.splice(currentPhotoIndex, 1);
+                
+                const allAlbums = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+                allAlbums[ALBUM_ID] = allPhotos;
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(allAlbums));
+                
+                closeLightbox();
+                loadPhotos();
+                showSuccess('Photo deleted successfully!');
+            }
+        }
+
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) closeLightbox();
+        });
+
+        window.onload = () => {
+            checkAdminStatus();
+            loadPhotos();
+        };
+    </script>
 </body>
 </html>
