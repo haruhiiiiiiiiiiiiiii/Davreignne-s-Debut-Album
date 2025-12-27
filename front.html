@@ -3,360 +3,530 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Upload Photos & Videos</title>
+    <title>Davreignne's Debut</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            background-image: 
-                linear-gradient(135deg, rgba(0, 26, 77, 0.5) 0%, rgba(13, 59, 102, 0.6) 100%),
-                url('https://raw.githubusercontent.com/haruhiiiiiiiiiiiiiii/Davreignne-s-Debut-Album/main/MOT04452.JPG');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            background-repeat: no-repeat;
-            min-height: 100vh; 
-            padding: 20px; 
-            position: relative; 
-            overflow-x: hidden; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            padding: 0;
+            overflow-x: hidden;
+            background: linear-gradient(135deg, #001a4d 0%, #0d3b66 100%);
         }
         
-        /* GLITTER SPARKLES */
-        .sparkle-1 { position: fixed; width: 8px; height: 8px; background: radial-gradient(circle, #ffffff 0%, rgba(255,255,255,0.3) 70%); border-radius: 50%; top: 15%; left: 5%; animation: twinkle 2s ease-in-out infinite, float-random 6s ease-in-out infinite; box-shadow: 0 0 15px rgba(192, 192, 192, 0.8); z-index: 1; }
-        .sparkle-2 { position: fixed; width: 6px; height: 6px; background: radial-gradient(circle, #e8e8e8 0%, rgba(192,192,192,0.3) 70%); border-radius: 50%; top: 30%; right: 8%; animation: twinkle 2.5s ease-in-out infinite 0.5s, float-random 7s ease-in-out infinite; box-shadow: 0 0 12px rgba(200, 200, 200, 0.7); z-index: 1; }
-        .sparkle-3 { position: fixed; width: 7px; height: 7px; background: radial-gradient(circle, #f0f0f0 0%, rgba(192,192,192,0.2) 70%); border-radius: 50%; bottom: 20%; left: 10%; animation: twinkle 3s ease-in-out infinite 1s, float-random 8s ease-in-out infinite; box-shadow: 0 0 14px rgba(192, 192, 192, 0.8); z-index: 1; }
-        .sparkle-4 { position: fixed; width: 5px; height: 5px; background: radial-gradient(circle, #ffffff 0%, rgba(255,255,255,0.3) 70%); border-radius: 50%; top: 60%; right: 5%; animation: twinkle 2.2s ease-in-out infinite 0.8s, float-random 9s ease-in-out infinite; box-shadow: 0 0 11px rgba(200, 200, 200, 0.6); z-index: 1; }
+        .hero {
+    min-height: 100vh;
+    background-image: 
+        linear-gradient(135deg, rgba(0, 26, 77, 0.5) 0%, rgba(13, 59, 102, 0.6) 100%),
+        url('https://raw.githubusercontent.com/haruhiiiiiiiiiiiiiii/Davreignne-s-Debut-Album/main/MOT04452.JPG');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    padding: 20px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Responsive background adjustments */
+@media (max-width: 768px) {
+    .hero {
+        background-attachment: scroll;
+        background-size: cover;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero {
+        background-size: cover;
+        background-position: center center;
+    }
+}
         
-        @keyframes twinkle { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
-        @keyframes float-random { 0% { transform: translateY(0px) translateX(0px); } 25% { transform: translateY(-15px) translateX(10px); } 50% { transform: translateY(-30px) translateX(-10px); } 75% { transform: translateY(-15px) translateX(15px); } 100% { transform: translateY(0px) translateX(0px); } }
-        @keyframes slideDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
-        
-        .container { max-width: 800px; margin: 0 auto; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border-radius: 25px; box-shadow: 0 20px 40px rgba(0,0,0,0.3), 0 0 30px rgba(192, 192, 192, 0.2); padding: 40px; border: 3px solid; border-image: linear-gradient(135deg, #c0c0c0 0%, #e8e8e8 50%, #c0c0c0 100%) 1; position: relative; z-index: 10; animation: slideDown 0.8s ease-out; }
-        h1 { text-align: center; color: #001a4d; margin-bottom: 10px; font-size: 2.5em; background: linear-gradient(135deg, #001a4d 0%, #c0c0c0 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-        .subtitle { text-align: center; color: #555; margin-bottom: 30px; font-size: 1.1em; }
-        
-        .album-selector { background: linear-gradient(135deg, #f5f5f5 0%, #fafafa 100%); padding: 25px; border-radius: 15px; border: 2px solid #c0c0c0; margin-bottom: 20px; }
-        .album-selector-label { display: block; font-size: 1.1em; font-weight: bold; color: #001a4d; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
-        .label-icon { width: 24px; height: 24px; display: inline-block; }
-        .album-selector-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
-        .album-option { padding: 12px; border: 2px solid #c0c0c0; border-radius: 10px; background: white; cursor: pointer; transition: all 0.3s ease; text-align: center; font-size: 0.95em; display: flex; flex-direction: column; align-items: center; gap: 5px; }
-        .album-option:hover { border-color: #001a4d; background: #fafafa; transform: scale(1.02); }
-        .album-option.selected { background: linear-gradient(135deg, #001a4d 0%, #0d3b66 100%); color: #c0c0c0; border-color: #001a4d; font-weight: bold; box-shadow: 0 5px 15px rgba(0, 26, 77, 0.3); }
-        .album-option-icon { width: 24px; height: 24px; display: inline-block; }
-        
-        .current-album-info { text-align: center; background: linear-gradient(135deg, #001a4d 0%, #0d3b66 100%); color: #c0c0c0; padding: 15px; border-radius: 12px; margin-bottom: 20px; font-size: 1.2em; font-weight: bold; box-shadow: 0 0 15px rgba(192, 192, 192, 0.2); display: flex; align-items: center; justify-content: center; gap: 12px; }
-        .album-info-icon { width: 32px; height: 32px; display: inline-block; }
-        
-        .upload-area { border: 4px dashed #001a4d; border-radius: 20px; padding: 60px 30px; text-align: center; margin-bottom: 20px; transition: all 0.3s ease; background: rgba(250, 250, 250, 0.8); }
-        .upload-area:hover { border-color: #c0c0c0; background: rgba(245, 245, 245, 0.9); transform: scale(1.02); }
-        .upload-area.dragover { border-color: #c0c0c0; background: rgba(240, 240, 240, 0.9); border-width: 5px; }
-        .upload-area-icon { width: 48px; height: 48px; margin: 0 auto 15px; display: inline-block; }
-        .upload-area div { font-size: 1.3em; margin-bottom: 20px; }
-        #fileInput { display: none; }
-        .upload-btn { background: linear-gradient(135deg, #001a4d 0%, #0d3b66 100%); color: #c0c0c0; padding: 15px 40px; border: none; border-radius: 50px; font-size: 1.2em; cursor: pointer; transition: all 0.3s ease; margin-top: 15px; font-weight: bold; box-shadow: 0 5px 15px rgba(0, 26, 77, 0.4); display: inline-flex; align-items: center; gap: 10px; }
-        .btn-icon-medium { width: 24px; height: 24px; display: inline-block; }
-        .upload-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0, 26, 77, 0.6); }
-        .upload-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-        
-        .name-input { width: 100%; padding: 15px; margin: 20px 0; border: 2px solid #c0c0c0; border-radius: 12px; font-size: 1.1em; transition: all 0.3s ease; background: white; }
-        .name-input:focus { outline: none; border-color: #001a4d; box-shadow: 0 0 10px rgba(0, 26, 77, 0.3); }
-        
-        .view-gallery { text-align: center; margin: 25px 0; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
-        .view-gallery a { background: linear-gradient(135deg, #e8e8e8 0%, #f5f5f5 50%, #e8e8e8 100%); color: #001a4d; padding: 14px 30px; border-radius: 50px; text-decoration: none; font-weight: bold; display: inline-flex; align-items: center; gap: 8px; transition: all 0.3s ease; box-shadow: 0 5px 15px rgba(192, 192, 192, 0.4); border: 2px solid rgba(192, 192, 192, 0.5); position: relative; }
-        .view-gallery a::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent); animation: shimmer 3s infinite; border-radius: 50px; }
-        @keyframes shimmer { 0% { left: -100%; } 100% { left: 100%; } }
-        .view-gallery a:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(192, 192, 192, 0.6); }
-        
-        .success { background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%); color: #155724; padding: 18px; border-radius: 12px; margin: 20px 0; display: none; border: 2px solid #28a745; }
-        .error { background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%); color: #721c24; padding: 18px; border-radius: 12px; margin: 20px 0; display: none; border: 2px solid #f5365c; }
-        
-        .stats { text-align: center; margin-top: 25px; padding: 20px; background: rgba(250, 250, 250, 0.8); border-radius: 12px; border: 2px solid #c0c0c0; }
-        .stat-number { font-size: 2em; font-weight: bold; color: #001a4d; }
-        .stat-label { color: #666; font-size: 0.95em; }
-        
-        .unlimited-badge { background: linear-gradient(135deg, #28a745, #20c997); color: white; padding: 10px 20px; border-radius: 20px; font-size: 0.9em; font-weight: bold; display: inline-flex; align-items: center; gap: 8px; margin: 10px auto; box-shadow: 0 3px 10px rgba(40, 167, 69, 0.4); }
-        .badge-icon { width: 20px; height: 20px; display: inline-block; }
-        
-        @media (max-width: 768px) { 
-            body { background-attachment: scroll; }
+        /* GLITTERY BACKGROUND EFFECTS */
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(192, 192, 192, 0.5) 0%, rgba(192, 192, 192, 0.1) 70%);
+            border-radius: 50%;
+            top: -50px;
+            left: -50px;
+            animation: float 8s ease-in-out infinite, sparkle 3s ease-in-out infinite;
+            filter: blur(2px);
+            box-shadow: 0 0 60px rgba(192, 192, 192, 0.4), 0 0 100px rgba(200, 200, 200, 0.2);
         }
-        @media (max-width: 600px) { .container { padding: 20px; } h1 { font-size: 2em; } .upload-area { padding: 40px 20px; } .view-gallery { flex-direction: column; } .view-gallery a { width: 100%; justify-content: center; } }
+        
+        .hero::after {
+            content: '';
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.6) 0%, rgba(192, 192, 192, 0.2) 70%);
+            border-radius: 50%;
+            bottom: -30px;
+            right: -30px;
+            animation: float 10s ease-in-out infinite reverse, sparkle 4s ease-in-out infinite reverse;
+            filter: blur(2px);
+            box-shadow: 0 0 80px rgba(192, 192, 192, 0.5), 0 0 120px rgba(220, 220, 220, 0.3);
+        }
+        
+        /* FLOATING SPARKLES */
+        .sparkle-1 { position: absolute; width: 8px; height: 8px; background: radial-gradient(circle, #ffffff 0%, rgba(255,255,255,0.3) 70%); border-radius: 50%; top: 10%; left: 5%; animation: twinkle 2s ease-in-out infinite, float-random 6s ease-in-out infinite; box-shadow: 0 0 15px rgba(192, 192, 192, 0.8); }
+        .sparkle-2 { position: absolute; width: 6px; height: 6px; background: radial-gradient(circle, #e8e8e8 0%, rgba(192,192,192,0.3) 70%); border-radius: 50%; top: 20%; right: 8%; animation: twinkle 2.5s ease-in-out infinite 0.5s, float-random 7s ease-in-out infinite; box-shadow: 0 0 12px rgba(200, 200, 200, 0.7); }
+        .sparkle-3 { position: absolute; width: 7px; height: 7px; background: radial-gradient(circle, #f0f0f0 0%, rgba(192,192,192,0.2) 70%); border-radius: 50%; bottom: 15%; left: 10%; animation: twinkle 3s ease-in-out infinite 1s, float-random 8s ease-in-out infinite; box-shadow: 0 0 14px rgba(192, 192, 192, 0.8); }
+        .sparkle-4 { position: absolute; width: 5px; height: 5px; background: radial-gradient(circle, #ffffff 0%, rgba(255,255,255,0.3) 70%); border-radius: 50%; top: 50%; right: 5%; animation: twinkle 2.2s ease-in-out infinite 0.8s, float-random 9s ease-in-out infinite; box-shadow: 0 0 11px rgba(200, 200, 200, 0.6); }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(30px); }
+        }
+        
+        @keyframes float-random {
+            0% { transform: translateY(0px) translateX(0px); }
+            25% { transform: translateY(-15px) translateX(10px); }
+            50% { transform: translateY(-30px) translateX(-10px); }
+            75% { transform: translateY(-15px) translateX(15px); }
+            100% { transform: translateY(0px) translateX(0px); }
+        }
+        
+        @keyframes sparkle {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+        
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(192, 192, 192, 0.4), 0 0 40px rgba(192, 192, 192, 0.2); }
+            50% { box-shadow: 0 0 40px rgba(192, 192, 192, 0.8), 0 0 80px rgba(192, 192, 192, 0.4); }
+        }
+        
+        @keyframes shimmer-text {
+            0% { text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3), 0 0 10px rgba(192, 192, 192, 0.3); }
+            50% { text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3), 0 0 20px rgba(192, 192, 192, 0.6), 0 0 30px rgba(220, 220, 220, 0.4); }
+            100% { text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3), 0 0 10px rgba(192, 192, 192, 0.3); }
+        }
+        
+        .container {
+    max-width: 900px;
+    width: 100%;
+    z-index: 10;
+    text-align: center;
+    padding-bottom: 40px;
+    margin: 0 auto;
+}
+        
+ h1 {
+    font-family: 'Brush Script MT', 'Brush Script Std', 'Edwardian Script ITC', cursive, 'Segoe Script', serif;
+    font-size: 4.5em;
+    font-weight: 900;
+    background: linear-gradient(135deg, #e8e8e8 0%, #ffffff 25%, #e8e8e8 50%, #c0c0c0 75%, #e8e8e8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 15px;
+    animation: slideDown 0.8s ease-out 0.2s backwards, shimmer-text 3s ease-in-out infinite, cursiveGlow 4s ease-in-out infinite;
+    filter: drop-shadow(0 0 15px rgba(192, 192, 192, 0.6)) drop-shadow(0 0 25px rgba(220, 220, 220, 0.3));
+    text-shadow: 0 0 20px rgba(192, 192, 192, 0.4);
+    letter-spacing: 1px;
+    text-rendering: optimizeLegibility;
+}
+
+
+@keyframes cursiveGlow {
+    0%, 100% { 
+        filter: drop-shadow(0 0 15px rgba(192, 192, 192, 0.6)) drop-shadow(0 0 25px rgba(220, 220, 220, 0.3));
+        text-shadow: 0 0 20px rgba(192, 192, 192, 0.4);
+    }
+    50% { 
+        filter: drop-shadow(0 0 25px rgba(192, 192, 192, 0.9)) drop-shadow(0 0 40px rgba(220, 220, 220, 0.6));
+        text-shadow: 0 0 35px rgba(192, 192, 192, 0.8), 0 0 50px rgba(220, 220, 220, 0.5);
+    }
+}
+
+@keyframes shimmer-text {
+    0% { text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3), 0 0 10px rgba(192, 192, 192, 0.3); }
+    50% { text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3), 0 0 20px rgba(192, 192, 192, 0.6), 0 0 30px rgba(220, 220, 220, 0.4); }
+    100% { text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3), 0 0 10px rgba(192, 192, 192, 0.3); }
+}
+
+        
+        .subtitle {
+            font-size: 1.5em;
+            color: rgba(255, 255, 255, 0.98);
+            margin-bottom: 40px;
+            animation: slideDown 0.8s ease-out 0.4s backwards, pulse 2s ease-in-out infinite;
+            text-shadow: 0 0 15px rgba(192, 192, 192, 0.4), 1px 1px 3px rgba(0, 0, 0, 0.3);
+            letter-spacing: 1px;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 0.95; }
+            50% { opacity: 1; }
+        }
+        
+        /* VIDEO SECTION WITH GLITTER */
+        .video-section {
+            margin-bottom: 50px;
+            animation: slideDown 0.8s ease-out 0.5s backwards;
+            position: relative;
+        }
+        
+        .video-container {
+    position: relative;
+    width: 100%;
+    max-width: 850px;        /* ← Bigger: 700px → 850px */
+    margin: 0 auto;          /* ← Center it */
+    border-radius: 25px;
+    overflow: visible;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 0 50px rgba(192, 192, 192, 0.5), inset 0 0 30px rgba(220, 220, 220, 0.2);
+    border: 4px solid;
+    border-image: linear-gradient(135deg, #e8e8e8 0%, #ffffff 25%, #e8e8e8 50%, #c0c0c0 75%, #e8e8e8 100%) 1;
+    background: #1a1a1a;
+    animation: pulse-glow 3s ease-in-out infinite;
+}
+        
+        /* GLITTER BORDER EFFECT */
+        .video-container::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            left: -8px;
+            right: -8px;
+            bottom: -8px;
+            background: linear-gradient(135deg, transparent 0%, rgba(192, 192, 192, 0.3) 25%, transparent 50%, rgba(220, 220, 220, 0.2) 75%, transparent 100%);
+            border-radius: 30px;
+            animation: rotate-border 8s linear infinite;
+            z-index: -1;
+        }
+        
+        @keyframes rotate-border {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .video-container video {
+    width: 100%;
+    max-width: 850px;        /* ← Bigger: 700px → 850px */
+    max-height: 480px;       /* ← Taller: 380px → 480px */
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    object-fit: contain;
+}
+
+        
+        .video-label {
+    text-align: center;
+    color: rgba(220, 220, 220, 0.98);
+    font-size: 1.1em;
+    margin-top: 40px;      /* ← Move to bottom: more space from video */
+    margin-bottom: 60px;   /* ← Even more bottom space */
+    font-style: italic;
+    letter-spacing: 1px;
+    animation: slideDown 0.8s ease-out 0.6s backwards;
+    text-shadow: 0 0 10px rgba(192, 192, 192, 0.5);
+    font-weight: 500;
+}
+
+
+        
+        .buttons-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            max-width: 600px;
+            margin: 0 auto;
+            animation: slideDown 0.8s ease-out 0.7s backwards;
+        }
+        
+        .btn-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px 25px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2), 0 0 30px rgba(192, 192, 192, 0.3);
+            border: 3px solid;
+            border-image: linear-gradient(135deg, #c0c0c0 0%, #e8e8e8 50%, #c0c0c0 100%) 1;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 280px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            animation: shimmer 3s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        
+        .btn-card:hover {
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3), 0 0 50px rgba(192, 192, 192, 0.6);
+            border-image: linear-gradient(135deg, #e8e8e8 0%, #ffffff 50%, #e8e8e8 100%) 1;
+        }
+        
+        .btn-card.upload-btn {
+            background: linear-gradient(135deg, #001a4d 0%, #0d3b66 100%);
+            color: white;
+            border: 3px solid transparent;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 0 25px rgba(192, 192, 192, 0.3);
+        }
+        
+        .btn-card.upload-btn:hover {
+            background: linear-gradient(135deg, #0d3b66 0%, #1a5490 100%);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3), 0 0 40px rgba(192, 192, 192, 0.5);
+        }
+        
+        .btn-card.gallery-btn {
+    background: linear-gradient(135deg, #e8e8e8 0%, #ffffff 50%, #e8e8e8 100%);
+    color: #001a4d;
+    border: 3px solid transparent; /* same as Upload Now */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 0 25px rgba(192, 192, 192, 0.3);
+}
+
+
+.btn-card.gallery-btn:hover {
+    background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 50%, #ffffff 100%);
+    transform: translateY(-15px) scale(1.02);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3), 0 0 40px rgba(192, 192, 192, 0.5);
+}
+
+        
+        .btn-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 2;
+            display: inline-block;
+            width: 60px;
+            height: 60px;
+            filter: drop-shadow(0 0 8px rgba(192, 192, 192, 0.3));
+        }
+        
+        .btn-title {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .btn-description {
+            font-size: 0.95em;
+            opacity: 0.9;
+            line-height: 1.4;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .stats {
+            margin-top: 60px;
+            padding: 30px;
+            background: rgba(192, 192, 192, 0.15);
+            border-radius: 20px;
+            color: white;
+            backdrop-filter: blur(10px);
+            border: 2px solid;
+            border-image: linear-gradient(135deg, rgba(192, 192, 192, 0.6) 0%, rgba(255, 255, 255, 0.6) 50%, rgba(192, 192, 192, 0.6) 100%) 1;
+            box-shadow: 0 8px 32px rgba(192, 192, 192, 0.15), inset 0 0 20px rgba(255, 255, 255, 0.15), 0 0 40px rgba(192, 192, 192, 0.2);
+            animation: slideDown 0.8s ease-out 0.8s backwards, pulse-glow 4s ease-in-out infinite;
+        }
+        
+        .stat-item {
+            display: inline-block;
+            margin: 0 30px;
+        }
+        
+        .stat-icon {
+            font-size: 2em;
+            margin-bottom: 10px;
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            filter: drop-shadow(0 0 6px rgba(192, 192, 192, 0.4));
+        }
+        
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            display: block;
+            background: linear-gradient(135deg, #e8e8e8 0%, #ffffff 50%, #e8e8e8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .stat-label {
+            font-size: 0.95em;
+            opacity: 0.95;
+            text-shadow: 0 0 5px rgba(192, 192, 192, 0.3);
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5em; }
+            .subtitle { font-size: 1.2em; margin-bottom: 40px; }
+            .buttons-container { grid-template-columns: 1fr; gap: 20px; }
+            .btn-card { padding: 30px 20px; min-height: 240px; }
+            .video-container { max-width: 100%; }
+        }
+        
+        @media (max-width: 480px) {
+            body { padding: 10px; }
+            .hero { padding: 15px; }
+            h1 { font-size: 2em; }
+            .subtitle { font-size: 1em; margin-bottom: 30px; }
+            .buttons-container { gap: 15px; }
+        }
     </style>
 </head>
 <body>
-    <div class="sparkle-1"></div>
-    <div class="sparkle-2"></div>
-    <div class="sparkle-3"></div>
-    <div class="sparkle-4"></div>
+    <div class="hero">
+        <!-- FLOATING SPARKLES -->
+        <div class="sparkle-1"></div>
+        <div class="sparkle-2"></div>
+        <div class="sparkle-3"></div>
+        <div class="sparkle-4"></div>
+        
+        <div class="container">
+            <h1>✨ Davreignne's Debut Gallery ✨</h1>
+            
+            <!-- VIDEO SECTION -->
+            <div class="video-section">
+    <div class="video-container">
+        <video controls autoplay playsinline>
+            <source src="https://raw.githubusercontent.com/haruhiiiiiiiiiiiiiii/Davreignne-s-Debut-Album/main/debut-video.mp4" type="video/mp4">
+        </video>
+    </div>
+    <p class="video-label">Welcome to Davreignne's Gallery!</p>
     
-    <div class="container">
-        <h1>Upload Photos & Videos</h1>
-        <p class="subtitle">Share your memories from the celebration</p>
-        
-        <div class="album-selector">
-            <label class="album-selector-label">
-                <svg class="label-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-                    <g fill="currentColor">
-                        <path d="M12 14 L12 54 Q12 58 16 58 L48 58 Q52 58 52 54 L52 20 L36 20 L36 14 Q36 12 34 12 L16 12 Q12 12 12 14 Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                        <path d="M32 28 L32 48 M24 38 L40 38" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                    </g>
-                </svg>
-                Select Album:
-            </label>
-            <div class="album-selector-grid" id="albumGrid"></div>
-        </div>
-        
-        <div class="current-album-info" id="currentAlbumInfo">
-            <svg class="album-info-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-                <g fill="currentColor"><circle cx="32" cy="20" r="3"/><path d="M20 28 Q20 24 24 24 L40 24 Q44 24 44 28 L44 48 Q44 52 40 52 L24 52 Q20 52 20 48 Z" fill="none" stroke="currentColor" stroke-width="2"/><path d="M20 40 L26 32 L40 44 L44 40" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></g>
-            </svg>
-            <span id="currentAlbumName">Table 1</span>
-        </div>
-        
-        <div class="view-gallery">
-            <a href="#" id="viewGalleryLink">
-                <svg class="btn-icon-medium" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-                    <g fill="currentColor">
-                        <path d="M12 12 Q12 10 14 10 L50 10 Q52 10 52 12 L52 52 Q52 54 50 54 L14 54 Q12 54 12 52 Z" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/>
-                        <circle cx="28" cy="28" r="8" fill="none" stroke="currentColor" stroke-width="2"/>
-                        <circle cx="42" cy="20" r="3" fill="currentColor"/>
-                        <path d="M12 42 L24 30 L38 42 L52 28 L52 52" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                    </g>
-                </svg>
-                View This Album
-            </a>
-            <a href="albums.html">
-                <svg class="btn-icon-medium" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-                    <g fill="currentColor">
-                        <rect x="10" y="14" width="20" height="20" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
-                        <rect x="34" y="14" width="20" height="20" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
-                        <rect x="10" y="38" width="20" height="20" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
-                        <rect x="34" y="38" width="20" height="20" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
-                    </g>
-                </svg>
-                All Albums
-            </a>
-        </div>
-        
-        <div class="success" id="successMsg"></div>
-        <div class="error" id="errorMsg"></div>
-        
-        <div class="upload-area" id="uploadArea">
-            <svg class="upload-area-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-                <g fill="currentColor">
-                    <path d="M32 10 L32 44 M20 32 L32 10 L44 32" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
-                    <rect x="12" y="50" width="40" height="4" rx="2" fill="currentColor"/>
-                </g>
-            </svg>
-            <div>Drag & drop photos/videos here</div>
-            <input type="file" id="fileInput" multiple accept="image/*,video/*">
-            <button class="upload-btn" id="chooseBtn" onclick="document.getElementById('fileInput').click()">
-                <svg class="btn-icon-medium" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-                    <g fill="currentColor">
-                        <rect x="14" y="18" width="36" height="34" rx="2" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                        <path d="M32 28 L32 42 M26 34 L38 34" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                    </g>
-                </svg>
-                Choose Files
-            </button>
-        </div>
-        
-        <div class="loading" id="loading" style="display: none; text-align: center; padding: 20px;">
-            <div style="font-size: 1.5em; color: #001a4d; font-weight: bold;">Uploading...</div>
-        </div>
-        
-<input type="text" class="name-input" id="uploaderName" placeholder="Your name" required>
-        
-        <div class="stats">
-            <div class="stat-number" id="photoCount">0</div>
-            <div class="stat-label">Photos/Videos in this album</div>
+            
+            <div class="buttons-container">
+                <a href="albums.html" class="btn-card upload-btn">
+                    <svg class="btn-icon-small" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <g fill="currentColor">
+        <path d="M12 18 L12 6 M8 10 L12 6 L16 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/>
+        <line x1="4" y1="4" x2="20" y2="4" stroke="currentColor" stroke-width="1" stroke-linecap="round"/>
+    </g>
+</svg>
+                    <div class="btn-title">Upload Now</div>
+                    <div class="btn-description">Share your photos & videos instantly</div>
+                </a>
+                
+                <a href="albums.html" class="btn-card gallery-btn">
+                    <svg class="btn-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                        <defs><style>.cute-icon { fill: currentColor; }</style></defs>
+                        <g class="cute-icon">
+                            <path d="M12 12 Q12 10 14 10 L50 10 Q52 10 52 12 L52 52 Q52 54 50 54 L14 54 Q12 54 12 52 Z" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/>
+                            <circle cx="28" cy="28" r="8" fill="none" stroke="currentColor" stroke-width="2"/>
+                            <circle cx="42" cy="20" r="3" fill="currentColor"/>
+                            <path d="M12 42 L24 30 L38 42 L52 28 L52 52" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                        </g>
+                    </svg>
+                    <div class="btn-title">View Gallery</div>
+                    <div class="btn-description">See all the saved memories</div>
+                </a>
+            </div>
+            
+            <div class="stats" id="statsSection">
+                <div class="stat-item">
+                    <svg class="stat-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                        <g fill="currentColor">
+                            <rect x="8" y="12" width="16" height="20" rx="2" ry="2"/>
+                            <rect x="28" y="8" width="16" height="24" rx="2" ry="2"/>
+                            <rect x="48" y="16" width="8" height="16" rx="1" ry="1"/>
+                            <rect x="8" y="36" width="48" height="4" rx="2"/>
+                        </g>
+                    </svg>
+                    <span class="stat-number" id="photoCount">0</span>
+                    <span class="stat-label">Photos Saved</span>
+                </div>
+                <div class="stat-item">
+                    <svg class="stat-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                        <g fill="currentColor">
+                            <rect x="14" y="10" width="36" height="44" rx="3" ry="3" fill="none" stroke="currentColor" stroke-width="2"/>
+                            <path d="M24 20 L40 20 M24 28 L40 28 M24 36 L40 36 M24 44 L40 44" stroke="currentColor" stroke-width="1.5"/>
+                        </g>
+                    </svg>
+                    <span class="stat-number" id="storageUsed">0 KB</span>
+                    <span class="stat-label">Storage Used</span>
+                </div>
+                <div class="stat-item">
+                    <svg class="stat-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                        <g fill="currentColor">
+                            <circle cx="22" cy="22" r="10" fill="none" stroke="currentColor" stroke-width="2"/>
+                            <circle cx="42" cy="22" r="10" fill="none" stroke="currentColor" stroke-width="2"/>
+                            <path d="M32 32 Q32 36 28 40 L36 40 Q32 36 32 32" fill="currentColor"/>
+                        </g>
+                    </svg>
+                    <span class="stat-number" id="uploaderCount">0</span>
+                    <span class="stat-label">Contributors</span>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
         const STORAGE_KEY = 'qr_photo_albums';
         
-        const albumsList = [
-            { id: 1, name: 'Table 1', description: 'Family', icon: 'sparkle' },
-            { id: 2, name: 'Table 2', description: 'Guests', icon: 'sparkle' },
-            { id: 3, name: 'Table 3', description: 'Guests', icon: 'sparkle' },
-            { id: 4, name: 'Table 4', description: 'Guests', icon: 'sparkle' },
-            { id: 5, name: 'Table 5', description: 'Guests', icon: 'sparkle' },
-            { id: 6, name: 'Table 6', description: 'Guests', icon: 'sparkle' },
-            { id: 7, name: 'Table 7', description: 'Guests', icon: 'sparkle' },
-            { id: 8, name: 'Table 8', description: 'Guests', icon: 'sparkle' },
-            { id: 9, name: 'Table 9', description: 'Guests', icon: 'sparkle' },
-            { id: 10, name: 'Table 10', description: 'Guests', icon: 'sparkle' },
-            { id: 11, name: 'Table 11', description: 'Guests', icon: 'sparkle' },
-            { id: 12, name: 'Table 12', description: 'Guests', icon: 'sparkle' },
-            { id: 13, name: 'Table 13', description: 'Guests', icon: 'sparkle' },
-            { id: 14, name: 'Table 14', description: 'Guests', icon: 'sparkle' },
-            { id: 15, name: '18 Roses', description: 'Rose dance', icon: 'rose' },
-            { id: 16, name: '18 Candles', description: 'Candle ceremony', icon: 'rose' },
-            { id: 17, name: '18 Blue Bills', description: 'Blue bills', icon: 'rose' },
-            { id: 18, name: '18 Treasures', description: 'Wisdom & gifts', icon: 'rose' },
-            { id: 19, name: '18 Shots', description: 'Photo booth', icon: 'rose' }
-        ];
-        
-        const icons = {
-            sparkle: '<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><path d="M32 8 L36 18 L47 20 L39 28 L41 39 L32 35 L23 39 L25 28 L17 20 L28 18 Z"/><circle cx="32" cy="32" r="3" fill="#e8e8e8"/></g></svg>',
-            rose: '<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><ellipse cx="32" cy="20" rx="5" ry="3"/><ellipse cx="32" cy="18" rx="7" ry="4" opacity="0.7"/><path d="M32 22 Q30 28 28 35 Q27 40 28 45 L36 45 Q37 40 36 35 Q34 28 32 22 Z" opacity="0.8"/><path d="M28 45 L28 50 L36 50 L36 45"/></g></svg>'
-        };
-        
-        let currentAlbumId = 1;
-        
-        const uploadArea = document.getElementById('uploadArea');
-        const fileInput = document.getElementById('fileInput');
-        const loading = document.getElementById('loading');
-        const successMsg = document.getElementById('successMsg');
-        const errorMsg = document.getElementById('errorMsg');
-        const uploaderName = document.getElementById('uploaderName');
-        const photoCount = document.getElementById('photoCount');
-        const chooseBtn = document.getElementById('chooseBtn');
-        const currentAlbumName = document.getElementById('currentAlbumName');
-        const viewGalleryLink = document.getElementById('viewGalleryLink');
-        const albumGrid = document.getElementById('albumGrid');
-
-        function renderAlbumSelector() {
-            albumGrid.innerHTML = '';
-            albumsList.forEach(album => {
-                const option = document.createElement('div');
-                option.className = 'album-option' + (album.id === currentAlbumId ? ' selected' : '');
-                option.id = `album-${album.id}`;
-                option.onclick = () => selectAlbum(album.id, album.name);
-                option.innerHTML = `
-                    <div class="album-option-icon">${icons[album.icon]}</div>
-                    <span>${album.name}</span>
-                `;
-                albumGrid.appendChild(option);
-            });
-        }
-
-        function selectAlbum(id, name) {
-            currentAlbumId = id;
-            document.querySelectorAll('.album-option').forEach(el => el.classList.remove('selected'));
-            document.getElementById(`album-${id}`).classList.add('selected');
-            currentAlbumName.textContent = name;
-            viewGalleryLink.href = `album.html?album=${id}`;
-            updatePhotoCount();
-        }
-
-        function updatePhotoCount() {
+        function updateStats() {
             try {
                 const allAlbums = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
-                const count = (allAlbums[currentAlbumId] || []).length;
-                photoCount.textContent = count;
+                let totalPhotos = 0;
+                let totalSize = 0;
+                const uploaders = new Set();
+                
+                Object.values(allAlbums).forEach(album => {
+                    totalPhotos += album.length;
+                    album.forEach(p => uploaders.add(p.uploader));
+                });
+                
+                totalSize = localStorage.getItem(STORAGE_KEY)?.length || 0;
+                
+                document.getElementById('photoCount').textContent = totalPhotos;
+                document.getElementById('storageUsed').textContent = Math.round(totalSize / 1024) + ' KB';
+                document.getElementById('uploaderCount').textContent = uploaders.size;
             } catch (e) {
-                console.error('Count error:', e);
-                photoCount.textContent = '0';
+                console.error('Stats error:', e);
             }
         }
-
-        function savePhotos(photos) {
-            try {
-                const allAlbums = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
-                allAlbums[currentAlbumId] = photos;
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(allAlbums));
-                updatePhotoCount();
-                return true;
-            } catch (e) {
-                console.warn('Storage limit reached, but upload continues');
-                return false;
-            }
-        }
-
-        function showError(msg) {
-            errorMsg.textContent = msg;
-            errorMsg.style.display = 'block';
-            setTimeout(() => { errorMsg.style.display = 'none'; }, 4000);
-        }
-
-        ['dragover', 'dragenter'].forEach(event => {
-            uploadArea.addEventListener(event, (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                uploadArea.classList.add('dragover');
-            });
-        });
-        ['dragleave', 'drop'].forEach(event => {
-            uploadArea.addEventListener(event, (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                uploadArea.classList.remove('dragover');
-            });
-        });
-        uploadArea.addEventListener('drop', (e) => {
-            fileInput.files = e.dataTransfer.files;
-            handleFiles();
-        });
-
-        fileInput.addEventListener('change', handleFiles);
-
-        function handleFiles() {
-    const files = Array.from(fileInput.files);
-    if (files.length === 0) return;
-
-    const nameValue = uploaderName.value.trim();
-    if (!nameValue) {
-        showError('Please enter your name before uploading.');
-        fileInput.value = '';
-        return;
-    }
-
-    loading.style.display = 'block';
-    uploadArea.style.display = 'none';
-    chooseBtn.disabled = true;
-
-    let processed = 0;
-    const allAlbums = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
-    const currentPhotos = allAlbums[currentAlbumId] || [];
-
-    files.forEach(file => {
-        if (!file.type.startsWith('image/') && !file.type.startsWith('video/')) {
-            showError('Only photos and videos are allowed');
-            processed++;
-            return;
-        }
-
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            currentPhotos.push({
-                name: file.name,
-                dataUrl: e.target.result,
-                timestamp: Date.now(),
-                uploader: nameValue,
-                size: file.size,
-                type: file.type,
-                id: Date.now() + Math.random()
-            });
-
-            processed++;
-            if (processed === files.length) {
-                const albums = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
-                albums[currentAlbumId] = currentPhotos;
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(albums));
-
-                updatePhotoCount();
-
-                loading.style.display = 'none';
-                uploadArea.style.display = 'block';
-                chooseBtn.disabled = false;
-                fileInput.value = '';
-
-                successMsg.textContent = `${files.length} file(s) uploaded successfully!`;
-                successMsg.style.display = 'block';
-                setTimeout(() => {
-                    successMsg.style.display = 'none';
-                }, 4000);
-            }
-        };
-
-        reader.readAsDataURL(file);
-    });
-}
-
-        renderAlbumSelector();
-        selectAlbum(1, 'Table 1');
+        
+        updateStats();
+        setInterval(updateStats, 2000);
     </script>
 </body>
 </html>
