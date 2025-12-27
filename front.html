@@ -78,7 +78,7 @@
     
     <div class="container">
         <h1>Upload Photos & Videos</h1>
-        <p class="subtitle">Share your memories with everyone</p>
+        <p class="subtitle">Share your memories with everyone 🌟</p>
         
         <div class="album-selector">
             <label class="album-selector-label">Select Album:</label>
@@ -108,19 +108,32 @@
         
         <div class="loading" id="loading">
             <div class="loading-spinner"></div>
-            <div style="font-size: 1.2em; color: #001a4d; font-weight: bold;">Uploading...</div>
+            <div style="font-size: 1.2em; color: #001a4d; font-weight: bold;">Uploading to cloud...</div>
         </div>
         
         <input type="text" class="name-input" id="uploaderName" placeholder="Your name" required>
         
         <div class="stats">
-            <div class="stat-number" id="photoCount">0</div>
+            <div class="stat-number" id="photoCount">Loading...</div>
             <div class="stat-label">Photos/Videos in this album (visible to everyone)</div>
         </div>
     </div>
 
-    <script>
-        const STORAGE_KEY = 'qr_photo_albums';
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getFirestore, collection, addDoc, getDocs, query, orderBy } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDPaMpRBwk8a10vX4CUvsolfUyn3gpec5s",
+            authDomain: "debut-photo-gallery.firebaseapp.com",
+            projectId: "debut-photo-gallery",
+            storageBucket: "debut-photo-gallery.firebasestorage.app",
+            messagingSenderId: "954052989718",
+            appId: "1:954052989718:web:8faaeeaa9aebe726f67637"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
         
         const albumsList = [
             { id: 1, name: 'Table 1' }, { id: 2, name: 'Table 2' }, { id: 3, name: 'Table 3' },
@@ -167,12 +180,13 @@
             updatePhotoCount();
         }
 
-        function updatePhotoCount() {
+        async function updatePhotoCount() {
             try {
-                const allAlbums = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
-                const count = (allAlbums[currentAlbumId] || []).length;
-                photoCount.textContent = count;
+                const q = query(collection(db, `albums/${currentAlbumId}/photos`));
+                const snapshot = await getDocs(q);
+                photoCount.textContent = snapshot.size;
             } catch (e) {
+                console.error('Error counting photos:', e);
                 photoCount.textContent = '0';
             }
         }
@@ -180,13 +194,13 @@
         function showError(msg) {
             errorMsg.textContent = msg;
             errorMsg.style.display = 'block';
-            setTimeout(() => { errorMsg.style.display = 'none'; }, 4000);
+            setTimeout(() => { errorMsg.style.display = 'none'; }, 5000);
         }
 
         function showSuccess(msg) {
             successMsg.textContent = msg;
             successMsg.style.display = 'block';
-            setTimeout(() => { successMsg.style.display = 'none'; }, 4000);
+            setTimeout(() => { successMsg.style.display = 'none'; }, 5000);
         }
 
         ['dragover', 'dragenter'].forEach(event => {
@@ -212,7 +226,7 @@
 
         fileInput.addEventListener('change', handleFiles);
 
-        function handleFiles() {
+        async function handleFiles() {
             const files = Array.from(fileInput.files);
             if (files.length === 0) return;
 
@@ -227,59 +241,45 @@
             uploadArea.style.display = 'none';
 
             let uploadedCount = 0;
-            let processed = 0;
+            let errors = 0;
 
-            const allAlbums = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
-            const currentPhotos = allAlbums[currentAlbumId] || [];
-
-            files.forEach(file => {
+            for (const file of files) {
                 if (!file.type.startsWith('image/') && !file.type.startsWith('video/')) {
-                    processed++;
-                    if (processed === files.length) finishUpload();
-                    return;
+                    errors++;
+                    continue;
                 }
 
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    currentPhotos.push({
+                try {
+                    const dataUrl = await readFileAsDataURL(file);
+                    
+                    await addDoc(collection(db, `albums/${currentAlbumId}/photos`), {
                         name: file.name,
-                        dataUrl: e.target.result,
+                        dataUrl: dataUrl,
                         timestamp: Date.now(),
                         uploader: nameValue,
                         size: file.size,
-                        type: file.type,
-                        id: Date.now() + '-' + Math.random().toString(36).substr(2, 9)
+                        type: file.type
                     });
 
                     uploadedCount++;
-                    processed++;
-                    
-                    if (processed === files.length) {
-                        allAlbums[currentAlbumId] = currentPhotos;
-                        localStorage.setItem(STORAGE_KEY, JSON.stringify(allAlbums));
-                        finishUpload();
-                    }
-                };
-                
-                reader.onerror = () => {
-                    processed++;
-                    if (processed === files.length) finishUpload();
-                };
-                
-                reader.readAsDataURL(file);
-            });
-
-            function finishUpload() {
-                loading.style.display = 'none';
-                uploadArea.style.display = 'block';
-                fileInput.value = '';
-                updatePhotoCount();
-
-                if (uploadedCount > 0) {
-                    showSuccess(`✓ ${uploadedCount} file(s) uploaded successfully! Visible to everyone.`);
-                } else {
-                    showError('No files were uploaded. Please try again.');
+                    console.log(`✓ Uploaded: ${file.name}`);
+                } catch (error) {
+                    console.error('Upload error:', error);
+                    errors++;
                 }
+            }
+
+            loading.style.display = 'none';
+            uploadArea.style.display = 'block';
+            fileInput.value = '';
+
+            await updatePhotoCount();
+
+            if (uploadedCount > 0) {
+                showSuccess(`✓ ${uploadedCount} file(s) uploaded successfully! Everyone can now see them! 🎉`);
+            }
+            if (errors > 0) {
+                showError(`${errors} file(s) failed to upload.`);
             }
         }
 
@@ -294,6 +294,7 @@
 
         renderAlbumSelector();
         selectAlbum(1, 'Table 1');
+        updatePhotoCount();
     </script>
 </body>
 </html>
