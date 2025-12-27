@@ -227,12 +227,79 @@
             display: none;
         }
         
+        /* SECTION DIVIDER */
+        .section-divider {
+            margin: 50px 0 30px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .section-divider::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent 0%, #c0c0c0 20%, #c0c0c0 80%, transparent 100%);
+        }
+        
+        .section-divider h2 {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 10px 30px;
+            position: relative;
+            z-index: 1;
+            color: #001a4d;
+            font-size: 1.8em;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            background: linear-gradient(135deg, #001a4d 0%, #c0c0c0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* PHOTOS SECTION WITH BORDER */
+        .photos-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            padding: 40px;
+            margin: 30px 0;
+            border: 3px solid;
+            border-image: linear-gradient(135deg, #c0c0c0 0%, #e8e8e8 50%, #c0c0c0 100%) 1;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3), 0 0 40px rgba(192, 192, 192, 0.2);
+            position: relative;
+        }
+        
+        .photos-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(192, 192, 192, 0.1) 0%, transparent 70%);
+            animation: sparkleMove 4s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        @keyframes sparkleMove { 
+            0%, 100% { transform: translate(0, 0); } 
+            50% { transform: translate(30px, 30px); } 
+        }
+        
         .photos-grid { 
             display: flex;
             flex-direction: column;
             gap: 40px;
             margin: 30px 0;
             align-items: center;
+            position: relative;
+            z-index: 1;
         }
         
         .photo-card {
@@ -409,6 +476,8 @@
             padding: 60px 20px;
             display: none;
             color: #666;
+            position: relative;
+            z-index: 1;
         }
         
         @media (max-width: 768px) {
@@ -419,6 +488,8 @@
             .photo-card:nth-child(even) .photo-thumbnail-wrapper {
                 border-width: 5px;
             }
+            .section-divider h2 { font-size: 1.4em; padding: 8px 20px; }
+            .photos-section { padding: 25px 15px; }
         }
     </style>
 </head>
@@ -452,26 +523,31 @@
             <button class="admin-btn" onclick="logoutAdmin()">Logout Admin</button>
         </div>
         
-        <div style="text-align:center; margin: 20px 0;" id="adminLoginBtn">
-            <button class="admin-btn" onclick="showAdminLogin()">
-                Add More to This Album
-            </button>
-        </div>
-        
         <div class="success" id="successMsg"></div>
         <div class="error" id="errorMsg"></div>
         
+        <!-- PHOTOS SECTION WITH BORDER AND TITLE -->
+        <div class="section-divider">
+            <h2>✨ PHOTOS ✨</h2>
+        </div>
+        
+        <div class="photos-section">
+            <div id="photosGrid" class="photos-grid"></div>
+            
+            <div id="noPhotos">
+                <h3>No photos yet</h3>
+                <p>Photos will appear here once uploaded by admin</p>
+            </div>
+        </div>
+        
+        <!-- BUTTONS AT BOTTOM -->
         <div class="button-group">
             <a href="albums.html" class="btn-link">
                 ← Back to Albums
             </a>
-        </div>
-        
-        <div id="photosGrid" class="photos-grid"></div>
-        
-        <div id="noPhotos">
-            <h3>No photos yet</h3>
-            <p>Photos will appear here once uploaded by admin</p>
+            <button class="admin-btn" id="adminLoginBtn" onclick="showAdminLogin()">
+                Add More to This Album
+            </button>
         </div>
     </div>
 
@@ -529,7 +605,7 @@
                 deleteSection.style.display = 'block';
             } else {
                 adminControls.style.display = 'none';
-                adminLoginBtn.style.display = 'block';
+                adminLoginBtn.style.display = 'inline-flex';
                 deleteSection.style.display = 'none';
             }
         }
@@ -695,13 +771,4 @@
         }
 
         lightbox.addEventListener('click', (e) => {
-            if (e.target === lightbox) closeLightbox();
-        });
-
-        window.onload = () => {
-            checkAdminStatus();
-            loadPhotos();
-        };
-    </script>
-</body>
-</html>
+            if (e.
