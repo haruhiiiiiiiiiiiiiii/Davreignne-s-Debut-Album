@@ -6,566 +6,118 @@
     <title>Albums</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-image: 
-                linear-gradient(135deg, rgba(0, 26, 77, 0.5) 0%, rgba(13, 59, 102, 0.6) 100%),
-                url('https://raw.githubusercontent.com/haruhiiiiiiiiiiiiiii/Davreignne-s-Debut-Album/main/MOT04452.JPG');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            background-repeat: no-repeat;
-            min-height: 100vh;
-            padding: 20px;
-            position: relative;
-            overflow-x: hidden;
+            background-image: linear-gradient(135deg, rgba(0, 26, 77, 0.5) 0%, rgba(13, 59, 102, 0.6) 100%), url('https://raw.githubusercontent.com/haruhiiiiiiiiiiiiiii/Davreignne-s-Debut-Album/main/MOT04452.JPG');
+            background-size: cover; background-position: center; background-attachment: fixed; background-repeat: no-repeat;
+            min-height: 100vh; padding: 20px; position: relative; overflow-x: hidden;
         }
-        
-        /* GLITTER SPARKLES */
         .sparkle-1 { position: fixed; width: 8px; height: 8px; background: radial-gradient(circle, #ffffff 0%, rgba(255,255,255,0.3) 70%); border-radius: 50%; top: 15%; left: 5%; animation: twinkle 2s ease-in-out infinite, float-random 6s ease-in-out infinite; box-shadow: 0 0 15px rgba(192, 192, 192, 0.8); z-index: 1; }
         .sparkle-2 { position: fixed; width: 6px; height: 6px; background: radial-gradient(circle, #e8e8e8 0%, rgba(192,192,192,0.3) 70%); border-radius: 50%; top: 30%; right: 8%; animation: twinkle 2.5s ease-in-out infinite 0.5s, float-random 7s ease-in-out infinite; box-shadow: 0 0 12px rgba(200, 200, 200, 0.7); z-index: 1; }
         .sparkle-3 { position: fixed; width: 7px; height: 7px; background: radial-gradient(circle, #f0f0f0 0%, rgba(192,192,192,0.2) 70%); border-radius: 50%; bottom: 20%; left: 10%; animation: twinkle 3s ease-in-out infinite 1s, float-random 8s ease-in-out infinite; box-shadow: 0 0 14px rgba(192, 192, 192, 0.8); z-index: 1; }
         .sparkle-4 { position: fixed; width: 5px; height: 5px; background: radial-gradient(circle, #ffffff 0%, rgba(255,255,255,0.3) 70%); border-radius: 50%; top: 60%; right: 5%; animation: twinkle 2.2s ease-in-out infinite 0.8s, float-random 9s ease-in-out infinite; box-shadow: 0 0 11px rgba(200, 200, 200, 0.6); z-index: 1; }
-        
         @keyframes twinkle { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
-        @keyframes float-random {
-            0% { transform: translateY(0px) translateX(0px); }
-            25% { transform: translateY(-15px) translateX(10px); }
-            50% { transform: translateY(-30px) translateX(-10px); }
-            75% { transform: translateY(-15px) translateX(15px); }
-            100% { transform: translateY(0px) translateX(0px); }
-        }
+        @keyframes float-random { 0% { transform: translateY(0px) translateX(0px); } 25% { transform: translateY(-15px) translateX(10px); } 50% { transform: translateY(-30px) translateX(-10px); } 75% { transform: translateY(-15px) translateX(15px); } 100% { transform: translateY(0px) translateX(0px); } }
         @keyframes slideDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 25px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), 0 0 40px rgba(192, 192, 192, 0.2);
-            padding: 40px;
-            border: 3px solid;
-            border-image: linear-gradient(135deg, #c0c0c0 0%, #e8e8e8 50%, #c0c0c0 100%) 1;
-            position: relative;
-            animation: slideDown 0.8s ease-out;
-            z-index: 10;
-        }
-        
-        h1 {
-            text-align: center;
-            color: #001a4d;
-            margin-bottom: 15px;
-            font-size: 2.8em;
-            background: linear-gradient(135deg, #001a4d 0%, #c0c0c0 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .subtitle {
-            text-align: center;
-            color: #555;
-            margin-bottom: 40px;
-            font-size: 1.1em;
-        }
-        
-        /* DEBUT VIDEO ALBUM - SPECIAL HORIZONTAL CARD */
-        .debut-video-card {
-            background: linear-gradient(135deg, #001a4d 0%, #0d3b66 50%, #001a4d 100%),
-                url('https://raw.githubusercontent.com/haruhiiiiiiiiiiiiiii/Davreignne-s-Debut-Album/main/MOT04532.JPG');
-            border-radius: 25px;
-            padding: 40px;
-            margin-bottom: 50px;
-            cursor: pointer;
-            transition: all 0.4s ease;
-            box-shadow: 0 15px 50px rgba(0, 26, 77, 0.6), 0 0 40px rgba(192, 192, 192, 0.4);
-            border: 4px solid;
-            border-image: linear-gradient(135deg, #c0c0c0 0%, #e8e8e8 50%, #c0c0c0 100%) 1;
-            position: relative;
-            overflow: hidden;
-            text-decoration: none;
-            display: block;
-        }
-        
-        .debut-video-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(192, 192, 192, 0.3) 0%, transparent 70%);
-            animation: sparkleMove 4s ease-in-out infinite;
-            pointer-events: none;
-        }
-        
-        @keyframes sparkleMove { 
-            0%, 100% { transform: translate(0, 0); } 
-            50% { transform: translate(30px, 30px); } 
-        }
-        
-        .debut-video-card::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            animation: shimmer-slide 3s infinite;
-        }
-        
-        @keyframes shimmer-slide {
-            0% { left: -100%; }
-            100% { left: 100%; }
-        }
-        
-        .debut-video-card:hover {
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 25px 70px rgba(0, 26, 77, 0.8), 0 0 60px rgba(192, 192, 192, 0.6);
-        }
-        
-        .debut-video-content {
-            display: flex;
-            align-items: center;
-            gap: 40px;
-            position: relative;
-            z-index: 2;
-            
-        }
-        
-        .debut-video-icon {
-            width: 120px;
-            height: 120px;
-            flex-shrink: 0;
-            filter: drop-shadow(0 0 20px rgba(192, 192, 192, 0.6));
-        }
-        
-        .debut-video-text {
-            flex: 1;
-        }
-        
-        .debut-video-title {
-            font-size: 2.5em;
-            font-weight: bold;
-            color: #e8e8e8;
-            margin-bottom: 10px;
-            text-shadow: 0 0 20px rgba(192, 192, 192, 0.5);
-        }
-        
-        .debut-video-subtitle {
-            font-size: 1.3em;
-            color: #c0c0c0;
-            margin-bottom: 15px;
-        }
-        
-        .debut-video-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(192, 192, 192, 0.3);
-            padding: 10px 20px;
-            border-radius: 25px;
-            font-size: 1em;
-            color: #e8e8e8;
-            font-weight: bold;
-        }
-        
-        .badge-icon {
-            width: 20px;
-            height: 20px;
-        }
-        
-        .section-divider {
-            margin: 50px 0 30px;
-            text-align: center;
-            position: relative;
-        }
-        
-        .section-divider::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 50%;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(90deg, transparent 0%, #c0c0c0 20%, #c0c0c0 80%, transparent 100%);
-        }
-        
-        .section-divider h2 {
-            display: inline-block;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 10px 30px;
-            position: relative;
-            z-index: 1;
-            color: #001a4d;
-            font-size: 1.8em;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            background: linear-gradient(135deg, #001a4d 0%, #c0c0c0 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .albums-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 25px;
-            margin-bottom: 40px;
-        }
-        
-        .album-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 18px;
-            padding: 15px;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1), 0 0 15px rgba(192, 192, 192, 0.15);
-            border: 3px solid;
-            border-image: linear-gradient(135deg, #c0c0c0 0%, #e8e8e8 50%, #c0c0c0 100%) 1;
-            cursor: pointer;
-            display: block;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .album-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, transparent 70%);
-            animation: sparkleMove 3s ease-in-out infinite;
-            pointer-events: none;
-            z-index: 0;
-        }
-        
-        .album-card:hover {
-            transform: translateY(-12px);
-            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.2), 0 0 30px rgba(192, 192, 192, 0.4);
-            border-image: linear-gradient(135deg, #e8e8e8 0%, #ffffff 50%, #e8e8e8 100%) 1;
-        }
-        
-        .album-thumbnail {
-            width: 100%;
-            aspect-ratio: 1;
-            border-radius: 12px;
-            background: linear-gradient(135deg, #f0f0f0 0%, #e8e8e8 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 12px;
-            position: relative;
-            z-index: 1;
-            overflow: hidden;
-        }
-        
-        .album-icon {
-            width: 80px;
-            height: 80px;
-            filter: drop-shadow(0 0 8px rgba(192, 192, 192, 0.4));
-            transition: transform 0.3s ease;
-        }
-        
-        .album-card:hover .album-icon {
-            transform: scale(1.15);
-        }
-        
-        .album-info {
-            position: relative;
-            z-index: 1;
-            text-align: center;
-        }
-        
-        .album-title {
-            font-size: 1.3em;
-            font-weight: bold;
-            color: #001a4d;
-            margin-bottom: 5px;
-        }
-        
-        .album-subtitle {
-            font-size: 0.9em;
-            color: #666;
-            margin-bottom: 10px;
-        }
-        
-        .album-count {
-            background: linear-gradient(135deg, #001a4d 0%, #0d3b66 100%);
-            color: #c0c0c0;
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 0.85em;
-            font-weight: bold;
-            box-shadow: 0 0 10px rgba(192, 192, 192, 0.3);
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-        }
-        
-        .count-icon { 
-            width: 14px; 
-            height: 14px; 
-        }
-        
-        .button-group {
-            text-align: center;
-            margin-top: 40px;
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            flex-wrap: wrap;
-            position: relative;
-            z-index: 2;
-        }
-        
-        .btn-link {
-            padding: 14px 30px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: bold;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-        
-        .back-button a {
-            background: linear-gradient(135deg, #001a4d 0%, #0d3b66 100%);
-            color: #c0c0c0;
-            box-shadow: 0 5px 15px rgba(0, 26, 77, 0.4), 0 0 10px rgba(192, 192, 192, 0.2);
-        }
-        .back-button a:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0, 26, 77, 0.6), 0 0 15px rgba(192, 192, 192, 0.3);
-        }
-        
-        .upload-button a {
-            background: linear-gradient(135deg, #e8e8e8 0%, #f5f5f5 50%, #e8e8e8 100%);
-            color: #001a4d;
-            box-shadow: 0 5px 15px rgba(192, 192, 192, 0.4), 0 0 10px rgba(192, 192, 192, 0.3);
-            border: 2px solid rgba(192, 192, 192, 0.5);
-        }
-        .upload-button a:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(192, 192, 192, 0.6), 0 0 15px rgba(192, 192, 192, 0.4);
-        }
-        
-        .btn-icon-small { 
-            width: 20px; 
-            height: 20px; 
-            flex-shrink: 0; 
-        }
-        
-        @media (max-width: 768px) {
-            body { background-attachment: scroll; }
-            .container { padding: 30px 20px; }
-            h1 { font-size: 2.2em; }
-            .debut-video-content { flex-direction: column; text-align: center; gap: 20px; }
-            .debut-video-title { font-size: 1.8em; }
-            .debut-video-subtitle { font-size: 1.1em; }
-            .albums-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; }
-            .section-divider h2 { font-size: 1.4em; padding: 8px 20px; }
-        }
-        
-        @media (max-width: 480px) {
-            body { padding: 10px; }
-            .container { padding: 20px 15px; }
-            h1 { font-size: 1.8em; }
-            .debut-video-card { padding: 25px; }
-            .debut-video-title { font-size: 1.5em; }
-            .albums-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; }
-            .section-divider h2 { font-size: 1.2em; padding: 6px 15px; }
-        }
+        .container { max-width: 1200px; margin: 0 auto; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border-radius: 25px; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), 0 0 40px rgba(192, 192, 192, 0.2); padding: 40px; border: 3px solid; border-image: linear-gradient(135deg, #c0c0c0 0%, #e8e8e8 50%, #c0c0c0 100%) 1; position: relative; animation: slideDown 0.8s ease-out; z-index: 10; }
+        h1 { text-align: center; color: #001a4d; margin-bottom: 15px; font-size: 2.8em; background: linear-gradient(135deg, #001a4d 0%, #c0c0c0 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .subtitle { text-align: center; color: #555; margin-bottom: 40px; font-size: 1.1em; }
+        .debut-video-card { background: linear-gradient(135deg, rgba(0, 26, 77, 0.95) 0%, rgba(13, 59, 102, 0.95) 50%, rgba(0, 26, 77, 0.95) 100%), url('https://raw.githubusercontent.com/haruhiiiiiiiiiiiiiii/Davreignne-s-Debut-Album/main/MOT04532.JPG'); background-size: cover; background-position: center; background-blend-mode: overlay; border-radius: 25px; padding: 40px; margin-bottom: 50px; cursor: pointer; transition: all 0.4s ease; box-shadow: 0 15px 50px rgba(0, 26, 77, 0.6), 0 0 40px rgba(192, 192, 192, 0.4); border: 3px solid rgba(192, 192, 192, 0.6); position: relative; overflow: hidden; text-decoration: none; display: block; }
+        .debut-video-card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(192, 192, 192, 0.3) 0%, transparent 70%); animation: sparkleMove 4s ease-in-out infinite; pointer-events: none; }
+        @keyframes sparkleMove { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(30px, 30px); } }
+        .debut-video-card::after { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent); animation: shimmer-slide 3s infinite; }
+        @keyframes shimmer-slide { 0% { left: -100%; } 100% { left: 100%; } }
+        .debut-video-card:hover { transform: translateY(-10px) scale(1.02); box-shadow: 0 25px 70px rgba(0, 26, 77, 0.8), 0 0 60px rgba(192, 192, 192, 0.6); }
+        .debut-video-content { display: flex; align-items: center; gap: 40px; position: relative; z-index: 2; }
+        .debut-video-icon { width: 120px; height: 120px; flex-shrink: 0; filter: drop-shadow(0 0 20px rgba(192, 192, 192, 0.6)); }
+        .debut-video-text { flex: 1; }
+        .debut-video-title { font-size: 2.5em; font-weight: bold; color: #e8e8e8; margin-bottom: 10px; text-shadow: 0 0 20px rgba(192, 192, 192, 0.5); }
+        .debut-video-subtitle { font-size: 1.3em; color: #c0c0c0; margin-bottom: 15px; }
+        .debut-video-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(192, 192, 192, 0.3); padding: 10px 20px; border-radius: 25px; font-size: 1em; color: #e8e8e8; font-weight: bold; }
+        .badge-icon { width: 20px; height: 20px; }
+        .section-divider { margin: 50px 0 30px; text-align: center; position: relative; }
+        .section-divider::before { content: ''; position: absolute; left: 0; top: 50%; width: 100%; height: 2px; background: linear-gradient(90deg, transparent 0%, #c0c0c0 20%, #c0c0c0 80%, transparent 100%); }
+        .section-divider h2 { display: inline-block; background: rgba(255, 255, 255, 0.95); padding: 10px 30px; position: relative; z-index: 1; color: #001a4d; font-size: 1.8em; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; background: linear-gradient(135deg, #001a4d 0%, #c0c0c0 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .albums-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 25px; margin-bottom: 40px; }
+        .album-card { background: linear-gradient(135deg, rgba(0, 26, 77, 0.95) 0%, rgba(13, 59, 102, 0.95) 50%, rgba(0, 26, 77, 0.95) 100%); backdrop-filter: blur(10px); border-radius: 18px; padding: 15px; text-decoration: none; transition: all 0.3s ease; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3), 0 0 15px rgba(192, 192, 192, 0.15); border: 3px solid rgba(192, 192, 192, 0.6); cursor: pointer; display: block; position: relative; overflow: hidden; }
+        .album-card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, transparent 70%); animation: sparkleMove 3s ease-in-out infinite; pointer-events: none; z-index: 0; }
+        .album-card:hover { transform: translateY(-12px); box-shadow: 0 20px 45px rgba(0, 0, 0, 0.4), 0 0 30px rgba(192, 192, 192, 0.4); border: 3px solid rgba(232, 232, 232, 0.8); }
+        .album-thumbnail { width: 100%; aspect-ratio: 1; border-radius: 12px; background: linear-gradient(135deg, rgba(192, 192, 192, 0.2) 0%, rgba(232, 232, 232, 0.2) 100%); display: flex; align-items: center; justify-content: center; margin-bottom: 12px; position: relative; z-index: 1; overflow: hidden; }
+        .album-icon { width: 80px; height: 80px; filter: drop-shadow(0 0 12px rgba(192, 192, 192, 0.6)); transition: transform 0.3s ease; }
+        .album-card:hover .album-icon { transform: scale(1.15); }
+        .album-info { position: relative; z-index: 1; text-align: center; }
+        .album-title { font-size: 1.3em; font-weight: bold; color: #e8e8e8; margin-bottom: 5px; text-shadow: 0 0 10px rgba(192, 192, 192, 0.3); }
+        .album-subtitle { font-size: 0.9em; color: #c0c0c0; margin-bottom: 10px; }
+        .album-count { background: linear-gradient(135deg, rgba(192, 192, 192, 0.3) 0%, rgba(232, 232, 232, 0.3) 100%); color: #e8e8e8; padding: 6px 14px; border-radius: 20px; font-size: 0.85em; font-weight: bold; box-shadow: 0 0 10px rgba(192, 192, 192, 0.3); display: inline-flex; align-items: center; justify-content: center; gap: 6px; border: 1px solid rgba(192, 192, 192, 0.4); }
+        .count-icon { width: 14px; height: 14px; }
+        .button-group { text-align: center; margin-top: 40px; display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; position: relative; z-index: 2; }
+        .btn-link { padding: 14px 30px; border-radius: 50px; text-decoration: none; font-weight: bold; display: inline-flex; align-items: center; gap: 8px; transition: all 0.3s ease; position: relative; }
+        .back-button a { background: linear-gradient(135deg, #001a4d 0%, #0d3b66 100%); color: #c0c0c0; box-shadow: 0 5px 15px rgba(0, 26, 77, 0.4), 0 0 10px rgba(192, 192, 192, 0.2); }
+        .back-button a:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0, 26, 77, 0.6), 0 0 15px rgba(192, 192, 192, 0.3); }
+        .upload-button a { background: linear-gradient(135deg, #e8e8e8 0%, #f5f5f5 50%, #e8e8e8 100%); color: #001a4d; box-shadow: 0 5px 15px rgba(192, 192, 192, 0.4), 0 0 10px rgba(192, 192, 192, 0.3); border: 2px solid rgba(192, 192, 192, 0.5); }
+        .upload-button a:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(192, 192, 192, 0.6), 0 0 15px rgba(192, 192, 192, 0.4); }
+        .btn-icon-small { width: 20px; height: 20px; flex-shrink: 0; }
+        @media (max-width: 768px) { body { background-attachment: scroll; } .container { padding: 30px 20px; } h1 { font-size: 2.2em; } .debut-video-content { flex-direction: column; text-align: center; gap: 20px; } .debut-video-title { font-size: 1.8em; } .debut-video-subtitle { font-size: 1.1em; } .albums-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; } .section-divider h2 { font-size: 1.4em; padding: 8px 20px; } }
+        @media (max-width: 480px) { body { padding: 10px; } .container { padding: 20px 15px; } h1 { font-size: 1.8em; } .debut-video-card { padding: 25px; } .debut-video-title { font-size: 1.5em; } .albums-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; } .section-divider h2 { font-size: 1.2em; padding: 6px 15px; } }
     </style>
 </head>
 <body>
-    <div class="sparkle-1"></div>
-    <div class="sparkle-2"></div>
-    <div class="sparkle-3"></div>
-    <div class="sparkle-4"></div>
-    
+    <div class="sparkle-1"></div><div class="sparkle-2"></div><div class="sparkle-3"></div><div class="sparkle-4"></div>
     <div class="container">
         <h1>Choose Album</h1>
         <p class="subtitle">Select which album to view or upload to</p>
-        
-        <!-- DEBUT VIDEO SPECIAL CARD -->
         <a href="debut-video.html" class="debut-video-card">
             <div class="debut-video-content">
-                <svg class="debut-video-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-                    <g fill="currentColor">
-                        <circle cx="32" cy="32" r="28" fill="none" stroke="#c0c0c0" stroke-width="3"/>
-                        <polygon points="26,20 26,44 46,32" fill="#e8e8e8"/>
-                        <circle cx="32" cy="32" r="32" fill="none" stroke="#c0c0c0" stroke-width="1" opacity="0.3"/>
-                    </g>
-                </svg>
+                <svg class="debut-video-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><circle cx="32" cy="32" r="28" fill="none" stroke="#c0c0c0" stroke-width="3"/><polygon points="26,20 26,44 46,32" fill="#e8e8e8"/><circle cx="32" cy="32" r="32" fill="none" stroke="#c0c0c0" stroke-width="1" opacity="0.3"/></g></svg>
                 <div class="debut-video-text">
                     <div class="debut-video-title">Official Debut Gallery</div>
                     <div class="debut-video-subtitle">Watch Davreignne's Full Debut Video and Photos</div>
-                    <div class="debut-video-badge">
-                        <svg class="badge-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-                            <g fill="currentColor">
-                                <polygon points="32,10 36,22 48,24 40,32 42,44 32,38 22,44 24,32 16,24 28,22" fill="currentColor"/>
-                            </g>
-                        </svg>
-                        Featured Video
-                    </div>
+                    <div class="debut-video-badge"><svg class="badge-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><polygon points="32,10 36,22 48,24 40,32 42,44 32,38 22,44 24,32 16,24 28,22" fill="currentColor"/></g></svg>Featured Video</div>
                 </div>
             </div>
         </a>
-        
-        <div class="section-divider">
-            <h2>✨ TABLE ALBUMS ✨</h2>
-        </div>
-        
+        <div class="section-divider"><h2>TABLE ALBUMS</h2></div>
         <div class="albums-grid" id="albumsGrid"></div>
-        
-        <div class="section-divider">
-            <h2>✨ 18 COLLECTION ✨</h2>
-        </div>
-        
+        <div class="section-divider"><h2>18 COLLECTION</h2></div>
         <div class="albums-grid" id="specialAlbumsGrid"></div>
-        
         <div class="button-group">
-            <div class="upload-button">
-                <a href="index.html" class="btn-link">
-                    <svg class="btn-icon-small" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-                        <g fill="currentColor">
-                            <path d="M32 10 L32 44 M20 32 L32 10 L44 32" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
-                            <rect x="12" y="50" width="40" height="6" rx="2" fill="currentColor"/>
-                        </g>
-                    </svg>
-                    Upload Only
-                </a>
-            </div>
-            <div class="back-button">
-                <a href="front.html" class="btn-link">
-                    <svg class="btn-icon-small" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-                        <g fill="currentColor">
-                            <path d="M44 54 L20 32 L44 10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
-                        </g>
-                    </svg>
-                    Back to Home
-                </a>
-            </div>
+            <div class="upload-button"><a href="index.html" class="btn-link"><svg class="btn-icon-small" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><path d="M32 10 L32 44 M20 32 L32 10 L44 32" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/><rect x="12" y="50" width="40" height="6" rx="2" fill="currentColor"/></g></svg>Upload Only</a></div>
+            <div class="back-button"><a href="front.html" class="btn-link"><svg class="btn-icon-small" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><path d="M44 54 L20 32 L44 10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/></g></svg>Back to Home</a></div>
         </div>
     </div>
-
     <script>
         const STORAGE_KEY = 'qr_photo_albums';
-        
-        const albums = [
-            { id: 1, name: 'Table 1', description: 'Family' },
-            { id: 2, name: 'Table 2', description: 'Guests' },
-            { id: 3, name: 'Table 3', description: 'Guests' },
-            { id: 4, name: 'Table 4', description: 'Guests' },
-            { id: 5, name: 'Table 5', description: 'Guests' },
-            { id: 6, name: 'Table 6', description: 'Guests' },
-            { id: 7, name: 'Table 7', description: 'Guests' },
-            { id: 8, name: 'Table 8', description: 'Guests' },
-            { id: 9, name: 'Table 9', description: 'Guests' },
-            { id: 10, name: 'Table 10', description: 'Guests' },
-            { id: 11, name: 'Table 11', description: 'Guests' },
-            { id: 12, name: 'Table 12', description: 'Guests' },
-            { id: 13, name: 'Table 13', description: 'Guests' },
-            { id: 14, name: 'Table 14', description: 'Guests' }
-        ];
-        
-        const specialAlbums = [
-            { id: 15, name: '18 Roses', description: 'Rose dance moments' },
-            { id: 16, name: '18 Candles', description: 'Candle ceremony' },
-            { id: 17, name: '18 Blue Bills', description: 'Blue bills collection' },
-            { id: 18, name: '18 Treasures', description: 'Wisdom & gifts' },
-            { id: 19, name: '18 Shots', description: 'Photo booth shots' }
-        ];
-        
+        const albums = [{id: 1, name: 'Table 1', description: 'Family'},{id: 2, name: 'Table 2', description: 'Guests'},{id: 3, name: 'Table 3', description: 'Guests'},{id: 4, name: 'Table 4', description: 'Guests'},{id: 5, name: 'Table 5', description: 'Guests'},{id: 6, name: 'Table 6', description: 'Guests'},{id: 7, name: 'Table 7', description: 'Guests'},{id: 8, name: 'Table 8', description: 'Guests'},{id: 9, name: 'Table 9', description: 'Guests'},{id: 10, name: 'Table 10', description: 'Guests'},{id: 11, name: 'Table 11', description: 'Guests'},{id: 12, name: 'Table 12', description: 'Guests'},{id: 13, name: 'Table 13', description: 'Guests'},{id: 14, name: 'Table 14', description: 'Guests'}];
+        const specialAlbums = [{id: 15, name: '18 Roses', description: 'Rose dance moments'},{id: 16, name: '18 Candles', description: 'Candle ceremony'},{id: 17, name: '18 Blue Bills', description: 'Blue bills collection'},{id: 18, name: '18 Treasures', description: 'Wisdom & gifts'},{id: 19, name: '18 Shots', description: 'Photo booth shots'}];
         const albumIcons = {
-            default: '<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g fill="#001a4d"><path d="M32 8 L36 18 L47 20 L39 28 L41 39 L32 35 L23 39 L25 28 L17 20 L28 18 Z"/><circle cx="32" cy="32" r="3" fill="#e8e8e8"/><circle cx="28" cy="26" r="2" fill="#e8e8e8"/><circle cx="36" cy="26" r="2" fill="#e8e8e8"/></g></svg>',
-            rose: '<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g fill="#001a4d"><ellipse cx="32" cy="20" rx="5" ry="3"/><ellipse cx="32" cy="18" rx="7" ry="4" opacity="0.7"/><path d="M32 22 Q30 28 28 35 Q27 40 28 45 L36 45 Q37 40 36 35 Q34 28 32 22 Z" opacity="0.8"/><path d="M28 45 L28 50 L36 50 L36 45"/></g></svg>'
+            table: '<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g fill="#e8e8e8"><rect x="10" y="28" width="44" height="3" rx="1.5"/><circle cx="16" cy="38" r="4"/><circle cx="32" cy="38" r="4"/><circle cx="48" cy="38" r="4"/><path d="M14 42 L14 50 M18 42 L18 50 M30 42 L30 50 M34 42 L34 50 M46 42 L46 50 M50 42 L50 50" stroke="#e8e8e8" stroke-width="2" stroke-linecap="round"/></g></svg>',
+            rose: '<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g fill="#e8e8e8"><ellipse cx="32" cy="18" rx="6" ry="4"/><ellipse cx="32" cy="16" rx="8" ry="5" opacity="0.7"/><ellipse cx="32" cy="22" rx="5" ry="3" opacity="0.6"/><path d="M32 24 Q30 30 29 38 Q28 43 29 48 L35 48 Q36 43 35 38 Q34 30 32 24 Z" opacity="0.8"/><path d="M29 48 L29 54 L35 54 L35 48" opacity="0.9"/><ellipse cx="24" cy="38" rx="2" ry="3" opacity="0.5"/><ellipse cx="40" cy="38" rx="2" ry="3" opacity="0.5"/></g></svg>',
+            candle: '<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g fill="#e8e8e8"><ellipse cx="32" cy="14" rx="3" ry="4" opacity="0.8" fill="#ffd700"/><path d="M32 12 Q34 8 32 6 Q30 8 32 12" fill="#ffa500" opacity="0.7"/><rect x="28" y="18" width="8" height="28" rx="1"/><path d="M26 46 L26 50 Q26 52 28 52 L36 52 Q38 52 38 50 L38 46 Z"/><ellipse cx="32" cy="46" rx="6" ry="2" opacity="0.5"/></g></svg>',
+            bill: '<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g fill="#e8e8e8"><rect x="16" y="20" width="32" height="20" rx="2"/><rect x="18" y="22" width="28" height="16" rx="1" fill="none" stroke="#001a4d" stroke-width="1.5"/><circle cx="32" cy="30" r="5" fill="#001a4d"/><text x="32" y="34" text-anchor="middle" font-size="8" font-weight="bold" fill="#e8e8e8">$</text><rect x="20" y="24" width="4" height="12" opacity="0.3"/><rect x="40" y="24" width="4" height="12" opacity="0.3"/></g></svg>',
+            treasure: '<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g fill="#e8e8e8"><rect x="16" y="28" width="32" height="20" rx="2"/><path d="M16 32 Q16 24 20 20 Q24 16 32 16 Q40 16 44 20 Q48 24 48 32" fill="none" stroke="#e8e8e8" stroke-width="2"/><circle cx="32" cy="38" r="4" fill="#001a4d"/><rect x="30" y="38" width="4" height="6" fill="#001a4d"/><rect x="20" y="32" width="24" height="2" opacity="0.5"/></g></svg>',
+            shot: '<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g fill="#e8e8e8"><path d="M24 34 L24 50 Q24 52 26 52 L38 52 Q40 52 40 50 L40 34 Z"/><ellipse cx="32" cy="34" rx="8" ry="2"/><path d="M26 34 L26 46 Q26 44 32 44 Q38 44 38 46 L38 34" opacity="0.3"/><rect x="28" y="28" width="8" height="6" opacity="0.6"/><ellipse cx="32" cy="28" rx="4" ry="1.5"/><path d="M29 28 L29 22 L35 22 L35 28" opacity="0.4"/></g></svg>'
         };
-
-        function getAlbumPhotoCount(albumId) {
-            const allAlbums = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
-            return (allAlbums[albumId] || []).length;
-        }
-
+        function getAlbumPhotoCount(albumId) { const allAlbums = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; return (allAlbums[albumId] || []).length; }
         function renderAlbums() {
-            const grid = document.getElementById('albumsGrid');
-            grid.innerHTML = '';
-            
+            const grid = document.getElementById('albumsGrid'); grid.innerHTML = '';
             albums.forEach(album => {
-                const count = getAlbumPhotoCount(album.id);
-                const iconSvg = albumIcons.default;
-
-                const card = document.createElement('a');
-                card.href = `album.html?album=${album.id}`;
-                card.className = 'album-card';
-
-                card.innerHTML = `
-                    <div class="album-thumbnail">
-                        <div class="album-icon">${iconSvg}</div>
-                    </div>
-                    <div class="album-info">
-                        <div class="album-title">${album.name}</div>
-                        <div class="album-subtitle">${album.description}</div>
-                        <div class="album-count">
-                            <svg class="count-icon" viewBox="0 0 64 64">
-                                <rect x="12" y="20" width="16" height="20" rx="2"/>
-                                <rect x="32" y="16" width="16" height="24" rx="2"/>
-                                <rect x="52" y="24" width="8" height="16" rx="1"/>
-                            </svg>
-                            ${count}
-                        </div>
-                    </div>
-                `;
+                const count = getAlbumPhotoCount(album.id); const iconSvg = albumIcons.table; const card = document.createElement('a');
+                card.href = `album.html?album=${album.id}`; card.className = 'album-card';
+                card.innerHTML = `<div class="album-thumbnail"><div class="album-icon">${iconSvg}</div></div><div class="album-info"><div class="album-title">${album.name}</div><div class="album-subtitle">${album.description}</div><div class="album-count"><svg class="count-icon" viewBox="0 0 64 64"><rect x="12" y="20" width="16" height="20" rx="2" fill="#e8e8e8" opacity="0.7"/><rect x="32" y="16" width="16" height="24" rx="2" fill="#e8e8e8" opacity="0.9"/><rect x="52" y="24" width="8" height="16" rx="1" fill="#e8e8e8" opacity="0.6"/></svg>${count}</div></div>`;
                 grid.appendChild(card);
             });
         }
-        
         function renderSpecialAlbums() {
-            const grid = document.getElementById('specialAlbumsGrid');
-            grid.innerHTML = '';
-            
+            const grid = document.getElementById('specialAlbumsGrid'); grid.innerHTML = '';
+            const iconMap = {15: albumIcons.rose, 16: albumIcons.candle, 17: albumIcons.bill, 18: albumIcons.treasure, 19: albumIcons.shot};
             specialAlbums.forEach(album => {
-                const count = getAlbumPhotoCount(album.id);
-                const iconSvg = albumIcons.rose;
-
-                const card = document.createElement('a');
-                card.href = `album.html?album=${album.id}`;
-                card.className = 'album-card';
-
-                card.innerHTML = `
-                    <div class="album-thumbnail">
-                        <div class="album-icon">${iconSvg}</div>
-                    </div>
-                    <div class="album-info">
-                        <div class="album-title">${album.name}</div>
-                        <div class="album-subtitle">${album.description}</div>
-                        <div class="album-count">
-                            <svg class="count-icon" viewBox="0 0 64 64">
-                                <rect x="12" y="20" width="16" height="20" rx="2" opacity="0.7"/>
-                                <rect x="32" y="16" width="16" height="24" rx="2" opacity="0.9"/>
-                                <rect x="52" y="24" width="8" height="16" rx="1" opacity="0.6"/>
-                            </svg>
-                            ${count}
-                        </div>
-                    </div>
-                `;
+                const count = getAlbumPhotoCount(album.id); const iconSvg = iconMap[album.id]; const card = document.createElement('a');
+                card.href = `album.html?album=${album.id}`; card.className = 'album-card';
+                card.innerHTML = `<div class="album-thumbnail"><div class="album-icon">${iconSvg}</div></div><div class="album-info"><div class="album-title">${album.name}</div><div class="album-subtitle">${album.description}</div><div class="album-count"><svg class="count-icon" viewBox="0 0 64 64"><rect x="12" y="20" width="16" height="20" rx="2" fill="#e8e8e8" opacity="0.7"/><rect x="32" y="16" width="16" height="24" rx="2" fill="#e8e8e8" opacity="0.9"/><rect x="52" y="24" width="8" height="16" rx="1" fill="#e8e8e8" opacity="0.6"/></svg>${count}</div></div>`;
                 grid.appendChild(card);
             });
         }
-
-        renderAlbums();
-        renderSpecialAlbums();
+        renderAlbums(); renderSpecialAlbums();
     </script>
 </body>
 </html>
