@@ -41,13 +41,8 @@
         .container { 
             max-width: 1400px; 
             margin: 0 auto; 
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 25px; 
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3), 0 0 40px rgba(192, 192, 192, 0.2); 
+            background: transparent;
             padding: 40px;
-            border: 3px solid;
-            border-image: linear-gradient(135deg, #c0c0c0 0%, #e8e8e8 50%, #c0c0c0 100%) 1;
             position: relative;
             animation: slideDown 0.8s ease-out;
             z-index: 10;
@@ -292,11 +287,10 @@
         }
         
         .photos-grid { 
-            display: flex;
-            flex-direction: column;
-            gap: 40px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
             margin: 30px 0;
-            align-items: center;
             position: relative;
             z-index: 1;
         }
@@ -306,7 +300,7 @@
             cursor: pointer;
             transition: all 0.3s ease;
             position: relative;
-            max-width: 100%;
+            width: 100%;
         }
         
         .photo-card:hover {
@@ -489,6 +483,17 @@
             }
             .section-divider h2 { font-size: 1.4em; padding: 8px 20px; }
             .photos-section { padding: 25px 15px; }
+            .photos-grid { 
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .photos-grid { 
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
         }
     </style>
 </head>
