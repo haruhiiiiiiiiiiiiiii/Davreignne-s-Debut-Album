@@ -21,7 +21,6 @@
             overflow-x: hidden; 
         }
         
-        /* GLITTER SPARKLES */
         .sparkle-1 { position: fixed; width: 8px; height: 8px; background: radial-gradient(circle, #ffffff 0%, rgba(255,255,255,0.3) 70%); border-radius: 50%; top: 15%; left: 5%; animation: twinkle 2s ease-in-out infinite, float-random 6s ease-in-out infinite; box-shadow: 0 0 15px rgba(192, 192, 192, 0.8); z-index: 1; }
         .sparkle-2 { position: fixed; width: 6px; height: 6px; background: radial-gradient(circle, #e8e8e8 0%, rgba(192,192,192,0.3) 70%); border-radius: 50%; top: 30%; right: 8%; animation: twinkle 2.5s ease-in-out infinite 0.5s, float-random 7s ease-in-out infinite; box-shadow: 0 0 12px rgba(200, 200, 200, 0.7); z-index: 1; }
         .sparkle-3 { position: fixed; width: 7px; height: 7px; background: radial-gradient(circle, #f0f0f0 0%, rgba(192,192,192,0.2) 70%); border-radius: 50%; bottom: 20%; left: 10%; animation: twinkle 3s ease-in-out infinite 1s, float-random 8s ease-in-out infinite; box-shadow: 0 0 14px rgba(192, 192, 192, 0.8); z-index: 1; }
@@ -63,8 +62,6 @@
         
         .view-gallery { text-align: center; margin: 25px 0; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
         .view-gallery a { background: linear-gradient(135deg, #e8e8e8 0%, #f5f5f5 50%, #e8e8e8 100%); color: #001a4d; padding: 14px 30px; border-radius: 50px; text-decoration: none; font-weight: bold; display: inline-flex; align-items: center; gap: 8px; transition: all 0.3s ease; box-shadow: 0 5px 15px rgba(192, 192, 192, 0.4); border: 2px solid rgba(192, 192, 192, 0.5); position: relative; }
-        .view-gallery a::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent); animation: shimmer 3s infinite; border-radius: 50px; }
-        @keyframes shimmer { 0% { left: -100%; } 100% { left: 100%; } }
         .view-gallery a:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(192, 192, 192, 0.6); }
         
         .success { background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%); color: #155724; padding: 18px; border-radius: 12px; margin: 20px 0; display: none; border: 2px solid #28a745; }
@@ -74,13 +71,12 @@
         .stat-number { font-size: 2em; font-weight: bold; color: #001a4d; }
         .stat-label { color: #666; font-size: 0.95em; }
         
-        .unlimited-badge { background: linear-gradient(135deg, #28a745, #20c997); color: white; padding: 10px 20px; border-radius: 20px; font-size: 0.9em; font-weight: bold; display: inline-flex; align-items: center; gap: 8px; margin: 10px auto; box-shadow: 0 3px 10px rgba(40, 167, 69, 0.4); }
-        .badge-icon { width: 20px; height: 20px; display: inline-block; }
+        .loading { text-align: center; padding: 20px; display: none; }
+        .loading-spinner { display: inline-block; width: 40px; height: 40px; border: 4px solid #f3f3f3; border-top: 4px solid #001a4d; border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 10px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         
-        @media (max-width: 768px) { 
-            body { background-attachment: scroll; }
-        }
-        @media (max-width: 600px) { .container { padding: 20px; } h1 { font-size: 2em; } .upload-area { padding: 40px 20px; } .view-gallery { flex-direction: column; } .view-gallery a { width: 100%; justify-content: center; } }
+        @media (max-width: 768px) { body { background-attachment: scroll; } }
+        @media (max-width: 600px) { .container { padding: 20px; } h1 { font-size: 2em; } .upload-area { padding: 40px 20px; } }
     </style>
 </head>
 <body>
@@ -91,14 +87,13 @@
     
     <div class="container">
         <h1>Upload Photos & Videos</h1>
-        <p class="subtitle">Share your memories from the celebration</p>
+        <p class="subtitle">Share your memories with everyone</p>
         
         <div class="album-selector">
             <label class="album-selector-label">
                 <svg class="label-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
                     <g fill="currentColor">
                         <path d="M12 14 L12 54 Q12 58 16 58 L48 58 Q52 58 52 54 L52 20 L36 20 L36 14 Q36 12 34 12 L16 12 Q12 12 12 14 Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                        <path d="M32 28 L32 48 M24 38 L40 38" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                     </g>
                 </svg>
                 Select Album:
@@ -108,7 +103,7 @@
         
         <div class="current-album-info" id="currentAlbumInfo">
             <svg class="album-info-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-                <g fill="currentColor"><circle cx="32" cy="20" r="3"/><path d="M20 28 Q20 24 24 24 L40 24 Q44 24 44 28 L44 48 Q44 52 40 52 L24 52 Q20 52 20 48 Z" fill="none" stroke="currentColor" stroke-width="2"/><path d="M20 40 L26 32 L40 44 L44 40" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></g>
+                <g fill="currentColor"><circle cx="32" cy="20" r="3"/><path d="M20 28 Q20 24 24 24 L40 24 Q44 24 44 28 L44 48 Q44 52 40 52 L24 52 Q20 52 20 48 Z" fill="none" stroke="currentColor" stroke-width="2"/></g>
             </svg>
             <span id="currentAlbumName">Table 1</span>
         </div>
@@ -118,9 +113,6 @@
                 <svg class="btn-icon-medium" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
                     <g fill="currentColor">
                         <path d="M12 12 Q12 10 14 10 L50 10 Q52 10 52 12 L52 52 Q52 54 50 54 L14 54 Q12 54 12 52 Z" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/>
-                        <circle cx="28" cy="28" r="8" fill="none" stroke="currentColor" stroke-width="2"/>
-                        <circle cx="42" cy="20" r="3" fill="currentColor"/>
-                        <path d="M12 42 L24 30 L38 42 L52 28 L52 52" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
                     </g>
                 </svg>
                 View This Album
@@ -130,8 +122,6 @@
                     <g fill="currentColor">
                         <rect x="10" y="14" width="20" height="20" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
                         <rect x="34" y="14" width="20" height="20" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
-                        <rect x="10" y="38" width="20" height="20" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
-                        <rect x="34" y="38" width="20" height="20" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
                     </g>
                 </svg>
                 All Albums
@@ -154,54 +144,35 @@
                 <svg class="btn-icon-medium" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
                     <g fill="currentColor">
                         <rect x="14" y="18" width="36" height="34" rx="2" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                        <path d="M32 28 L32 42 M26 34 L38 34" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                     </g>
                 </svg>
                 Choose Files
             </button>
         </div>
         
-        <div class="loading" id="loading" style="display: none; text-align: center; padding: 20px;">
-            <div style="font-size: 1.5em; color: #001a4d; font-weight: bold;">Uploading...</div>
+        <div class="loading" id="loading">
+            <div class="loading-spinner"></div>
+            <div style="font-size: 1.2em; color: #001a4d; font-weight: bold;">Uploading...</div>
         </div>
         
-<input type="text" class="name-input" id="uploaderName" placeholder="Your name" required>
+        <input type="text" class="name-input" id="uploaderName" placeholder="Your name" required>
         
         <div class="stats">
-            <div class="stat-number" id="photoCount">0</div>
-            <div class="stat-label">Photos/Videos in this album</div>
+            <div class="stat-number" id="photoCount">Loading...</div>
+            <div class="stat-label">Photos/Videos in this album (visible to everyone)</div>
         </div>
     </div>
 
     <script>
-        const STORAGE_KEY = 'qr_photo_albums';
-        
         const albumsList = [
-            { id: 1, name: 'Table 1', description: 'Family', icon: 'sparkle' },
-            { id: 2, name: 'Table 2', description: 'Guests', icon: 'sparkle' },
-            { id: 3, name: 'Table 3', description: 'Guests', icon: 'sparkle' },
-            { id: 4, name: 'Table 4', description: 'Guests', icon: 'sparkle' },
-            { id: 5, name: 'Table 5', description: 'Guests', icon: 'sparkle' },
-            { id: 6, name: 'Table 6', description: 'Guests', icon: 'sparkle' },
-            { id: 7, name: 'Table 7', description: 'Guests', icon: 'sparkle' },
-            { id: 8, name: 'Table 8', description: 'Guests', icon: 'sparkle' },
-            { id: 9, name: 'Table 9', description: 'Guests', icon: 'sparkle' },
-            { id: 10, name: 'Table 10', description: 'Guests', icon: 'sparkle' },
-            { id: 11, name: 'Table 11', description: 'Guests', icon: 'sparkle' },
-            { id: 12, name: 'Table 12', description: 'Guests', icon: 'sparkle' },
-            { id: 13, name: 'Table 13', description: 'Guests', icon: 'sparkle' },
-            { id: 14, name: 'Table 14', description: 'Guests', icon: 'sparkle' },
-            { id: 15, name: '18 Roses', description: 'Rose dance', icon: 'rose' },
-            { id: 16, name: '18 Candles', description: 'Candle ceremony', icon: 'rose' },
-            { id: 17, name: '18 Blue Bills', description: 'Blue bills', icon: 'rose' },
-            { id: 18, name: '18 Treasures', description: 'Wisdom & gifts', icon: 'rose' },
-            { id: 19, name: '18 Shots', description: 'Photo booth', icon: 'rose' }
+            { id: 1, name: 'Table 1' }, { id: 2, name: 'Table 2' }, { id: 3, name: 'Table 3' },
+            { id: 4, name: 'Table 4' }, { id: 5, name: 'Table 5' }, { id: 6, name: 'Table 6' },
+            { id: 7, name: 'Table 7' }, { id: 8, name: 'Table 8' }, { id: 9, name: 'Table 9' },
+            { id: 10, name: 'Table 10' }, { id: 11, name: 'Table 11' }, { id: 12, name: 'Table 12' },
+            { id: 13, name: 'Table 13' }, { id: 14, name: 'Table 14' }, { id: 15, name: '18 Roses' },
+            { id: 16, name: '18 Candles' }, { id: 17, name: '18 Blue Bills' }, 
+            { id: 18, name: '18 Treasures' }, { id: 19, name: '18 Shots' }
         ];
-        
-        const icons = {
-            sparkle: '<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><path d="M32 8 L36 18 L47 20 L39 28 L41 39 L32 35 L23 39 L25 28 L17 20 L28 18 Z"/><circle cx="32" cy="32" r="3" fill="#e8e8e8"/></g></svg>',
-            rose: '<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><ellipse cx="32" cy="20" rx="5" ry="3"/><ellipse cx="32" cy="18" rx="7" ry="4" opacity="0.7"/><path d="M32 22 Q30 28 28 35 Q27 40 28 45 L36 45 Q37 40 36 35 Q34 28 32 22 Z" opacity="0.8"/><path d="M28 45 L28 50 L36 50 L36 45"/></g></svg>'
-        };
         
         let currentAlbumId = 1;
         
@@ -224,10 +195,7 @@
                 option.className = 'album-option' + (album.id === currentAlbumId ? ' selected' : '');
                 option.id = `album-${album.id}`;
                 option.onclick = () => selectAlbum(album.id, album.name);
-                option.innerHTML = `
-                    <div class="album-option-icon">${icons[album.icon]}</div>
-                    <span>${album.name}</span>
-                `;
+                option.innerHTML = `<span>${album.name}</span>`;
                 albumGrid.appendChild(option);
             });
         }
@@ -235,33 +203,23 @@
         function selectAlbum(id, name) {
             currentAlbumId = id;
             document.querySelectorAll('.album-option').forEach(el => el.classList.remove('selected'));
-            document.getElementById(`album-${id}`).classList.add('selected');
+            const selected = document.getElementById(`album-${id}`);
+            if (selected) selected.classList.add('selected');
             currentAlbumName.textContent = name;
             viewGalleryLink.href = `album.html?album=${id}`;
             updatePhotoCount();
         }
 
-        function updatePhotoCount() {
+        async function updatePhotoCount() {
             try {
-                const allAlbums = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
-                const count = (allAlbums[currentAlbumId] || []).length;
-                photoCount.textContent = count;
+                const result = await window.storage.list(`album-${currentAlbumId}:`, true);
+                if (result && result.keys) {
+                    photoCount.textContent = result.keys.length;
+                } else {
+                    photoCount.textContent = '0';
+                }
             } catch (e) {
-                console.error('Count error:', e);
                 photoCount.textContent = '0';
-            }
-        }
-
-        function savePhotos(photos) {
-            try {
-                const allAlbums = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
-                allAlbums[currentAlbumId] = photos;
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(allAlbums));
-                updatePhotoCount();
-                return true;
-            } catch (e) {
-                console.warn('Storage limit reached, but upload continues');
-                return false;
             }
         }
 
@@ -271,6 +229,12 @@
             setTimeout(() => { errorMsg.style.display = 'none'; }, 4000);
         }
 
+        function showSuccess(msg) {
+            successMsg.textContent = msg;
+            successMsg.style.display = 'block';
+            setTimeout(() => { successMsg.style.display = 'none'; }, 4000);
+        }
+
         ['dragover', 'dragenter'].forEach(event => {
             uploadArea.addEventListener(event, (e) => {
                 e.preventDefault();
@@ -278,6 +242,7 @@
                 uploadArea.classList.add('dragover');
             });
         });
+
         ['dragleave', 'drop'].forEach(event => {
             uploadArea.addEventListener(event, (e) => {
                 e.preventDefault();
@@ -285,6 +250,7 @@
                 uploadArea.classList.remove('dragover');
             });
         });
+
         uploadArea.addEventListener('drop', (e) => {
             fileInput.files = e.dataTransfer.files;
             handleFiles();
@@ -292,68 +258,74 @@
 
         fileInput.addEventListener('change', handleFiles);
 
-        function handleFiles() {
-    const files = Array.from(fileInput.files);
-    if (files.length === 0) return;
+        async function handleFiles() {
+            const files = Array.from(fileInput.files);
+            if (files.length === 0) return;
 
-    const nameValue = uploaderName.value.trim();
-    if (!nameValue) {
-        showError('Please enter your name before uploading.');
-        fileInput.value = '';
-        return;
-    }
+            const nameValue = uploaderName.value.trim();
+            if (!nameValue) {
+                showError('Please enter your name before uploading.');
+                fileInput.value = '';
+                return;
+            }
 
-    loading.style.display = 'block';
-    uploadArea.style.display = 'none';
-    chooseBtn.disabled = true;
+            loading.style.display = 'block';
+            uploadArea.style.display = 'none';
+            chooseBtn.disabled = true;
 
-    let processed = 0;
-    const allAlbums = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
-    const currentPhotos = allAlbums[currentAlbumId] || [];
+            let uploadedCount = 0;
+            let errors = 0;
 
-    files.forEach(file => {
-        if (!file.type.startsWith('image/') && !file.type.startsWith('video/')) {
-            showError('Only photos and videos are allowed');
-            processed++;
-            return;
+            for (const file of files) {
+                if (!file.type.startsWith('image/') && !file.type.startsWith('video/')) {
+                    errors++;
+                    continue;
+                }
+
+                try {
+                    const dataUrl = await readFileAsDataURL(file);
+                    const photoData = {
+                        name: file.name,
+                        dataUrl: dataUrl,
+                        timestamp: Date.now(),
+                        uploader: nameValue,
+                        size: file.size,
+                        type: file.type,
+                        id: Date.now() + Math.random()
+                    };
+
+                    const key = `album-${currentAlbumId}:photo-${photoData.id}`;
+                    await window.storage.set(key, JSON.stringify(photoData), true);
+                    uploadedCount++;
+                } catch (error) {
+                    console.error('Upload error:', error);
+                    errors++;
+                }
+            }
+
+            loading.style.display = 'none';
+            uploadArea.style.display = 'block';
+            chooseBtn.disabled = false;
+            fileInput.value = '';
+
+            await updatePhotoCount();
+
+            if (uploadedCount > 0) {
+                showSuccess(`✓ ${uploadedCount} file(s) uploaded and visible to everyone!`);
+            }
+            if (errors > 0) {
+                showError(`${errors} file(s) failed to upload`);
+            }
         }
 
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            currentPhotos.push({
-                name: file.name,
-                dataUrl: e.target.result,
-                timestamp: Date.now(),
-                uploader: nameValue,
-                size: file.size,
-                type: file.type,
-                id: Date.now() + Math.random()
+        function readFileAsDataURL(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = (e) => resolve(e.target.result);
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
             });
-
-            processed++;
-            if (processed === files.length) {
-                const albums = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
-                albums[currentAlbumId] = currentPhotos;
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(albums));
-
-                updatePhotoCount();
-
-                loading.style.display = 'none';
-                uploadArea.style.display = 'block';
-                chooseBtn.disabled = false;
-                fileInput.value = '';
-
-                successMsg.textContent = `${files.length} file(s) uploaded successfully!`;
-                successMsg.style.display = 'block';
-                setTimeout(() => {
-                    successMsg.style.display = 'none';
-                }, 4000);
-            }
-        };
-
-        reader.readAsDataURL(file);
-    });
-}
+        }
 
         renderAlbumSelector();
         selectAlbum(1, 'Table 1');
