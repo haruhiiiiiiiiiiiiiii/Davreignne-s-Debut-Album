@@ -281,9 +281,6 @@
             border-radius: 50px; 
             text-decoration: none; 
             font-weight: bold;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
             transition: all 0.3s ease;
             box-shadow: 0 5px 15px rgba(192, 192, 192, 0.4);
             border: 2px solid rgba(192, 192, 192, 0.5);
@@ -320,13 +317,6 @@
             border-top: 2px solid rgba(192, 192, 192, 0.3);
         }
         
-        .loading {
-            text-align: center;
-            padding: 60px;
-            color: #001a4d;
-            font-size: 1.3em;
-        }
-        
         @media (max-width: 768px) {
             body { background-attachment: scroll; }
             .container { padding: 20px; }
@@ -352,8 +342,6 @@
             <a href="front.html" id="uploadLink" class="btn-link">Upload More</a>
             <a href="albums.html" class="btn-link">All Albums</a>
         </div>
-        
-        <div id="loading" class="loading">Loading photos...</div>
         
         <div id="photosGrid" class="photos-grid"></div>
         
@@ -398,14 +386,15 @@
     </div>
 
     <script>
+        const STORAGE_KEY = 'qr_photo_albums';
+        
         const albumsList = [
             { id: 1, name: 'Table 1' }, { id: 2, name: 'Table 2' }, { id: 3, name: 'Table 3' },
             { id: 4, name: 'Table 4' }, { id: 5, name: 'Table 5' }, { id: 6, name: 'Table 6' },
             { id: 7, name: 'Table 7' }, { id: 8, name: 'Table 8' }, { id: 9, name: 'Table 9' },
             { id: 10, name: 'Table 10' }, { id: 11, name: 'Table 11' }, { id: 12, name: 'Table 12' },
-            { id: 13, name: 'Table 13' }, { id: 14, name: 'Table 14' }, { id: 15, name: '18 Roses' },
-            { id: 16, name: '18 Candles' }, { id: 17, name: '18 Blue Bills' }, 
-            { id: 18, name: '18 Treasures' }, { id: 19, name: '18 Shots' }
+            { id: 13, name: 'Table 13' }, { id: 14, name: '18 Roses' }, { id: 15, name: '18 Candles' },
+            { id: 16, name: '18 Blue Bills' }, { id: 17, name: '18 Treasures' }, { id: 18, name: '18 Shots' }
         ];
         
         const urlParams = new URLSearchParams(window.location.search);
@@ -419,7 +408,6 @@
         const lightboxImageContainer = document.getElementById('lightboxImageContainer');
         const albumInfo = document.getElementById('albumInfo');
         const uploadLink = document.getElementById('uploadLink');
-        const loading = document.getElementById('loading');
         
         let allPhotos = [];
         let currentPhotoIndex = 0;
@@ -516,45 +504,21 @@
             if (e.target === lightbox) closeLightbox();
         });
 
-        async function loadPhotos() {
+        function loadPhotos() {
             try {
-                loading.style.display = 'block';
-                const result = await window.storage.list(`album-${currentAlbumId}:`, true);
-                
-                if (!result || !result.keys || result.keys.length === 0) {
-                    loading.style.display = 'none';
+                const allAlbums = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+                allPhotos = (allAlbums[currentAlbumId] || []).sort((a, b) => b.timestamp - a.timestamp);
+
+                if (allPhotos.length === 0) {
                     noPhotos.style.display = 'block';
                     storageInfo.textContent = '0 photos';
                     return;
                 }
 
-                const photoPromises = result.keys.map(async (key) => {
-                    try {
-                        const data = await window.storage.get(key, true);
-                        if (data && data.value) {
-                            return JSON.parse(data.value);
-                        }
-                    } catch (e) {
-                        console.error('Error loading photo:', e);
-                    }
-                    return null;
-                });
-
-                const photos = await Promise.all(photoPromises);
-                allPhotos = photos.filter(p => p !== null).sort((a, b) => b.timestamp - a.timestamp);
-
-                loading.style.display = 'none';
-                
-                if (allPhotos.length === 0) {
-                    noPhotos.style.display = 'block';
-                } else {
-                    allPhotos.forEach((photo, index) => addPhotoCard(photo, index));
-                }
-
+                allPhotos.forEach((photo, index) => addPhotoCard(photo, index));
                 storageInfo.textContent = `${allPhotos.length} photos shared by everyone`;
             } catch (e) {
                 console.error('Error loading photos:', e);
-                loading.style.display = 'none';
                 noPhotos.style.display = 'block';
             }
         }
