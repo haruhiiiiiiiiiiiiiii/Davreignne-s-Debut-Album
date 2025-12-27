@@ -535,7 +535,7 @@
         <div class="success" id="successMsg"></div>
         
         <div class="button-group">
-            <a href="index.html" id="uploadLink" class="btn-link">
+            <a href="front.html" id="uploadLink" class="btn-link">
                 <svg class="btn-icon-small" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
                     <g fill="currentColor">
                         <path d="M32 10 L32 44 M20 32 L32 10 L44 32" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
@@ -561,7 +561,7 @@
         
         <div id="noPhotos">
             <h3>No photos yet</h3>
-            <p>Be the first to upload! <a href="index.html" style="color: #001a4d; font-weight: bold;">Upload now →</a></p>
+            <p>Be the first to upload! <a href="front.html" style="color: #001a4d; font-weight: bold;">Upload now →</a></p>
         </div>
         
         <div class="storage-info" id="storageInfo"></div>
@@ -728,7 +728,7 @@
         let currentPhotoIndex = 0;
 
         albumInfo.textContent = currentAlbum ? currentAlbum.name : `Album ${currentAlbumId}`;
-        uploadLink.href = `index.html?album=${currentAlbumId}`;
+        uploadLink.href = `front.html?album=${currentAlbumId}`;
 
         function addPhotoCard(name, src, uploader, timestamp, photoId) {
             const card = document.createElement('div');
