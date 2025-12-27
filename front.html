@@ -275,10 +275,12 @@
 
             let uploadedCount = 0;
             let errors = 0;
+            const errorMessages = [];
 
             for (const file of files) {
                 if (!file.type.startsWith('image/') && !file.type.startsWith('video/')) {
                     errors++;
+                    errorMessages.push(`${file.name}: Not an image or video`);
                     continue;
                 }
 
@@ -291,15 +293,31 @@
                         uploader: nameValue,
                         size: file.size,
                         type: file.type,
-                        id: Date.now() + Math.random()
+                        id: Date.now() + '-' + Math.random().toString(36).substr(2, 9)
                     };
 
                     const key = `album-${currentAlbumId}:photo-${photoData.id}`;
-                    await window.storage.set(key, JSON.stringify(photoData), true);
-                    uploadedCount++;
+                    const jsonData = JSON.stringify(photoData);
+                    
+                    console.log(`Attempting to upload: ${file.name}, Size: ${(jsonData.length / 1024).toFixed(2)} KB`);
+                    
+                    const result = await window.storage.set(key, jsonData, true);
+                    
+                    if (result && result.key) {
+                        uploadedCount++;
+                        console.log(`✓ Successfully uploaded: ${file.name}`);
+                    } else {
+                        errors++;
+                        errorMessages.push(`${file.name}: Storage returned no result`);
+                        console.error(`✗ Failed to upload: ${file.name}`, result);
+                    }
+                    
+                    // Small delay between uploads
+                    await new Promise(resolve => setTimeout(resolve, 50));
                 } catch (error) {
-                    console.error('Upload error:', error);
+                    console.error(`✗ Upload error for ${file.name}:`, error);
                     errors++;
+                    errorMessages.push(`${file.name}: ${error.message || 'Unknown error'}`);
                 }
             }
 
@@ -314,7 +332,9 @@
                 showSuccess(`✓ ${uploadedCount} file(s) uploaded and visible to everyone!`);
             }
             if (errors > 0) {
-                showError(`${errors} file(s) failed to upload`);
+                const errorMsg = `${errors} file(s) failed to upload. Check console for details.`;
+                showError(errorMsg);
+                console.error('Failed uploads:', errorMessages);
             }
         }
 
