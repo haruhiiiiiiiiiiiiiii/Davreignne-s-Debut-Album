@@ -23,7 +23,7 @@
         .container { 
             max-width: 1200px; 
             margin: 0 auto; 
-            background: rgba(255, 255, 255, 0.88); /* lets bg image show */
+            background: rgba(255, 255, 255, 0.88);
     backdrop-filter: blur(8px);
             border-radius: 25px; 
             box-shadow: 0 20px 60px rgba(0,0,0,0.3), 0 0 40px rgba(192, 192, 192, 0.2); 
@@ -646,7 +646,7 @@
                     </div>
                 </div>
                 
-                <div class="delete-section">
+                <div class="delete-section" id="deleteSection">
                     <button class="btn-delete" onclick="deleteLightboxPhoto()" title="Delete photo">
                         <svg class="trash-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
                             <g fill="currentColor">
@@ -684,13 +684,13 @@
     { id: 11, name: 'Table 11', description: 'Guests' },
     { id: 12, name: 'Table 12', description: 'Guests' },
     { id: 13, name: 'Table 13', description: 'Guests' },
-    { id: 14, name: 'Table 14', description: 'Guests' }
-
+    { id: 14, name: 'Table 14', description: 'Guests' },
     { id: 15, name: '18 Roses', description: 'Rose dance moments' },
     { id: 16, name: '18 Candles', description: 'Candle ceremony' },
     { id: 17, name: '18 Blue Bills', description: 'Blue bills collection' },
     { id: 18, name: '18 Treasures', description: 'Wisdom & gifts' },
-    { id: 19, name: '18 Shots', description: 'Photo booth shots' }
+    { id: 19, name: '18 Shots', description: 'Photo booth shots' },
+    { id: 20, name: 'Debut Video', description: 'Official Video' }
         ];
         
         const currentAlbum = albumsList.find(a => a.id === currentAlbumId);
@@ -704,6 +704,7 @@
         const lightboxImageContainer = document.getElementById('lightboxImageContainer');
         const albumInfo = document.getElementById('albumInfo');
         const uploadLink = document.getElementById('uploadLink');
+        const deleteSection = document.getElementById('deleteSection');
         
         let allPhotos = [];
         let currentPhotoIndex = 0;
@@ -720,7 +721,7 @@
             thumbnail.className = 'photo-thumbnail';
             thumbnail.id = `thumb-${photoId}`;
             thumbnail.onclick = () => openLightbox(allPhotos.findIndex(p => p.id === photoId));
-            const isVideo = src.startsWith('video');
+            const isVideo = src.startsWith('video') || src.startsWith('data:video');
             
             thumbnail.innerHTML = `
                 <div class="photo-thumbnail-inner">
@@ -752,7 +753,7 @@
             const photo = allPhotos[currentPhotoIndex];
             if (!photo) return;
 
-            const isVideo = photo.dataUrl.startsWith('video');
+            const isVideo = photo.dataUrl.startsWith('video') || photo.dataUrl.startsWith('data:video');
             
             // Save nav buttons
             const prevBtn = lightboxImageContainer.querySelector('.nav-prev');
@@ -791,6 +792,13 @@
             document.getElementById('detailDate').textContent = fullDate;
             document.getElementById('detailTime').textContent = fullTime;
             document.getElementById('detailSize').textContent = Math.round(photo.size / 1024) + ' KB';
+            
+            // Hide delete button for album 20 (Debut Video)
+            if (currentAlbumId === 20) {
+                deleteSection.style.display = 'none';
+            } else {
+                deleteSection.style.display = 'block';
+            }
         }
 
         function nextPhoto() {
@@ -804,6 +812,11 @@
         }
 
         function deleteLightboxPhoto() {
+            if (currentAlbumId === 20) {
+                alert('Cannot delete videos from the Debut Video album.');
+                return;
+            }
+            
             if (confirm('Are you sure you want to delete this photo?')) {
                 const photo = allPhotos[currentPhotoIndex];
                 allPhotos.splice(currentPhotoIndex, 1);
@@ -850,9 +863,24 @@
 
         window.onload = () => {
     const allAlbums = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
-    allPhotos = (allAlbums[currentAlbumId] || []).sort((a, b) => b.timestamp - a.timestamp);
+    
+    // Special handling for Debut Video album
+    if (currentAlbumId === 20) {
+        // Create debut video entry
+        allPhotos = [{
+            name: 'DAVREIGNNE DEBUT.mp4',
+            dataUrl: 'https://raw.githubusercontent.com/haruhiiiiiiiiiiiiiii/Davreignne-s-Debut-Album/main/DAVREIGNNE%20DEBUT.mp4',
+            timestamp: Date.now(),
+            uploader: 'Official',
+            size: 0,
+            type: 'video/mp4',
+            id: 'debut-video-official'
+        }];
+    } else {
+        allPhotos = (allAlbums[currentAlbumId] || []).sort((a, b) => b.timestamp - a.timestamp);
+    }
 
-    if (allPhotos.length === 0) {
+    if (allPhotos.length === 0 && currentAlbumId !== 20) {
         noPhotos.style.display = 'block';
         updateStorageInfo(0);
         return;
