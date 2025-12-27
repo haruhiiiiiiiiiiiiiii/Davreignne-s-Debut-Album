@@ -22,20 +22,11 @@
             overflow-x: hidden;
         }
         
-        /* GLITTER SPARKLES */
         .sparkle-1 { position: fixed; width: 8px; height: 8px; background: radial-gradient(circle, #ffffff 0%, rgba(255,255,255,0.3) 70%); border-radius: 50%; top: 15%; left: 5%; animation: twinkle 2s ease-in-out infinite, float-random 6s ease-in-out infinite; box-shadow: 0 0 15px rgba(192, 192, 192, 0.8); z-index: 1; }
         .sparkle-2 { position: fixed; width: 6px; height: 6px; background: radial-gradient(circle, #e8e8e8 0%, rgba(192,192,192,0.3) 70%); border-radius: 50%; top: 30%; right: 8%; animation: twinkle 2.5s ease-in-out infinite 0.5s, float-random 7s ease-in-out infinite; box-shadow: 0 0 12px rgba(200, 200, 200, 0.7); z-index: 1; }
-        .sparkle-3 { position: fixed; width: 7px; height: 7px; background: radial-gradient(circle, #f0f0f0 0%, rgba(192,192,192,0.2) 70%); border-radius: 50%; bottom: 20%; left: 10%; animation: twinkle 3s ease-in-out infinite 1s, float-random 8s ease-in-out infinite; box-shadow: 0 0 14px rgba(192, 192, 192, 0.8); z-index: 1; }
-        .sparkle-4 { position: fixed; width: 5px; height: 5px; background: radial-gradient(circle, #ffffff 0%, rgba(255,255,255,0.3) 70%); border-radius: 50%; top: 60%; right: 5%; animation: twinkle 2.2s ease-in-out infinite 0.8s, float-random 9s ease-in-out infinite; box-shadow: 0 0 11px rgba(200, 200, 200, 0.6); z-index: 1; }
         
         @keyframes twinkle { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
-        @keyframes float-random {
-            0% { transform: translateY(0px) translateX(0px); }
-            25% { transform: translateY(-15px) translateX(10px); }
-            50% { transform: translateY(-30px) translateX(-10px); }
-            75% { transform: translateY(-15px) translateX(15px); }
-            100% { transform: translateY(0px) translateX(0px); }
-        }
+        @keyframes float-random { 0% { transform: translateY(0px) translateX(0px); } 25% { transform: translateY(-15px) translateX(10px); } 50% { transform: translateY(-30px) translateX(-10px); } 75% { transform: translateY(-15px) translateX(15px); } 100% { transform: translateY(0px) translateX(0px); } }
         @keyframes slideDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
 
         .container { 
@@ -105,25 +96,9 @@
             overflow: hidden;
         }
         
-        .photo-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, transparent 70%);
-            animation: sparkleMove 3s ease-in-out infinite;
-            pointer-events: none;
-            z-index: 0;
-        }
-        
-        @keyframes sparkleMove { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(50px, 50px); } }
-        
         .photo-card:hover {
             transform: translateY(-12px);
             box-shadow: 0 20px 45px rgba(0, 0, 0, 0.2), 0 0 30px rgba(192, 192, 192, 0.4);
-            border-image: linear-gradient(135deg, #e8e8e8 0%, #ffffff 50%, #e8e8e8 100%) 1;
         }
         
         .photo-thumbnail-wrapper {
@@ -133,7 +108,6 @@
             overflow: hidden;
             background: #f0f0f0;
             position: relative;
-            z-index: 1;
             margin-bottom: 12px;
         }
         
@@ -152,8 +126,6 @@
         }
         
         .photo-info {
-            position: relative;
-            z-index: 1;
             text-align: center;
         }
         
@@ -172,23 +144,6 @@
             color: #666;
         }
         
-        .eye-icon {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 50px;
-            height: 50px;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            z-index: 10;
-            pointer-events: none;
-        }
-        
-        .photo-card:hover .eye-icon {
-            opacity: 1;
-        }
-        
         .lightbox {
             display: none;
             position: fixed;
@@ -198,7 +153,6 @@
             height: 100%;
             background: rgba(0, 0, 0, 0.95);
             z-index: 1000;
-            animation: fadeIn 0.3s ease;
             padding: 20px;
             overflow-y: auto;
         }
@@ -209,36 +163,13 @@
             justify-content: center;
         }
         
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
         .lightbox-content {
             position: relative;
             width: 90%;
-            height: auto;
             max-width: 1000px;
             display: flex;
             flex-direction: column;
-            animation: slideUp 0.3s ease;
             margin: 20px auto;
-        }
-        
-        @keyframes slideUp {
-            from {
-                transform: translateY(50px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-        
-        .close-btn-container {
-            text-align: right;
-            margin-bottom: 15px;
         }
         
         .btn-close {
@@ -246,38 +177,25 @@
             height: 50px;
             border: none;
             border-radius: 50%;
-            font-size: 1.5em;
+            background: rgba(100, 100, 100, 0.9);
+            color: white;
             cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            margin-bottom: 15px;
+            margin-left: auto;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: rgba(100, 100, 100, 0.9);
-            color: white;
-            padding: 0;
-        }
-        
-        .btn-close:hover {
-            background: rgba(50, 50, 50, 1);
-            transform: scale(1.1) rotate(90deg);
-        }
-        
-        .close-icon {
-            width: 24px;
-            height: 24px;
+            font-size: 1.5em;
         }
         
         .lightbox-image-container {
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow: hidden;
             border-radius: 20px;
             margin-bottom: 20px;
             background: #1a1a1a;
             max-height: 70vh;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
             position: relative;
         }
         
@@ -302,20 +220,10 @@
             border-radius: 8px;
             transition: all 0.2s ease;
             z-index: 999;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 50px;
-            height: 50px;
         }
         
         .nav-arrow:hover {
             background: rgba(255, 255, 255, 0.4);
-        }
-        
-        .nav-icon {
-            width: 24px;
-            height: 24px;
         }
         
         .nav-prev { left: 10px; }
@@ -327,9 +235,6 @@
             padding: 30px;
             border-radius: 20px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-            border: 2px solid;
-            border-image: linear-gradient(135deg, rgba(192, 192, 192, 0.5) 0%, rgba(255, 255, 255, 0.5) 50%, rgba(192, 192, 192, 0.5) 100%) 1;
-            animation: slideUp 0.4s ease 0.1s backwards;
         }
         
         .details-grid {
@@ -343,7 +248,6 @@
             padding: 15px;
             background: linear-gradient(135deg, rgba(192, 192, 192, 0.1) 0%, rgba(192, 192, 192, 0.05) 100%);
             border-radius: 12px;
-            border: 1px solid rgba(192, 192, 192, 0.3);
         }
         
         .detail-label {
@@ -351,17 +255,7 @@
             color: #001a4d;
             font-size: 0.9em;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
             margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .detail-icon {
-            width: 18px;
-            height: 18px;
-            flex-shrink: 0;
         }
         
         .detail-value {
@@ -371,47 +265,6 @@
             font-weight: 500;
         }
         
-        .delete-section {
-            margin-top: 25px;
-            padding-top: 25px;
-            border-top: 2px solid rgba(192, 192, 192, 0.3);
-            text-align: center;
-        }
-        
-        .btn-delete {
-            width: 60px;
-            height: 60px;
-            border: none;
-            border-radius: 50%;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(255, 0, 0, 0.3);
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, rgba(255, 0, 0, 0.8) 0%, rgba(220, 0, 0, 0.9) 100%);
-            color: white;
-            padding: 0;
-        }
-        
-        .btn-delete:hover {
-            background: linear-gradient(135deg, rgba(255, 0, 0, 1) 0%, rgba(200, 0, 0, 1) 100%);
-            transform: scale(1.15);
-            box-shadow: 0 8px 25px rgba(255, 0, 0, 0.5);
-        }
-        
-        .trash-icon {
-            width: 32px;
-            height: 32px;
-        }
-        
-        .delete-text {
-            display: block;
-            margin-top: 12px;
-            color: #666;
-            font-size: 0.95em;
-        }
-        
         .button-group { 
             text-align: center; 
             margin: 30px 0; 
@@ -419,8 +272,6 @@
             gap: 15px;
             justify-content: center;
             flex-wrap: wrap;
-            position: relative;
-            z-index: 2;
         }
         
         .btn-link { 
@@ -436,18 +287,11 @@
             transition: all 0.3s ease;
             box-shadow: 0 5px 15px rgba(192, 192, 192, 0.4);
             border: 2px solid rgba(192, 192, 192, 0.5);
-            position: relative;
         }
         
         .btn-link:hover {
             transform: translateY(-3px);
             box-shadow: 0 8px 25px rgba(192, 192, 192, 0.6);
-        }
-        
-        .btn-icon-small {
-            width: 20px;
-            height: 20px;
-            flex-shrink: 0;
         }
         
         #noPhotos {
@@ -476,14 +320,11 @@
             border-top: 2px solid rgba(192, 192, 192, 0.3);
         }
         
-        .success { 
-            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
-            color: #155724; 
-            padding: 15px; 
-            border-radius: 12px; 
-            margin: 20px 0; 
-            display: none;
-            border: 2px solid #28a745;
+        .loading {
+            text-align: center;
+            padding: 60px;
+            color: #001a4d;
+            font-size: 1.3em;
         }
         
         @media (max-width: 768px) {
@@ -494,68 +335,25 @@
                 grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
                 gap: 15px;
             }
-            .lightbox-image-container {
-                max-height: 50vh;
-            }
-            .lightbox-image-container img,
-            .lightbox-image-container video {
-                max-height: 50vh;
-            }
-            .details-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            body { padding: 10px; }
-            .container { padding: 15px; }
-            h1 { font-size: 1.8em; }
-            .photos-grid {
-                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-                gap: 12px;
-            }
-            .lightbox-details {
-                padding: 20px;
-            }
         }
     </style>
 </head>
 <body>
     <div class="sparkle-1"></div>
     <div class="sparkle-2"></div>
-    <div class="sparkle-3"></div>
-    <div class="sparkle-4"></div>
     
     <div class="container">
         <h1>Photo Gallery</h1>
-        <p class="subtitle">Click any photo to view details</p>
+        <p class="subtitle">Photos visible to everyone</p>
         
         <div class="album-info" id="albumInfo">Loading album...</div>
         
-        <div class="success" id="successMsg"></div>
-        
         <div class="button-group">
-            <a href="front.html" id="uploadLink" class="btn-link">
-                <svg class="btn-icon-small" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-                    <g fill="currentColor">
-                        <path d="M32 10 L32 44 M20 32 L32 10 L44 32" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
-                        <rect x="12" y="50" width="40" height="6" rx="2" fill="currentColor"/>
-                    </g>
-                </svg>
-                Upload More
-            </a>
-            <a href="albums.html" class="btn-link">
-                <svg class="btn-icon-small" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-                    <g fill="currentColor">
-                        <rect x="10" y="14" width="20" height="20" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
-                        <rect x="34" y="14" width="20" height="20" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
-                        <rect x="10" y="38" width="20" height="20" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
-                        <rect x="34" y="38" width="20" height="20" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
-                    </g>
-                </svg>
-                All Albums
-            </a>
+            <a href="front.html" id="uploadLink" class="btn-link">Upload More</a>
+            <a href="albums.html" class="btn-link">All Albums</a>
         </div>
+        
+        <div id="loading" class="loading">Loading photos...</div>
         
         <div id="photosGrid" class="photos-grid"></div>
         
@@ -569,160 +367,59 @@
 
     <div class="lightbox" id="lightbox">
         <div class="lightbox-content">
-            <div class="close-btn-container">
-                <button class="btn-close" onclick="closeLightbox()" title="Close">
-                    <svg class="close-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-                        <g stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round">
-                            <line x1="18" y1="18" x2="46" y2="46"/>
-                            <line x1="46" y1="18" x2="18" y2="46"/>
-                        </g>
-                    </svg>
-                </button>
-            </div>
+            <button class="btn-close" onclick="closeLightbox()">✕</button>
             
             <div class="lightbox-image-container" id="lightboxImageContainer">
-                <button class="nav-arrow nav-prev" onclick="prevPhoto()">
-                    <svg class="nav-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-                        <g fill="currentColor">
-                            <path d="M40 12 L20 32 L40 52" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
-                        </g>
-                    </svg>
-                </button>
-                <button class="nav-arrow nav-next" onclick="nextPhoto()">
-                    <svg class="nav-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-                        <g fill="currentColor">
-                            <path d="M24 12 L44 32 L24 52" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
-                        </g>
-                    </svg>
-                </button>
+                <button class="nav-arrow nav-prev" onclick="prevPhoto()">‹</button>
+                <button class="nav-arrow nav-next" onclick="nextPhoto()">›</button>
             </div>
             
             <div class="lightbox-details">
                 <div class="details-grid">
                     <div class="detail-item">
-                        <span class="detail-label">
-                            <svg class="detail-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-                                <g fill="currentColor">
-                                    <rect x="16" y="12" width="36" height="42" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
-                                    <path d="M24 22 L48 22 M24 30 L48 30 M24 38 L40 38" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                                </g>
-                            </svg>
-                            File Name
-                        </span>
-                        <span class="detail-value" id="detailName">-</span>
+                        <div class="detail-label">File Name</div>
+                        <div class="detail-value" id="detailName">-</div>
                     </div>
                     <div class="detail-item">
-                        <span class="detail-label">
-                            <svg class="detail-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-                                <g fill="currentColor">
-                                    <circle cx="22" cy="28" r="6" fill="none" stroke="currentColor" stroke-width="2"/>
-                                    <path d="M10 50 Q10 44 16 44 Q22 44 22 50" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                                    <circle cx="42" cy="26" r="7" fill="none" stroke="currentColor" stroke-width="2"/>
-                                    <path d="M30 50 Q30 42 42 42 Q54 42 54 50" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                                </g>
-                            </svg>
-                            Uploaded By
-                        </span>
-                        <span class="detail-value" id="detailUploader">-</span>
+                        <div class="detail-label">Uploaded By</div>
+                        <div class="detail-value" id="detailUploader">-</div>
                     </div>
                     <div class="detail-item">
-                        <span class="detail-label">
-                            <svg class="detail-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-                                <g fill="currentColor">
-                                    <rect x="14" y="14" width="36" height="38" rx="2" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                                    <line x1="14" y1="24" x2="50" y2="24" stroke="currentColor" stroke-width="1.5"/>
-                                    <path d="M28 32 L32 36 L40 28 M32 48 L32 40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                </g>
-                            </svg>
-                            Date
-                        </span>
-                        <span class="detail-value" id="detailDate">-</span>
+                        <div class="detail-label">Date & Time</div>
+                        <div class="detail-value" id="detailDate">-</div>
                     </div>
                     <div class="detail-item">
-                        <span class="detail-label">
-                            <svg class="detail-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-                                <g fill="currentColor">
-                                    <circle cx="32" cy="32" r="16" fill="none" stroke="currentColor" stroke-width="2"/>
-                                    <path d="M32 20 L32 32 L40 40" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                </g>
-                            </svg>
-                            Time
-                        </span>
-                        <span class="detail-value" id="detailTime">-</span>
+                        <div class="detail-label">File Size</div>
+                        <div class="detail-value" id="detailSize">-</div>
                     </div>
-                    <div class="detail-item">
-                        <span class="detail-label">
-                            <svg class="detail-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-                                <g fill="currentColor">
-                                    <rect x="14" y="10" width="36" height="44" rx="2" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                                    <path d="M20 24 L32 24 L32 32 L20 32 Z" fill="none" stroke="currentColor" stroke-width="1.5"/>
-                                    <line x1="20" y1="38" x2="44" y2="38" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                                    <line x1="20" y1="44" x2="44" y2="44" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                                </g>
-                            </svg>
-                            File Size
-                        </span>
-                        <span class="detail-value" id="detailSize">-</span>
-                    </div>
-                </div>
-                
-                <div class="delete-section" id="deleteSection">
-                    <button class="btn-delete" onclick="deleteLightboxPhoto()" title="Delete photo">
-                        <svg class="trash-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-                            <g fill="currentColor">
-                                <path d="M20 12 L20 8 Q20 6 22 6 L42 6 Q44 6 44 8 L44 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                                <rect x="16" y="14" width="32" height="38" rx="2" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                                <line x1="26" y1="22" x2="26" y2="46" stroke="currentColor" stroke-width="2"/>
-                                <line x1="32" y1="22" x2="32" y2="46" stroke="currentColor" stroke-width="2"/>
-                                <line x1="38" y1="22" x2="38" y2="46" stroke="currentColor" stroke-width="2"/>
-                            </g>
-                        </svg>
-                    </button>
-                    <span class="delete-text">Delete this photo</span>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        const STORAGE_KEY = 'qr_photo_albums';
+        const albumsList = [
+            { id: 1, name: 'Table 1' }, { id: 2, name: 'Table 2' }, { id: 3, name: 'Table 3' },
+            { id: 4, name: 'Table 4' }, { id: 5, name: 'Table 5' }, { id: 6, name: 'Table 6' },
+            { id: 7, name: 'Table 7' }, { id: 8, name: 'Table 8' }, { id: 9, name: 'Table 9' },
+            { id: 10, name: 'Table 10' }, { id: 11, name: 'Table 11' }, { id: 12, name: 'Table 12' },
+            { id: 13, name: 'Table 13' }, { id: 14, name: 'Table 14' }, { id: 15, name: '18 Roses' },
+            { id: 16, name: '18 Candles' }, { id: 17, name: '18 Blue Bills' }, 
+            { id: 18, name: '18 Treasures' }, { id: 19, name: '18 Shots' }
+        ];
         
         const urlParams = new URLSearchParams(window.location.search);
         const currentAlbumId = parseInt(urlParams.get('album')) || 1;
-        
-        const albumsList = [
-            { id: 1, name: 'Table 1', description: 'Family' },
-            { id: 2, name: 'Table 2', description: 'Guests' },
-            { id: 3, name: 'Table 3', description: 'Guests' },
-            { id: 4, name: 'Table 4', description: 'Guests' },
-            { id: 5, name: 'Table 5', description: 'Guests' },
-            { id: 6, name: 'Table 6', description: 'Guests' },
-            { id: 7, name: 'Table 7', description: 'Guests' },
-            { id: 8, name: 'Table 8', description: 'Guests' },
-            { id: 9, name: 'Table 9', description: 'Guests' },
-            { id: 10, name: 'Table 10', description: 'Guests' },
-            { id: 11, name: 'Table 11', description: 'Guests' },
-            { id: 12, name: 'Table 12', description: 'Guests' },
-            { id: 13, name: 'Table 13', description: 'Guests' },
-            { id: 14, name: 'Table 14', description: 'Guests' },
-            { id: 15, name: '18 Roses', description: 'Rose dance moments' },
-            { id: 16, name: '18 Candles', description: 'Candle ceremony' },
-            { id: 17, name: '18 Blue Bills', description: 'Blue bills collection' },
-            { id: 18, name: '18 Treasures', description: 'Wisdom & gifts' },
-            { id: 19, name: '18 Shots', description: 'Photo booth shots' }
-        ];
-        
         const currentAlbum = albumsList.find(a => a.id === currentAlbumId);
         
         const photosGrid = document.getElementById('photosGrid');
         const noPhotos = document.getElementById('noPhotos');
         const storageInfo = document.getElementById('storageInfo');
-        const successMsg = document.getElementById('successMsg');
         const lightbox = document.getElementById('lightbox');
         const lightboxImageContainer = document.getElementById('lightboxImageContainer');
         const albumInfo = document.getElementById('albumInfo');
         const uploadLink = document.getElementById('uploadLink');
-        const deleteSection = document.getElementById('deleteSection');
+        const loading = document.getElementById('loading');
         
         let allPhotos = [];
         let currentPhotoIndex = 0;
@@ -730,30 +427,23 @@
         albumInfo.textContent = currentAlbum ? currentAlbum.name : `Album ${currentAlbumId}`;
         uploadLink.href = `front.html?album=${currentAlbumId}`;
 
-        function addPhotoCard(name, src, uploader, timestamp, photoId) {
+        function addPhotoCard(photo, index) {
             const card = document.createElement('div');
             card.className = 'photo-card';
-            card.id = `photo-${photoId}`;
-            card.onclick = () => openLightbox(allPhotos.findIndex(p => p.id === photoId));
+            card.onclick = () => openLightbox(index);
             
-            const isVideo = src && (src.startsWith('video') || src.startsWith('data:video'));
+            const isVideo = photo.dataUrl && photo.dataUrl.startsWith('data:video');
             
             card.innerHTML = `
                 <div class="photo-thumbnail-wrapper">
                     ${isVideo ? 
-                        `<video src="${src}" muted preload="metadata"></video>` : 
-                        `<img src="${src}" alt="${name}" loading="lazy">`
+                        `<video src="${photo.dataUrl}" muted preload="metadata"></video>` : 
+                        `<img src="${photo.dataUrl}" alt="${photo.name}" loading="lazy">`
                     }
-                    <svg class="eye-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-                        <g fill="white">
-                            <path d="M32 20 C20 20 10 32 10 32 C10 32 20 44 32 44 C44 44 54 32 54 32 C54 32 44 20 32 20 Z" fill="none" stroke="white" stroke-width="3"/>
-                            <circle cx="32" cy="32" r="6" fill="white"/>
-                        </g>
-                    </svg>
                 </div>
                 <div class="photo-info">
-                    <div class="photo-name" title="${name}">${name}</div>
-                    <div class="photo-uploader">by ${uploader || 'Anonymous'}</div>
+                    <div class="photo-name" title="${photo.name}">${photo.name}</div>
+                    <div class="photo-uploader">by ${photo.uploader || 'Anonymous'}</div>
                 </div>
             `;
             photosGrid.appendChild(card);
@@ -775,20 +465,17 @@
             const photo = allPhotos[currentPhotoIndex];
             if (!photo) return;
 
-            const isVideo = photo.dataUrl && (photo.dataUrl.startsWith('video') || photo.dataUrl.startsWith('data:video'));
+            const isVideo = photo.dataUrl && photo.dataUrl.startsWith('data:video');
             
-            // Save nav buttons
             const prevBtn = lightboxImageContainer.querySelector('.nav-prev');
             const nextBtn = lightboxImageContainer.querySelector('.nav-next');
             
-            // Clear container
             lightboxImageContainer.innerHTML = '';
             
             if (isVideo) {
                 const video = document.createElement('video');
                 video.src = photo.dataUrl;
                 video.controls = true;
-                video.muted = true;
                 lightboxImageContainer.appendChild(video);
             } else {
                 const img = document.createElement('img');
@@ -797,26 +484,14 @@
                 lightboxImageContainer.appendChild(img);
             }
             
-            // Reattach buttons
             lightboxImageContainer.appendChild(prevBtn);
             lightboxImageContainer.appendChild(nextBtn);
 
             const date = new Date(photo.timestamp);
-            const fullDate = date.toLocaleDateString('en-US', { 
-                weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' 
-            });
-            const fullTime = date.toLocaleTimeString('en-US', { 
-                hour: '2-digit', minute: '2-digit', second: '2-digit' 
-            });
-
             document.getElementById('detailName').textContent = photo.name;
             document.getElementById('detailUploader').textContent = photo.uploader || 'Anonymous';
-            document.getElementById('detailDate').textContent = fullDate;
-            document.getElementById('detailTime').textContent = fullTime;
+            document.getElementById('detailDate').textContent = date.toLocaleString();
             document.getElementById('detailSize').textContent = Math.round(photo.size / 1024) + ' KB';
-            
-            // Always show delete button for regular albums
-            deleteSection.style.display = 'block';
         }
 
         function nextPhoto() {
@@ -827,41 +502,6 @@
         function prevPhoto() {
             currentPhotoIndex = (currentPhotoIndex - 1 + allPhotos.length) % allPhotos.length;
             displayLightboxPhoto();
-        }
-
-        function deleteLightboxPhoto() {
-            if (confirm('Are you sure you want to delete this photo?')) {
-                const photo = allPhotos[currentPhotoIndex];
-                allPhotos.splice(currentPhotoIndex, 1);
-                
-                const allAlbums = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
-                allAlbums[currentAlbumId] = allPhotos;
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(allAlbums));
-                
-                const cardElement = document.getElementById(`photo-${photo.id}`);
-                if (cardElement) {
-                    cardElement.remove();
-                }
-                
-                if (allPhotos.length === 0) {
-                    closeLightbox();
-                    noPhotos.style.display = 'block';
-                    updateStorageInfo(0);
-                } else {
-                    currentPhotoIndex = Math.min(currentPhotoIndex, allPhotos.length - 1);
-                    displayLightboxPhoto();
-                    updateStorageInfo(allPhotos.length);
-                }
-                
-                successMsg.textContent = '✓ Photo deleted successfully!';
-                successMsg.style.display = 'block';
-                setTimeout(() => { successMsg.style.display = 'none'; }, 3000);
-            }
-        }
-
-        function updateStorageInfo(count) {
-            const storageSize = localStorage.getItem(STORAGE_KEY)?.length || 0;
-            storageInfo.textContent = `${count} photos • ${Math.round(storageSize / 1024)} KB storage used`;
         }
 
         document.addEventListener('keydown', (e) => {
@@ -876,38 +516,50 @@
             if (e.target === lightbox) closeLightbox();
         });
 
-        window.onload = () => {
+        async function loadPhotos() {
             try {
-                const allAlbums = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
-                allPhotos = (allAlbums[currentAlbumId] || []).sort((a, b) => b.timestamp - a.timestamp);
-
-                console.log('Album ID:', currentAlbumId);
-                console.log('Photos found:', allPhotos.length);
+                loading.style.display = 'block';
+                const result = await window.storage.list(`album-${currentAlbumId}:`, true);
                 
-                if (allPhotos.length === 0) {
+                if (!result || !result.keys || result.keys.length === 0) {
+                    loading.style.display = 'none';
                     noPhotos.style.display = 'block';
-                    updateStorageInfo(0);
+                    storageInfo.textContent = '0 photos';
                     return;
                 }
 
-                allPhotos.forEach(photo => {
-                    if (photo.dataUrl) {
-                        addPhotoCard(
-                            photo.name,
-                            photo.dataUrl,
-                            photo.uploader,
-                            photo.timestamp,
-                            photo.id
-                        );
+                const photoPromises = result.keys.map(async (key) => {
+                    try {
+                        const data = await window.storage.get(key, true);
+                        if (data && data.value) {
+                            return JSON.parse(data.value);
+                        }
+                    } catch (e) {
+                        console.error('Error loading photo:', e);
                     }
+                    return null;
                 });
 
-                updateStorageInfo(allPhotos.length);
+                const photos = await Promise.all(photoPromises);
+                allPhotos = photos.filter(p => p !== null).sort((a, b) => b.timestamp - a.timestamp);
+
+                loading.style.display = 'none';
+                
+                if (allPhotos.length === 0) {
+                    noPhotos.style.display = 'block';
+                } else {
+                    allPhotos.forEach((photo, index) => addPhotoCard(photo, index));
+                }
+
+                storageInfo.textContent = `${allPhotos.length} photos shared by everyone`;
             } catch (e) {
                 console.error('Error loading photos:', e);
+                loading.style.display = 'none';
                 noPhotos.style.display = 'block';
             }
-        };
+        }
+
+        loadPhotos();
     </script>
 </body>
 </html>
