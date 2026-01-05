@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Upload Photos - Debut Gallery</title>
+    <title>Photo Gallery</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -30,7 +30,7 @@
         @keyframes slideDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
 
         .container { 
-            max-width: 800px; 
+            max-width: 1400px; 
             margin: 0 auto; 
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
@@ -44,8 +44,12 @@
             z-index: 10;
         }
 
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
         h1 { 
-            text-align: center; 
             color: #001a4d; 
             margin-bottom: 15px; 
             font-size: 2.5em;
@@ -56,183 +60,21 @@
         }
 
         .subtitle { 
-            text-align: center; 
             color: #555; 
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             font-size: 1.1em;
-        }
-
-        .form-group { 
-            margin-bottom: 25px; 
-        }
-
-        label { 
-            display: block; 
-            margin-bottom: 10px; 
-            font-weight: bold; 
-            color: #001a4d;
-            font-size: 1.1em;
-        }
-
-        input[type="text"], select { 
-            width: 100%; 
-            padding: 14px; 
-            border: 2px solid #c0c0c0;
-            border-radius: 12px; 
-            font-size: 16px;
-            transition: all 0.3s ease;
-            background: rgba(255, 255, 255, 0.9);
-        }
-
-        input[type="text"]:focus, select:focus { 
-            outline: none; 
-            border-color: #001a4d;
-            box-shadow: 0 0 15px rgba(192, 192, 192, 0.5);
-        }
-
-        .file-input-wrapper {
-            position: relative;
-            overflow: hidden;
-            display: inline-block;
-            width: 100%;
-        }
-
-        .file-input-wrapper input[type="file"] {
-            position: absolute;
-            left: -9999px;
-        }
-
-        .file-input-label {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            padding: 20px;
-            background: linear-gradient(135deg, #e8e8e8 0%, #f5f5f5 50%, #e8e8e8 100%);
-            color: #001a4d;
-            border: 2px dashed #c0c0c0;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: bold;
-            font-size: 1.1em;
-        }
-
-        .file-input-label:hover {
-            background: linear-gradient(135deg, #d0d0d0 0%, #e0e0e0 50%, #d0d0d0 100%);
-            border-color: #001a4d;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(192, 192, 192, 0.4);
-        }
-
-        .file-list {
-            margin-top: 15px;
-            padding: 15px;
-            background: rgba(240, 240, 240, 0.8);
-            border-radius: 12px;
-            max-height: 300px;
-            overflow-y: auto;
-        }
-
-        .file-item {
-            padding: 12px;
-            margin-bottom: 10px;
-            background: white;
-            border-radius: 8px;
-            border-left: 4px solid #c0c0c0;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        .file-item-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
-        }
-
-        .file-name {
-            font-weight: 600;
-            color: #001a4d;
-            flex: 1;
-            word-break: break-word;
-        }
-
-        .file-size {
-            color: #666;
-            font-size: 0.9em;
-            margin-left: 10px;
-        }
-
-        .file-status {
-            font-size: 0.9em;
-            color: #666;
-            margin-top: 5px;
-        }
-
-        .progress-bar-container {
-            width: 100%;
-            height: 20px;
-            background: #e0e0e0;
-            border-radius: 10px;
-            overflow: hidden;
-            margin-top: 8px;
-            position: relative;
-        }
-
-        .progress-bar {
-            height: 100%;
-            background: linear-gradient(90deg, #001a4d 0%, #0d3b66 100%);
-            width: 0%;
-            transition: width 0.3s ease;
-            border-radius: 10px;
-        }
-
-        .progress-text {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: white;
-            font-size: 0.85em;
-            font-weight: bold;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
-        }
-
-        .btn-upload { 
-            width: 100%; 
-            padding: 16px; 
-            background: linear-gradient(135deg, #001a4d 0%, #0d3b66 100%);
-            color: white; 
-            border: none; 
-            border-radius: 50px; 
-            font-size: 1.2em;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0, 26, 77, 0.3);
-            margin-top: 20px;
-        }
-
-        .btn-upload:hover:not(:disabled) {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(0, 26, 77, 0.5);
-        }
-
-        .btn-upload:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-            box-shadow: none;
         }
 
         .button-group {
             display: flex;
             gap: 15px;
-            margin-top: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
         }
 
-        .btn-secondary {
-            flex: 1;
-            padding: 14px;
+        .btn {
+            padding: 12px 30px;
             background: linear-gradient(135deg, #e8e8e8 0%, #f5f5f5 50%, #e8e8e8 100%);
             color: #001a4d;
             border: 2px solid #c0c0c0;
@@ -245,54 +87,155 @@
             display: inline-block;
         }
 
-        .btn-secondary:hover {
+        .btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(192, 192, 192, 0.4);
         }
 
-        .info-box {
-            background: linear-gradient(135deg, rgba(0, 26, 77, 0.1) 0%, rgba(192, 192, 192, 0.1) 100%);
-            padding: 20px;
-            border-radius: 15px;
-            margin-bottom: 25px;
-            border-left: 5px solid #c0c0c0;
+        .btn-primary {
+            background: linear-gradient(135deg, #001a4d 0%, #0d3b66 100%);
+            color: white;
+            border-color: #001a4d;
         }
 
-        .info-box ul {
-            margin-left: 20px;
-            color: #333;
+        .btn-primary:hover {
+            box-shadow: 0 5px 15px rgba(0, 26, 77, 0.5);
         }
 
-        .info-box li {
-            margin: 8px 0;
-        }
-
-        #uploadResult {
-            margin-top: 20px;
-            padding: 20px;
-            border-radius: 12px;
-            display: none;
+        .loading {
             text-align: center;
+            padding: 40px;
+            color: #001a4d;
+            font-size: 1.2em;
+        }
+
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .photo-item {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            background: white;
+            cursor: pointer;
+        }
+
+        .photo-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+
+        .photo-item img, .photo-item video {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .photo-info {
+            padding: 15px;
+            background: white;
+        }
+
+        .photo-uploader {
             font-weight: bold;
-            font-size: 1.1em;
+            color: #001a4d;
+            margin-bottom: 5px;
         }
 
-        .success {
-            background: #d4edda;
-            color: #155724;
-            border: 2px solid #c3e6cb;
+        .photo-date {
+            font-size: 0.85em;
+            color: #666;
         }
 
-        .error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 2px solid #f5c6cb;
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+
+        .empty-state h2 {
+            color: #001a4d;
+            margin-bottom: 15px;
+        }
+
+        /* Lightbox styles */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 90%;
+            position: relative;
+        }
+
+        .lightbox-content img, .lightbox-content video {
+            max-width: 100%;
+            max-height: 90vh;
+            border-radius: 10px;
+            box-shadow: 0 10px 50px rgba(0,0,0,0.5);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 40px;
+            color: white;
+            cursor: pointer;
+            background: rgba(0, 0, 0, 0.5);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .lightbox-close:hover {
+            background: rgba(0, 0, 0, 0.8);
+            transform: rotate(90deg);
+        }
+
+        .lightbox-info {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 10px;
+            text-align: center;
         }
 
         @media (max-width: 768px) {
             body { background-attachment: scroll; }
             .container { padding: 25px; }
             h1 { font-size: 2em; }
+            .photo-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+            .photo-item img, .photo-item video { height: 150px; }
             .button-group { flex-direction: column; }
         }
     </style>
@@ -302,61 +245,34 @@
     <div class="sparkle-2"></div>
 
     <div class="container">
-        <h1>📸 Upload Photos</h1>
-        <p class="subtitle">Share your moments from the celebration!</p>
-
-        <div class="info-box">
-            <strong>📋 Upload Guidelines:</strong>
-            <ul>
-                <li>✅ Max file size: <strong>5MB per file</strong></li>
-                <li>📸 Accepted: Photos (JPG, PNG) & Videos (MP4, MOV)</li>
-                <li>🗜️ Images auto-compressed for faster upload</li>
-                <li>🚀 Multiple files processed sequentially</li>
-            </ul>
+        <div class="header">
+            <h1 id="albumTitle">📸 Photo Gallery</h1>
+            <p class="subtitle" id="photoCount">Loading photos...</p>
         </div>
 
-        <form id="uploadForm">
-            <div class="form-group">
-                <label for="uploaderName">Your Name:</label>
-                <input type="text" id="uploaderName" placeholder="Enter your name" required>
-            </div>
+        <div class="button-group">
+            <a href="albums.html" class="btn">📚 All Albums</a>
+            <a href="#" id="uploadBtn" class="btn btn-primary">📤 Upload Photos</a>
+        </div>
 
-            <div class="form-group">
-                <label for="albumSelect">Choose Album (Table):</label>
-                <select id="albumSelect" required>
-                    <option value="">-- Select Table/Category --</option>
-                </select>
-            </div>
+        <div id="photoGrid" class="photo-grid"></div>
+        <div id="loadingState" class="loading">🔄 Loading photos...</div>
+        <div id="emptyState" class="empty-state" style="display: none;">
+            <h2>📭 No photos yet</h2>
+            <p>Be the first to share your memories!</p>
+            <a href="#" id="uploadBtnEmpty" class="btn btn-primary" style="margin-top: 20px; display: inline-block;">📤 Upload Photos</a>
+        </div>
+    </div>
 
-            <div class="form-group">
-                <label>Select Photos/Videos:</label>
-                <div class="file-input-wrapper">
-                    <input type="file" id="fileInput" multiple accept="image/*,video/*">
-                    <label for="fileInput" class="file-input-label">
-                        <span>📁</span>
-                        <span>Choose Files</span>
-                    </label>
-                </div>
-                <div id="fileList" class="file-list" style="display: none;"></div>
-            </div>
-
-            <button type="submit" class="btn-upload" id="uploadBtn">
-                🚀 Upload Files
-            </button>
-
-            <div class="button-group">
-                <a href="albums.html" class="btn-secondary">📚 View All Albums</a>
-                <a href="#" id="viewCurrentAlbum" class="btn-secondary" style="display: none;">👁️ View This Album</a>
-            </div>
-        </form>
-
-        <div id="uploadResult"></div>
+    <!-- Lightbox -->
+    <div id="lightbox" class="lightbox">
+        <div class="lightbox-close" onclick="closeLightbox()">×</div>
+        <div class="lightbox-content" id="lightboxContent"></div>
     </div>
 
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-        import { getFirestore, collection, addDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
-        import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js';
+        import { getFirestore, collection, getDocs, query, orderBy } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
         const firebaseConfig = {
             apiKey: "AIzaSyDPaMpRBwk8a10vX4CUvsolfUyn3gpec5s",
@@ -370,294 +286,177 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
-        const storage = getStorage(app);
 
-        const albumsList = [
-            { id: 1, name: 'Table 1' }, { id: 2, name: 'Table 2' }, { id: 3, name: 'Table 3' },
-            { id: 4, name: 'Table 4' }, { id: 5, name: 'Table 5' }, { id: 6, name: 'Table 6' },
-            { id: 7, name: 'Table 7' }, { id: 8, name: 'Table 8' }, { id: 9, name: 'Table 9' },
-            { id: 10, name: 'Table 10' }, { id: 11, name: 'Table 11' }, { id: 12, name: 'Table 12' },
-            { id: 13, name: 'Table 13' }, { id: 14, name: 'Table 14' }, { id: 15, name: '18 Roses' },
-            { id: 16, name: '18 Candles' }, { id: 17, name: '18 Blue Bills' }, 
-            { id: 18, name: '18 Treasures' }, { id: 19, name: '18 Shots' }
-        ];
+        const albumsList = {
+            1: 'Table 1', 2: 'Table 2', 3: 'Table 3', 4: 'Table 4', 5: 'Table 5',
+            6: 'Table 6', 7: 'Table 7', 8: 'Table 8', 9: 'Table 9', 10: 'Table 10',
+            11: 'Table 11', 12: 'Table 12', 13: 'Table 13', 14: 'Table 14',
+            15: '18 Roses', 16: '18 Candles', 17: '18 Blue Bills', 18: '18 Treasures', 19: '18 Shots'
+        };
 
-        const albumSelect = document.getElementById('albumSelect');
-        const fileInput = document.getElementById('fileInput');
-        const fileList = document.getElementById('fileList');
-        const uploadForm = document.getElementById('uploadForm');
-        const uploadBtn = document.getElementById('uploadBtn');
-        const uploadResult = document.getElementById('uploadResult');
-        const viewCurrentAlbum = document.getElementById('viewCurrentAlbum');
-
-        let selectedFiles = [];
-        let selectedAlbumId = null;
-
-        // Populate album dropdown
-        albumsList.forEach(album => {
-            const option = document.createElement('option');
-            option.value = album.id;
-            option.textContent = album.name;
-            albumSelect.appendChild(option);
-        });
-
-        // Pre-select album from URL parameter
+        // Get album ID from URL
         const urlParams = new URLSearchParams(window.location.search);
-        const preSelectedAlbum = urlParams.get('album');
-        if (preSelectedAlbum) {
-            albumSelect.value = preSelectedAlbum;
-            selectedAlbumId = parseInt(preSelectedAlbum);
-            viewCurrentAlbum.href = `album.html?album=${preSelectedAlbum}`;
-            viewCurrentAlbum.style.display = 'inline-block';
+        const albumId = urlParams.get('album');
+
+        if (!albumId) {
+            window.location.href = 'albums.html';
         }
 
-        albumSelect.addEventListener('change', (e) => {
-            selectedAlbumId = parseInt(e.target.value);
-            if (selectedAlbumId) {
-                viewCurrentAlbum.href = `album.html?album=${selectedAlbumId}`;
-                viewCurrentAlbum.style.display = 'inline-block';
-            } else {
-                viewCurrentAlbum.style.display = 'none';
-            }
-        });
+        const albumName = albumsList[albumId] || 'Unknown Album';
+        document.getElementById('albumTitle').textContent = `📸 ${albumName}`;
+        document.getElementById('uploadBtn').href = `front.html?album=${albumId}`;
+        document.getElementById('uploadBtnEmpty').href = `front.html?album=${albumId}`;
 
-        fileInput.addEventListener('change', (e) => {
-            selectedFiles = Array.from(e.target.files);
-            displayFileList();
-        });
-
-        function displayFileList() {
-            if (selectedFiles.length === 0) {
-                fileList.style.display = 'none';
-                return;
-            }
-
-            fileList.style.display = 'block';
-            fileList.innerHTML = '';
-
-            selectedFiles.forEach((file, index) => {
-                const fileItem = document.createElement('div');
-                fileItem.className = 'file-item';
-                fileItem.innerHTML = `
-                    <div class="file-item-header">
-                        <span class="file-name">${file.name}</span>
-                        <span class="file-size">${Math.round(file.size / 1024)} KB</span>
-                    </div>
-                    <div class="file-status" id="status-${index}">Ready to upload</div>
-                    <div class="progress-bar-container">
-                        <div class="progress-bar" id="progress-${index}"></div>
-                        <div class="progress-text" id="progress-text-${index}">0%</div>
-                    </div>
-                `;
-                fileList.appendChild(fileItem);
-            });
-        }
-
-        // ✅ SANITIZE FILENAME FUNCTION
-        function sanitizeFilename(filename) {
-            const lastDot = filename.lastIndexOf('.');
-            const name = lastDot > 0 ? filename.substring(0, lastDot) : filename;
-            const ext = lastDot > 0 ? filename.substring(lastDot) : '';
-            
-            // Remove emojis, special unicode, and replace spaces/special chars
-            const sanitized = name
-                .replace(/[^\w\s-]/g, '') // Remove special chars except word chars, spaces, hyphens
-                .replace(/\s+/g, '_')      // Replace spaces with underscores
-                .replace(/_+/g, '_')       // Replace multiple underscores with single
-                .substring(0, 50);         // Limit length
-            
-            return sanitized || 'photo'; // Fallback if name is empty
-        }
-
-        async function uploadFile(file, index) {
-            const statusDiv = document.getElementById(`status-${index}`);
-            const progressBar = document.getElementById(`progress-${index}`);
-            const progressText = document.getElementById(`progress-text-${index}`);
+        // Load photos
+        async function loadPhotos() {
+            const photoGrid = document.getElementById('photoGrid');
+            const loadingState = document.getElementById('loadingState');
+            const emptyState = document.getElementById('emptyState');
+            const photoCount = document.getElementById('photoCount');
 
             try {
-                statusDiv.textContent = 'Preparing...';
-                console.log(`📦 Processing file ${index + 1}: ${file.name}`);
+                console.log(`🔍 Loading photos from album ${albumId}...`);
+                
+                const photosRef = collection(db, `albums/${albumId}/photos`);
+                const q = query(photosRef, orderBy('timestamp', 'desc'));
+                const querySnapshot = await getDocs(q);
 
-                // ✅ Generate safe filename with sanitization
-                const timestamp = Date.now();
-                const randomStr = Math.random().toString(36).substring(2, 15);
-                const sanitizedName = sanitizeFilename(file.name.replace(/\.[^/.]+$/, '')); // Remove extension
-                const extension = file.name.split('.').pop(); // Get original extension
-                const fileName = `${timestamp}_${randomStr}_${sanitizedName}.${extension}`;
+                loadingState.style.display = 'none';
 
-                console.log(`📝 Sanitized filename: ${file.name} → ${fileName}`);
-
-                let fileToUpload = file;
-                const isVideo = file.type.startsWith('video');
-
-                // Compress images (skip videos)
-                if (!isVideo && file.type.startsWith('image')) {
-                    statusDiv.textContent = 'Compressing...';
-                    console.log(`🗜️ Compressing ${file.name}...`);
-
-                    fileToUpload = await new Promise((resolve) => {
-                        const reader = new FileReader();
-                        reader.onload = (e) => {
-                            const img = new Image();
-                            img.onload = () => {
-                                const canvas = document.createElement('canvas');
-                                let width = img.width;
-                                let height = img.height;
-
-                                const maxDimension = 1920;
-                                if (width > maxDimension || height > maxDimension) {
-                                    if (width > height) {
-                                        height = (height / width) * maxDimension;
-                                        width = maxDimension;
-                                    } else {
-                                        width = (width / height) * maxDimension;
-                                        height = maxDimension;
-                                    }
-                                }
-
-                                canvas.width = width;
-                                canvas.height = height;
-                                const ctx = canvas.getContext('2d');
-                                ctx.drawImage(img, 0, 0, width, height);
-
-                                canvas.toBlob((blob) => {
-                                    console.log(`✅ Compressed: ${Math.round(file.size/1024)}KB → ${Math.round(blob.size/1024)}KB`);
-                                    resolve(new File([blob], fileName, { type: 'image/jpeg' }));
-                                }, 'image/jpeg', 0.85);
-                            };
-                            img.src = e.target.result;
-                        };
-                        reader.readAsDataURL(file);
-                    });
-                } else {
-                    // For videos, just rename with sanitized name
-                    fileToUpload = new File([file], fileName, { type: file.type });
+                if (querySnapshot.empty) {
+                    console.log('📭 No photos found in this album');
+                    emptyState.style.display = 'block';
+                    photoCount.textContent = 'No photos yet';
+                    return;
                 }
 
-                // Upload to Firebase Storage
-                statusDiv.textContent = 'Uploading...';
-                console.log(`☁️ Uploading ${fileName} to Storage...`);
+                let validPhotoCount = 0;
+                const photos = [];
 
-                const storageRef = ref(storage, `albums/${selectedAlbumId}/${fileName}`);
-                const uploadTask = uploadBytesResumable(storageRef, fileToUpload);
+                querySnapshot.forEach((doc) => {
+                    const photo = doc.data();
+                    
+                    // ✅ VALIDATE URL - Skip photos with missing or undefined URLs
+                    if (!photo.url || photo.url === 'undefined' || photo.url === '') {
+                        console.warn(`⚠️ Skipping invalid photo from database: ${photo.name || 'Unknown'}`);
+                        return; // Skip this photo
+                    }
 
-                await new Promise((resolve, reject) => {
-                    uploadTask.on('state_changed',
-                        (snapshot) => {
-                            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                            progressBar.style.width = progress + '%';
-                            progressText.textContent = Math.round(progress) + '%';
-                        },
-                        (error) => {
-                            console.error(`❌ Upload failed for ${fileName}:`, error);
-                            reject(error);
-                        },
-                        () => resolve()
-                    );
+                    photos.push({
+                        id: doc.id,
+                        ...photo
+                    });
+                    validPhotoCount++;
                 });
 
-                // Get download URL
-                const downloadURL = await getDownloadURL(storageRef);
-                console.log(`✅ Upload complete! URL: ${downloadURL}`);
+                console.log(`✅ Loaded ${validPhotoCount} valid photos (skipped ${querySnapshot.size - validPhotoCount} broken)`);
 
-                // Save metadata to Firestore
-                statusDiv.textContent = 'Saving...';
-                console.log(`💾 Saving metadata to Firestore...`);
+                if (validPhotoCount === 0) {
+                    emptyState.style.display = 'block';
+                    photoCount.textContent = 'No valid photos to display';
+                    return;
+                }
 
-                const photoData = {
-                    name: file.name, // Keep original name for display
-                    url: downloadURL, // ✅ This should now always have a value
-                    uploader: document.getElementById('uploaderName').value,
-                    timestamp: Date.now(),
-                    size: fileToUpload.size,
-                    type: file.type
-                };
+                photoCount.textContent = `${validPhotoCount} photo${validPhotoCount !== 1 ? 's' : ''}`;
 
-                await addDoc(collection(db, `albums/${selectedAlbumId}/photos`), photoData);
-                
-                console.log(`✅ File ${index + 1} complete: ${file.name}`);
-                statusDiv.textContent = 'Done!';
-                statusDiv.style.color = '#28a745';
-                progressBar.style.background = 'linear-gradient(90deg, #28a745 0%, #20c997 100%)';
+                photos.forEach((photo) => {
+                    const photoItem = document.createElement('div');
+                    photoItem.className = 'photo-item';
+                    photoItem.onclick = () => openLightbox(photo);
+
+                    const isVideo = photo.type && photo.type.startsWith('video');
+                    const mediaElement = isVideo 
+                        ? `<video src="${photo.url}" controls></video>`
+                        : `<img src="${photo.url}" alt="${photo.name}" loading="lazy">`;
+
+                    const date = photo.timestamp 
+                        ? new Date(photo.timestamp).toLocaleDateString('en-US', { 
+                            month: 'short', 
+                            day: 'numeric', 
+                            year: 'numeric' 
+                          })
+                        : 'Unknown date';
+
+                    photoItem.innerHTML = `
+                        ${mediaElement}
+                        <div class="photo-info">
+                            <div class="photo-uploader">📤 ${photo.uploader || 'Anonymous'}</div>
+                            <div class="photo-date">📅 ${date}</div>
+                        </div>
+                    `;
+
+                    photoGrid.appendChild(photoItem);
+                });
 
             } catch (error) {
-                console.error(`❌ Error uploading file ${index + 1}:`, error);
-                statusDiv.textContent = `Failed: ${error.message}`;
-                statusDiv.style.color = '#dc3545';
-                progressBar.style.background = '#dc3545';
-                throw error;
+                console.error('❌ Error loading photos:', error);
+                loadingState.innerHTML = `
+                    <p style="color: #dc3545;">❌ Error loading photos</p>
+                    <p style="font-size: 0.9em; color: #666;">${error.message}</p>
+                `;
             }
         }
 
-        uploadForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            const uploaderName = document.getElementById('uploaderName').value.trim();
+        // Lightbox functions
+        window.openLightbox = function(photo) {
+            const lightbox = document.getElementById('lightbox');
+            const lightboxContent = document.getElementById('lightboxContent');
             
-            if (!uploaderName) {
-                alert('Please enter your name');
-                return;
+            const isVideo = photo.type && photo.type.startsWith('video');
+            const mediaElement = isVideo 
+                ? `<video src="${photo.url}" controls autoplay style="max-width: 100%; max-height: 90vh;"></video>`
+                : `<img src="${photo.url}" alt="${photo.name}">`;
+
+            const date = photo.timestamp 
+                ? new Date(photo.timestamp).toLocaleDateString('en-US', { 
+                    month: 'long', 
+                    day: 'numeric', 
+                    year: 'numeric' 
+                  })
+                : 'Unknown date';
+
+            lightboxContent.innerHTML = `
+                ${mediaElement}
+                <div class="lightbox-info">
+                    <div style="font-weight: bold; margin-bottom: 5px;">${photo.name || 'Untitled'}</div>
+                    <div>Uploaded by: ${photo.uploader || 'Anonymous'}</div>
+                    <div>${date}</div>
+                </div>
+            `;
+
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        };
+
+        window.closeLightbox = function() {
+            const lightbox = document.getElementById('lightbox');
+            lightbox.classList.remove('active');
+            document.body.style.overflow = 'auto';
+            
+            // Stop any playing videos
+            const videos = lightbox.querySelectorAll('video');
+            videos.forEach(video => {
+                video.pause();
+                video.currentTime = 0;
+            });
+        };
+
+        // Close lightbox on background click
+        document.getElementById('lightbox').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeLightbox();
             }
-
-            if (!selectedAlbumId) {
-                alert('Please select an album');
-                return;
-            }
-
-            if (selectedFiles.length === 0) {
-                alert('Please select at least one file');
-                return;
-            }
-
-            uploadBtn.disabled = true;
-            uploadBtn.textContent = '⏳ Uploading...';
-            uploadResult.style.display = 'none';
-
-            let successCount = 0;
-            let failCount = 0;
-
-            // Upload files sequentially with delay
-            for (let i = 0; i < selectedFiles.length; i++) {
-                try {
-                    await uploadFile(selectedFiles[i], i);
-                    successCount++;
-                    
-                    // Add delay between uploads
-                    if (i < selectedFiles.length - 1) {
-                        await new Promise(resolve => setTimeout(resolve, 500));
-                    }
-                } catch (error) {
-                    failCount++;
-                }
-            }
-
-            // Show final result
-            uploadBtn.disabled = false;
-            uploadBtn.textContent = '🚀 Upload Files';
-
-            uploadResult.style.display = 'block';
-            if (failCount === 0) {
-                uploadResult.className = 'success';
-                uploadResult.innerHTML = `
-                    ✅ All ${successCount} files uploaded successfully!<br>
-                    <a href="album.html?album=${selectedAlbumId}" style="color: #155724; text-decoration: underline; font-weight: bold;">View Album →</a>
-                `;
-            } else if (successCount > 0) {
-                uploadResult.className = 'success';
-                uploadResult.innerHTML = `
-                    ⚠️ ${successCount} files uploaded, ${failCount} failed.<br>
-                    <a href="album.html?album=${selectedAlbumId}" style="color: #155724; text-decoration: underline; font-weight: bold;">View Album →</a>
-                `;
-            } else {
-                uploadResult.className = 'error';
-                uploadResult.textContent = `❌ All uploads failed. Please check console and try again.`;
-            }
-
-            // Reset form
-            selectedFiles = [];
-            fileInput.value = '';
-            fileList.style.display = 'none';
         });
+
+        // Close lightbox on ESC key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeLightbox();
+            }
+        });
+
+        // Load photos on page load
+        loadPhotos();
     </script>
 </body>
 </html>
