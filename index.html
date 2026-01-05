@@ -653,7 +653,7 @@
         
         <div class="container">
             <h1>✨ Davreignne's Debut Gallery ✨</h1>
-            
+            <p class="subtitle" id="welcomeMessage">Loading...</p>
             <div class="video-section">
                 <div class="video-container">
                     <video controls autoplay playsinline>
@@ -730,6 +730,11 @@
 
 
     <script type="module">
+        // Display welcome message with logged-in user
+const userData = JSON.parse(currentUser);
+document.getElementById('welcomeMessage').textContent = 
+    `Welcome, ${userData.guestName}! 🎉`;
+
         // Check if user is logged in
         window.addEventListener('DOMContentLoaded', function() {            
             const currentUser = localStorage.getItem('currentUser');            
