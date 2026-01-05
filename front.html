@@ -354,6 +354,29 @@
     </div>
 
     <script type="module">
+
+        // Check if user is logged in and auto-fill nickname
+window.addEventListener('DOMContentLoaded', function() {
+    const currentUser = localStorage.getItem('currentUser');
+    
+    if (!currentUser) {
+        window.location.href = 'login.html';
+        return;
+    }
+    
+    const userData = JSON.parse(currentUser);
+    const uploaderInput = document.getElementById('uploaderName');
+    
+    if (uploaderInput) {
+        uploaderInput.value = userData.nickname;
+        uploaderInput.readOnly = true;
+        uploaderInput.style.background = 'rgba(255,255,255,0.1)';
+        uploaderInput.style.cursor = 'not-allowed';
+    }
+    
+    console.log('Logged in as:', userData.guestName, '(' + userData.nickname + ')');
+});
+
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
         import { getFirestore, collection, addDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
         import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js';
