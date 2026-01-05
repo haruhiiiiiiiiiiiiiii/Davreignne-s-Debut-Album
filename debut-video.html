@@ -832,263 +832,259 @@
 
     <script>
 
-        // Check if user is logged in
-window.addEventListener('DOMContentLoaded', function() {
-    const currentUser = localStorage.getItem('currentUser');
-    
-    if (!currentUser) {
-        window.location.href = 'login.html';
-        return;
-    }
-    
-    const userData = JSON.parse(currentUser);
-    console.log('Logged in as:', userData.guestName, '(' + userData.nickname + ')');
-    
-    // Optional: You can add admin check here
-    // if (userData.nickname === 'Admin') {
-    //     document.getElementById('adminSection').style.display = 'block';
-    // }
-});
-// Logout functionality
-function handleLogout() {
-    if (confirm('Are you sure you want to logout?')) {
-        localStorage.removeItem('currentUser');
-        window.location.href = 'login.html';
-    }
-}
+        <script>
+    // Get current user FIRST (outside DOMContentLoaded for global access)
+    let currentUser = '';
+    let userData = null;
 
-        const STORAGE_KEY = 'qr_photo_albums';
-        const ADMIN_KEY = 'debut_admin_logged_in';
-        const ADMIN_PASSWORD = '01082008';
-        const ALBUM_ID = 20;
+    // Check if user is logged in
+    window.addEventListener('DOMContentLoaded', function() {
+        const storedUser = localStorage.getItem('currentUser');
         
-        let allPhotos = [];
-        let currentPhotoIndex = 0;
-        let isAdmin = false;
+        if (!storedUser) {
+            window.location.href = 'login.html';
+            return;
+        }
         
-        const fileInput = document.getElementById('fileInput');
-        const uploadArea = document.getElementById('uploadArea');
-        const adminControls = document.getElementById('adminControls');
-        const adminLoginBtn = document.getElementById('adminLoginBtn');
-        const successMsg = document.getElementById('successMsg');
-        const errorMsg = document.getElementById('errorMsg');
-        const photosGrid = document.getElementById('photosGrid');
-        const noPhotos = document.getElementById('noPhotos');
-        const lightbox = document.getElementById('lightbox');
-        const deleteSection = document.getElementById('deleteSection');
-
-        // Click to upload
-        uploadArea.addEventListener('click', () => {
-            fileInput.click();
-        });
-
-        // Drag and drop functionality
-        uploadArea.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            uploadArea.classList.add('drag-over');
-        });
-
-        uploadArea.addEventListener('dragleave', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            uploadArea.classList.remove('drag-over');
-        });
-
-        uploadArea.addEventListener('drop', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            uploadArea.classList.remove('drag-over');
-            
-            const files = e.dataTransfer.files;
-            if (files.length > 0) {
-                fileInput.files = files;
-                handleFiles();
-            }
-        });
-
-        function checkAdminStatus() {
-            isAdmin = sessionStorage.getItem(ADMIN_KEY) === 'true';
-            if (isAdmin) {
-                adminControls.style.display = 'block';
-                adminLoginBtn.style.display = 'none';
-                deleteSection.style.display = 'block';
-            } else {
-                adminControls.style.display = 'none';
-                adminLoginBtn.style.display = 'inline-flex';
-                deleteSection.style.display = 'none';
-            }
+        userData = JSON.parse(storedUser);
+        currentUser = storedUser; // Store for later use
+        console.log('Logged in as:', userData.guestName, '(' + userData.nickname + ')');
+        
+        // Show logout button
+        const logoutBtn = document.getElementById('logoutBtn');
+        if (logoutBtn && userData) {
+            logoutBtn.style.display = 'flex';
         }
+    });
 
-        function showAdminLogin() {
-            document.getElementById('adminModal').classList.add('active');
+    const STORAGE_KEY = 'qr_photo_albums';
+    const ADMIN_KEY = 'debut_admin_logged_in';
+    const ADMIN_PASSWORD = '01082008';
+    const ALBUM_ID = 20;
+    
+    let allPhotos = [];
+    let currentPhotoIndex = 0;
+    let isAdmin = false;
+    
+    const fileInput = document.getElementById('fileInput');
+    const uploadArea = document.getElementById('uploadArea');
+    const adminControls = document.getElementById('adminControls');
+    const adminLoginBtn = document.getElementById('adminLoginBtn');
+    const successMsg = document.getElementById('successMsg');
+    const errorMsg = document.getElementById('errorMsg');
+    const photosGrid = document.getElementById('photosGrid');
+    const noPhotos = document.getElementById('noPhotos');
+    const lightbox = document.getElementById('lightbox');
+    const deleteSection = document.getElementById('deleteSection');
+
+    // Click to upload
+    uploadArea.addEventListener('click', () => {
+        fileInput.click();
+    });
+
+    // Drag and drop functionality
+    uploadArea.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        uploadArea.classList.add('drag-over');
+    });
+
+    uploadArea.addEventListener('dragleave', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        uploadArea.classList.remove('drag-over');
+    });
+
+    uploadArea.addEventListener('drop', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        uploadArea.classList.remove('drag-over');
+        
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+            fileInput.files = files;
+            handleFiles();
         }
+    });
 
-        function closeAdminModal() {
-            document.getElementById('adminModal').classList.remove('active');
-            document.getElementById('adminPassword').value = '';
+    function checkAdminStatus() {
+        isAdmin = sessionStorage.getItem(ADMIN_KEY) === 'true';
+        if (isAdmin) {
+            adminControls.style.display = 'block';
+            adminLoginBtn.style.display = 'none';
+            deleteSection.style.display = 'block';
+        } else {
+            adminControls.style.display = 'none';
+            adminLoginBtn.style.display = 'inline-flex';
+            deleteSection.style.display = 'none';
         }
+    }
 
-        function checkAdminPassword() {
-            const password = document.getElementById('adminPassword').value;
-            if (password === ADMIN_PASSWORD) {
-                sessionStorage.setItem(ADMIN_KEY, 'true');
-                isAdmin = true;
-                checkAdminStatus();
-                closeAdminModal();
-                showSuccess('Admin logged in successfully!');
-            } else {
-                showError('Incorrect password!');
-            }
-        }
+    function showAdminLogin() {
+        document.getElementById('adminModal').classList.add('active');
+    }
 
-        function logoutAdmin() {
-            sessionStorage.removeItem(ADMIN_KEY);
-            isAdmin = false;
+    function closeAdminModal() {
+        document.getElementById('adminModal').classList.remove('active');
+        document.getElementById('adminPassword').value = '';
+    }
+
+    function checkAdminPassword() {
+        const password = document.getElementById('adminPassword').value;
+        if (password === ADMIN_PASSWORD) {
+            sessionStorage.setItem(ADMIN_KEY, 'true');
+            isAdmin = true;
             checkAdminStatus();
-            showSuccess('Logged out successfully!');
+            closeAdminModal();
+            showSuccess('Admin logged in successfully!');
+        } else {
+            showError('Incorrect password!');
+        }
+    }
+
+    function logoutAdmin() {
+        sessionStorage.removeItem(ADMIN_KEY);
+        isAdmin = false;
+        checkAdminStatus();
+        showSuccess('Logged out successfully!');
+    }
+
+    function showSuccess(msg) {
+        successMsg.textContent = msg;
+        successMsg.style.display = 'block';
+        setTimeout(() => { successMsg.style.display = 'none'; }, 3000);
+    }
+
+    function showError(msg) {
+        errorMsg.textContent = msg;
+        errorMsg.style.display = 'block';
+        setTimeout(() => { errorMsg.style.display = 'none'; }, 3000);
+    }
+
+    fileInput.addEventListener('change', handleFiles);
+
+    function handleFiles() {
+        if (!isAdmin) {
+            showError('Only admin can upload photos!');
+            return;
         }
 
-        function showSuccess(msg) {
-            successMsg.textContent = msg;
-            successMsg.style.display = 'block';
-            setTimeout(() => { successMsg.style.display = 'none'; }, 3000);
+        const files = Array.from(fileInput.files);
+        if (files.length === 0) return;
+
+        let processed = 0;
+        const allAlbums = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+        const currentPhotos = allAlbums[ALBUM_ID] || [];
+
+        files.forEach(file => {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                currentPhotos.push({
+                    name: file.name,
+                    dataUrl: e.target.result,
+                    timestamp: Date.now(),
+                    uploader: 'Admin',
+                    size: file.size,
+                    type: file.type,
+                    id: Date.now() + Math.random()
+                });
+
+                processed++;
+                if (processed === files.length) {
+                    const albums = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+                    albums[ALBUM_ID] = currentPhotos;
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(albums));
+
+                    fileInput.value = '';
+                    loadPhotos();
+                    showSuccess(`${files.length} file(s) uploaded successfully!`);
+                }
+            };
+            reader.readAsDataURL(file);
+        });
+    }
+
+    function loadPhotos() {
+        const allAlbums = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+        allPhotos = (allAlbums[ALBUM_ID] || []).sort((a, b) => b.timestamp - a.timestamp);
+
+        photosGrid.innerHTML = '';
+        
+        if (allPhotos.length === 0) {
+            noPhotos.style.display = 'block';
+            return;
         }
 
-        function showError(msg) {
-            errorMsg.textContent = msg;
-            errorMsg.style.display = 'block';
-            setTimeout(() => { errorMsg.style.display = 'none'; }, 3000);
-        }
-
-        fileInput.addEventListener('change', handleFiles);
-
-        function handleFiles() {
-            if (!isAdmin) {
-                showError('Only admin can upload photos!');
-                return;
-            }
-
-            const files = Array.from(fileInput.files);
-            if (files.length === 0) return;
-
-            let processed = 0;
-            const allAlbums = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
-            const currentPhotos = allAlbums[ALBUM_ID] || [];
-
-            files.forEach(file => {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    currentPhotos.push({
-                        name: file.name,
-                        dataUrl: e.target.result,
-                        timestamp: Date.now(),
-                        uploader: 'Admin',
-                        size: file.size,
-                        type: file.type,
-                        id: Date.now() + Math.random()
-                    });
-
-                    processed++;
-                    if (processed === files.length) {
-                        const albums = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
-                        albums[ALBUM_ID] = currentPhotos;
-                        localStorage.setItem(STORAGE_KEY, JSON.stringify(albums));
-
-                        fileInput.value = '';
-                        loadPhotos();
-                        showSuccess(`${files.length} file(s) uploaded successfully!`);
-                    }
-                };
-                reader.readAsDataURL(file);
-            });
-        }
-
-        function loadPhotos() {
-            const allAlbums = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
-            allPhotos = (allAlbums[ALBUM_ID] || []).sort((a, b) => b.timestamp - a.timestamp);
-
-            photosGrid.innerHTML = '';
+        noPhotos.style.display = 'none';
+        
+        allPhotos.forEach((photo, index) => {
+            const card = document.createElement('div');
+            card.className = 'photo-card';
+            card.onclick = () => openLightbox(index);
             
-            if (allPhotos.length === 0) {
-                noPhotos.style.display = 'block';
-                return;
-            }
-
-            noPhotos.style.display = 'none';
-            
-            allPhotos.forEach((photo, index) => {
-                const card = document.createElement('div');
-                card.className = 'photo-card';
-                card.onclick = () => openLightbox(index);
-                
-                const isVideo = photo.dataUrl && photo.dataUrl.startsWith('data:video');
-                
-                card.innerHTML = `
-                    <div class="photo-thumbnail-wrapper">
-                        ${isVideo ? 
-                            `<video src="${photo.dataUrl}" muted preload="metadata"></video>` : 
-                            `<img src="${photo.dataUrl}" alt="${photo.name}">`
-                        }
-                    </div>
-                `;
-                photosGrid.appendChild(card);
-            });
-        }
-
-        function openLightbox(index) {
-            currentPhotoIndex = index;
-            const photo = allPhotos[index];
             const isVideo = photo.dataUrl && photo.dataUrl.startsWith('data:video');
             
-            const container = document.getElementById('lightboxImageContainer');
-            container.innerHTML = isVideo ?
-                `<video src="${photo.dataUrl}" controls style="max-width:100%; max-height:70vh;"></video>` :
-                `<img src="${photo.dataUrl}" alt="${photo.name}" style="max-width:100%; max-height:70vh;">`;
-            
-            const date = new Date(photo.timestamp);
-            document.getElementById('detailInfo').innerHTML = `
-                <h3>${photo.name}</h3>
-                <p>Uploaded: ${date.toLocaleDateString()} ${date.toLocaleTimeString()}</p>
-                <p>Size: ${Math.round(photo.size / 1024)} KB</p>
+            card.innerHTML = `
+                <div class="photo-thumbnail-wrapper">
+                    ${isVideo ? 
+                        `<video src="${photo.dataUrl}" muted preload="metadata"></video>` : 
+                        `<img src="${photo.dataUrl}" alt="${photo.name}">`
+                    }
+                </div>
             `;
-            
-            deleteSection.style.display = isAdmin ? 'block' : 'none';
-            lightbox.classList.add('active');
-        }
-
-        function closeLightbox() {
-            lightbox.classList.remove('active');
-        }
-
-        function deletePhoto() {
-            if (!isAdmin) {
-                showError('Only admin can delete photos!');
-                return;
-            }
-            
-            if (confirm('Are you sure you want to delete this photo?')) {
-                allPhotos.splice(currentPhotoIndex, 1);
-                
-                const allAlbums = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
-                allAlbums[ALBUM_ID] = allPhotos;
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(allAlbums));
-                
-                closeLightbox();
-                loadPhotos();
-                showSuccess('Photo deleted successfully!');
-            }
-        }
-
-        lightbox.addEventListener('click', (e) => {
-            if (e.target === lightbox) closeLightbox();
+            photosGrid.appendChild(card);
         });
+    }
 
-        window.onload = () => {
-            checkAdminStatus();
+    function openLightbox(index) {
+        currentPhotoIndex = index;
+        const photo = allPhotos[index];
+        const isVideo = photo.dataUrl && photo.dataUrl.startsWith('data:video');
+        
+        const container = document.getElementById('lightboxImageContainer');
+        container.innerHTML = isVideo ?
+            `<video src="${photo.dataUrl}" controls style="max-width:100%; max-height:70vh;"></video>` :
+            `<img src="${photo.dataUrl}" alt="${photo.name}" style="max-width:100%; max-height:70vh;">`;
+        
+        const date = new Date(photo.timestamp);
+        document.getElementById('detailInfo').innerHTML = `
+            <h3>${photo.name}</h3>
+            <p>Uploaded: ${date.toLocaleDateString()} ${date.toLocaleTimeString()}</p>
+            <p>Size: ${Math.round(photo.size / 1024)} KB</p>
+        `;
+        
+        deleteSection.style.display = isAdmin ? 'block' : 'none';
+        lightbox.classList.add('active');
+    }
+
+    function closeLightbox() {
+        lightbox.classList.remove('active');
+    }
+
+    function deletePhoto() {
+        if (!isAdmin) {
+            showError('Only admin can delete photos!');
+            return;
+        }
+        
+        if (confirm('Are you sure you want to delete this photo?')) {
+            allPhotos.splice(currentPhotoIndex, 1);
+            
+            const allAlbums = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+            allAlbums[ALBUM_ID] = allPhotos;
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(allAlbums));
+            
+            closeLightbox();
             loadPhotos();
-        };
-        // Logout functionality
+            showSuccess('Photo deleted successfully!');
+        }
+    }
+
+    lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) closeLightbox();
+    });
+
+    // Logout functionality
     const logoutBtn = document.getElementById('logoutBtn');
     if (logoutBtn) {
         logoutBtn.addEventListener('click', function(e) {
@@ -1098,13 +1094,13 @@ function handleLogout() {
                 window.location.href = 'login.html';
             }
         });
-        
-        if (currentUser) {
-            logoutBtn.style.display = 'flex';
-        }
     }
 
-    </script>
+    window.onload = () => {
+        checkAdminStatus();
+        loadPhotos();
+    };
+</script>
         <!-- Footer -->
     <footer class="site-footer">    
         <div class="footer-content">
