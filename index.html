@@ -397,7 +397,6 @@
         .buttons-container { gap: 15px; }
     }
 
-    /* ==================== HEADER STYLES ==================== */
     .site-header {
         background: linear-gradient(135deg, #001a4d 0%, #4a5568 50%, #c0c0c0 100%);
         color: #fff;
@@ -496,7 +495,7 @@
 
     .dropdown:hover .dropdown-menu {
         opacity: 1;
-        visibility: hidden;
+        visibility: visible;
         transform: translateY(0);
     }
 
@@ -527,10 +526,9 @@
         background: linear-gradient(135deg, #001a4d 0%, #4a5568 50%, #c0c0c0 100%);
         color: #fff;
         padding: 20px 40px;
+        margin-top: 50px;
         text-align: center;
         box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
-        position: relative;
-        clear: both;
     }
 
     .footer-content {
@@ -543,7 +541,17 @@
         font-size: 0.95em;
     }
 
-    @media (max-width: 768px) {
+    /* Mobile Responsive */
+    @media (max-width: 768px) { 
+        body { background-attachment: scroll; } 
+        .container { padding: 30px 20px; } 
+        h1 { font-size: 2.2em; } 
+        .debut-video-content { flex-direction: column; text-align: center; gap: 20px; } 
+        .debut-video-title { font-size: 1.8em; } 
+        .debut-video-subtitle { font-size: 1.1em; } 
+        .albums-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; } 
+        .section-divider h2 { font-size: 1.4em; padding: 8px 20px; }
+        
         .site-header {
             padding: 10px 20px;
         }
@@ -570,6 +578,16 @@
         .dropdown:hover .dropdown-menu {
             transform: translateX(-50%) translateY(0);
         }
+    }
+    
+    @media (max-width: 480px) { 
+        body { padding: 10px; } 
+        .container { padding: 20px 15px; } 
+        h1 { font-size: 1.8em; } 
+        .debut-video-card { padding: 25px; } 
+        .debut-video-title { font-size: 1.5em; } 
+        .albums-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; } 
+        .section-divider h2 { font-size: 1.2em; padding: 6px 15px; } 
     }
 </style>
 
