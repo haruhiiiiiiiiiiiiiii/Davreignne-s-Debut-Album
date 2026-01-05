@@ -4,17 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Photo Gallery</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
 
         /*header*/
         /* ==================== HEADER STYLES ==================== */
+/* ==================== HEADER STYLES ==================== */
 .site-header {
-    background: linear-gradient(135deg, #001a4d 0%, #0d3b66 100%);
-    color: #c0c0c0;
-    padding: 20px 40px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(135deg, #001a4d 0%, #4a5568 50%, #c0c0c0 100%);
+    color: #fff;
+    padding: 12px 40px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
     position: sticky;
     top: 0;
     z-index: 1000;
@@ -27,133 +30,174 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap;
-    gap: 15px;
 }
 
 .site-header .logo {
-    font-size: 1.5em;
+    font-size: 1.3em;
     font-weight: bold;
-    color: #c0c0c0;
+    color: #fff;
     text-decoration: none;
-    text-shadow: 0 0 15px rgba(192, 192, 192, 0.6);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .site-header nav {
     display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
+    gap: 5px;
+    align-items: center;
 }
 
-.site-header nav a {
-    color: #c0c0c0;
+.site-header nav .nav-item {
+    position: relative;
+}
+
+.site-header nav a,
+.site-header nav .nav-link {
+    color: #fff;
     text-decoration: none;
-    padding: 8px 15px;
-    border-radius: 8px;
+    padding: 10px 18px;
+    border-radius: 6px;
     transition: all 0.3s ease;
     font-weight: 500;
-}
-
-.site-header nav a:hover {
-    background: rgba(192, 192, 192, 0.2);
-    transform: translateY(-2px);
-}
-
-/* ==================== FOOTER STYLES ==================== */
-.site-footer {
-    background: linear-gradient(135deg, #001a4d 0%, #0d3b66 100%);
-    color: #c0c0c0;
-    padding: 40px 20px 20px;
-    margin-top: 60px;
-    box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.3);
-}
-
-.site-footer .footer-content {
-    max-width: 1400px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 30px;
-    margin-bottom: 30px;
-}
-
-.site-footer .footer-section h3 {
-    color: #e8e8e8;
-    margin-bottom: 15px;
-    font-size: 1.2em;
-    text-shadow: 0 0 10px rgba(192, 192, 192, 0.5);
-}
-
-.site-footer .footer-section p,
-.site-footer .footer-section a {
-    color: #c0c0c0;
-    text-decoration: none;
-    line-height: 1.8;
-    display: block;
-    margin-bottom: 8px;
-    transition: all 0.3s ease;
-}
-
-.site-footer .footer-section a:hover {
-    color: #e8e8e8;
-    padding-left: 5px;
-}
-
-.site-footer .social-links {
-    display: flex;
-    gap: 15px;
-    margin-top: 10px;
-}
-
-.site-footer .social-links a {
-    display: inline-block;
-    width: 40px;
-    height: 40px;
-    background: rgba(192, 192, 192, 0.2);
-    border-radius: 50%;
+    font-size: 0.95em;
     display: flex;
     align-items: center;
-    justify-content: center;
-    font-size: 1.2em;
+    gap: 6px;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+}
+
+.site-header nav a:hover,
+.site-header nav .nav-link:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-1px);
+}
+
+/* Dropdown Styles */
+.dropdown {
+    position: relative;
+}
+
+.dropdown-toggle {
+    background: transparent;
+    border: none;
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 0.95em;
+    display: flex;
+    align-items: center;
+    gap: 6px;
     transition: all 0.3s ease;
 }
 
-.site-footer .social-links a:hover {
-    background: rgba(192, 192, 192, 0.4);
-    transform: translateY(-3px);
+.dropdown-toggle:hover {
+    background: rgba(255, 255, 255, 0.15);
 }
 
-.site-footer .footer-bottom {
-    text-align: center;
-    padding-top: 20px;
-    border-top: 1px solid rgba(192, 192, 192, 0.3);
-    color: #a0a0a0;
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: linear-gradient(135deg, #001a4d 0%, #0d3b66 100%);
+    min-width: 220px;
+    border-radius: 8px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+    z-index: 1000;
+    max-height: 400px;
+    overflow-y: auto;
+    margin-top: 8px;
+}
+
+.dropdown:hover .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.dropdown-menu a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 20px;
+    color: #c0c0c0;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border-bottom: 1px solid rgba(192, 192, 192, 0.1);
     font-size: 0.9em;
 }
 
-/* ==================== RESPONSIVE ADJUSTMENTS ==================== */
+.dropdown-menu a:last-child {
+    border-bottom: none;
+}
+
+.dropdown-menu a:hover {
+    background: rgba(192, 192, 192, 0.15);
+    color: #fff;
+    padding-left: 25px;
+}
+
+.dropdown-menu a i {
+    width: 20px;
+    text-align: center;
+    font-size: 1em;
+}
+
+/* Scrollbar for dropdown */
+.dropdown-menu::-webkit-scrollbar {
+    width: 6px;
+}
+
+.dropdown-menu::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+}
+
+.dropdown-menu::-webkit-scrollbar-thumb {
+    background: rgba(192, 192, 192, 0.5);
+    border-radius: 10px;
+}
+
+.dropdown-menu::-webkit-scrollbar-thumb:hover {
+    background: rgba(192, 192, 192, 0.7);
+}
+
+/* Mobile Responsive */
 @media (max-width: 768px) {
     .site-header {
-        padding: 15px 20px;
+        padding: 10px 20px;
     }
     
     .site-header .header-content {
         flex-direction: column;
-        text-align: center;
+        gap: 10px;
     }
     
     .site-header nav {
+        flex-wrap: wrap;
         justify-content: center;
         width: 100%;
     }
     
-    .site-footer .footer-content {
-        grid-template-columns: 1fr;
-        text-align: center;
+    .dropdown-menu {
+        position: fixed;
+        left: 50%;
+        transform: translateX(-50%) translateY(-10px);
+        width: 90%;
+        max-width: 300px;
     }
     
-    .site-footer .social-links {
-        justify-content: center;
+    .dropdown:hover .dropdown-menu {
+        transform: translateX(-50%) translateY(0);
     }
 }
 
@@ -628,16 +672,68 @@
 </head>
 <body>
     <div class="sparkle-1"></div>    <div class="sparkle-2"></div>   
-    <header class="site-header">        
-        <div class="header-content">            
-            <a href="albums.html" class="logo">✨ Davreignne's Debut</a>            
-            <nav>                
-                <a href="albums.html">📚 Albums</a>                
-                <a href="debut-video.html">🎥 Video</a>                
-                <a href="#about">ℹ️ About</a>            
-            </nav>        
-        </div>    
-    </header>    
+    <header class="site-header">    
+        <div class="header-content">        
+        <a href="albums.html" class="logo">           
+            <i class="fas fa-star"></i>            Davreignne's Debut        </a>        
+            <nav>            
+                <a href="albums.html">                
+                    <i class="fas fa-home"></i>                Home            </a>                        
+                <div class="dropdown nav-item">                
+                    <button class="dropdown-toggle">                    
+                        <i class="fas fa-images">
+                            
+                        </i>                    Albums                    <i class="fas fa-chevron-down" style="font-size: 0.7em;">
+                            
+                        </i>                
+                    </button>                
+                    <div class="dropdown-menu">                    
+                        <a href="album.html?album=1">                        
+                            <i class="fas fa-users"></i>                        Table 1                    </a>                    
+                        <a href="album.html?album=2">                        
+                            <i class="fas fa-users"></i>                        Table 2                    </a>                    
+                        <a href="album.html?album=3">                        
+                            <i class="fas fa-users"></i>                        Table 3                    </a>                    
+                        <a href="album.html?album=4">                        
+                            <i class="fas fa-users"></i>                        Table 4                    </a>                    
+                        <a href="album.html?album=5">                        
+                            <i class="fas fa-users"></i>                        Table 5                    </a>                    
+                        <a href="album.html?album=6">                        
+                            <i class="fas fa-users"></i>                        Table 6                    </a>                    
+                        <a href="album.html?album=7">                        
+                            <i class="fas fa-users"></i>                        Table 7                    </a>                    
+                        <a href="album.html?album=8">                        
+                            <i class="fas fa-users"></i>                        Table 8                    </a>                    
+                        <a href="album.html?album=9">                        
+                            <i class="fas fa-users"></i>                        Table 9                    </a>                    
+                        <a href="album.html?album=10">                        
+                            <i class="fas fa-users"></i>                        Table 10                    </a>                    
+                        <a href="album.html?album=11">                        
+                            <i class="fas fa-users"></i>                        Table 11                    </a>                    
+                        <a href="album.html?album=12">                        
+                            <i class="fas fa-users"></i>                        Table 12                    </a>                    
+                        <a href="album.html?album=13">                        
+                            <i class="fas fa-users"></i>                        Table 13                    </a>                    
+                        <a href="album.html?album=14">                        
+                            <i class="fas fa-users"></i>                        Table 14                    </a>                    
+                        <a href="album.html?album=15">                        
+                            <i class="fas fa-rose"></i>                        18 Roses                    </a>                    
+                        <a href="album.html?album=16">                        
+                            <i class="fas fa-candle-holder"></i>                        18 Candles                    </a>                    
+                        <a href="album.html?album=17">                        
+                            <i class="fas fa-money-bill"></i>                        18 Blue Bills                    </a>                    
+                        <a href="album.html?album=18">                        
+                            <i class="fas fa-gift"></i>                        18 Treasures                    </a>                    
+                        <a href="album.html?album=19">                        
+                            <i class="fas fa-glass-cheers"></i>                        18 Shots                    </a>                
+                    </div>            
+                </div>                        
+                <a href="#about">                
+                    <i class="fas fa-info-circle"></i>                About            </a>                        
+                <a href="#" id="logoutBtn" style="display: none;">                
+                    <i class="fas fa-sign-out-alt"></i>                Logout            </a>        
+            </nav>    
+    </div></header> 
     <div class="container">
         <div class="header">
             <h1 id="albumTitle">📸 Photo Gallery</h1>
@@ -998,6 +1094,20 @@ const deleteButton = canDelete
         });
 
         loadPhotos();
+        // Logout functionality (for future use)
+document.getElementById('logoutBtn').addEventListener('click', function(e) {
+    e.preventDefault();
+    if (confirm('Are you sure you want to logout?')) {
+        localStorage.removeItem('currentUser');
+        window.location.reload();
+    }
+});
+
+// Show logout button if user is logged in
+if (currentUser) {
+    document.getElementById('logoutBtn').style.display = 'flex';
+}
+
      </script>    <!-- ==================== FOOTER ==================== -->    
     <footer class="site-footer">        
         <div class="footer-content">            
