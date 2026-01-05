@@ -65,6 +65,15 @@
             border-color: #001a4d;
         }
 
+        .file-info {
+            margin-top: 10px;
+            padding: 10px;
+            background: #f0f0f0;
+            border-radius: 8px;
+            font-size: 0.9em;
+            color: #555;
+        }
+
         .upload-btn {
             width: 100%;
             padding: 18px;
@@ -113,6 +122,7 @@
             justify-content: center;
             color: #000;
             font-weight: bold;
+            font-size: 0.9em;
         }
 
         .upload-status {
@@ -156,8 +166,9 @@
             </div>
 
             <div class="form-group">
-                <label for="photoFile">Choose Photo/Video (Max 5MB):</label>
-                <input type="file" id="photoFile" accept="image/*,video/*" required>
+                <label for="photoFile">Choose Photo/Video (Max 5MB each):</label>
+                <input type="file" id="photoFile" accept="image/*,video/*" multiple required>
+                <div class="file-info" id="fileInfo" style="display: none;"></div>
             </div>
 
             <button type="submit" class="upload-btn" id="uploadBtn">Upload</button>
@@ -218,6 +229,31 @@
             albumSelect.value = preselectedAlbum;
         }
 
+        // Show file info when files are selected
+        document.getElementById('photoFile').addEventListener('change', (e) => {
+            const files = e.target.files;
+            const fileInfo = document.getElementById('fileInfo');
+            
+            if (files.length > 0) {
+                const totalSize = Array.from(files).reduce((sum, file) => sum + file.size, 0);
+                const totalSizeMB = (totalSize / (1024 * 1024)).toFixed(2);
+                
+                fileInfo.style.display = 'block';
+                fileInfo.textContent = `${files.length} file(s) selected • Total: ${totalSizeMB} MB`;
+                
+                // Check if any file exceeds 5MB
+                const oversized = Array.from(files).filter(f => f.size > 5 * 1024 * 1024);
+                if (oversized.length > 0) {
+                    fileInfo.textContent += ` ⚠️ ${oversized.length} file(s) exceed 5MB limit`;
+                    fileInfo.style.color = 'red';
+                } else {
+                    fileInfo.style.color = '#555';
+                }
+            } else {
+                fileInfo.style.display = 'none';
+            }
+        });
+
         // Compress image before upload
         function compressFile(file) {
             return new Promise((resolve) => {
@@ -265,6 +301,55 @@
             });
         }
 
+        // Upload single file
+        async function uploadSingleFile(file, albumId, uploaderName, fileIndex, totalFiles) {
+            return new Promise(async (resolve, reject) => {
+                try {
+                    const compressedFile = await compressFile(file);
+                    
+                    const storageRef = ref(storage, `albums/${albumId}/${Date.now()}_${file.name}`);
+                    const uploadTask = uploadBytesResumable(storageRef, compressedFile);
+
+                    uploadTask.on('state_changed',
+                        (snapshot) => {
+                            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                            const progressFill = document.getElementById('progressFill');
+                            const uploadStatus = document.getElementById('uploadStatus');
+                            
+                            progressFill.style.width = progress + '%';
+                            progressFill.textContent = Math.round(progress) + '%';
+                            uploadStatus.textContent = `Uploading file ${fileIndex + 1} of ${totalFiles}: ${Math.round(progress)}%`;
+                        },
+                        (error) => {
+                            reject(error);
+                        },
+                        async () => {
+                            try {
+                                const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+                                
+                                const uploadStatus = document.getElementById('uploadStatus');
+                                uploadStatus.textContent = 'Saving...';
+
+                                await addDoc(collection(db, `albums/${albumId}/photos`), {
+                                    name: file.name,
+                                    dataUrl: downloadURL,
+                                    uploader: uploaderName,
+                                    size: compressedFile.size,
+                                    timestamp: Date.now()
+                                });
+
+                                resolve();
+                            } catch (error) {
+                                reject(error);
+                            }
+                        }
+                    );
+                } catch (error) {
+                    reject(error);
+                }
+            });
+        }
+
         // Handle form submission
         document.getElementById('uploadForm').addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -272,15 +357,17 @@
             const albumId = parseInt(albumSelect.value);
             const uploaderName = document.getElementById('uploaderName').value.trim();
             const fileInput = document.getElementById('photoFile');
-            const file = fileInput.files[0];
+            const files = Array.from(fileInput.files);
 
-            if (!albumId || !uploaderName || !file) {
+            if (!albumId || !uploaderName || files.length === 0) {
                 alert('Please fill all fields');
                 return;
             }
 
-            if (file.size > 5 * 1024 * 1024) {
-                alert('File too large! Maximum 5MB allowed.');
+            // Check if any file exceeds 5MB
+            const oversizedFiles = files.filter(f => f.size > 5 * 1024 * 1024);
+            if (oversizedFiles.length > 0) {
+                alert(`${oversizedFiles.length} file(s) exceed 5MB limit. Please remove them and try again.`);
                 return;
             }
 
@@ -291,66 +378,27 @@
 
             uploadBtn.disabled = true;
             progressContainer.style.display = 'block';
-            uploadStatus.textContent = 'Compressing file...';
+            uploadStatus.textContent = 'Starting upload...';
 
             try {
-                // Compress file
-                const compressedFile = await compressFile(file);
-                console.log('Original size:', file.size, 'Compressed:', compressedFile.size);
+                // Upload files one by one
+                for (let i = 0; i < files.length; i++) {
+                    await uploadSingleFile(files[i], albumId, uploaderName, i, files.length);
+                }
 
-                uploadStatus.textContent = 'Uploading to Firebase Storage...';
+                // All done!
+                uploadStatus.textContent = 'Done!';
+                progressFill.style.width = '100%';
+                progressFill.textContent = '100%';
+                progressFill.style.background = 'linear-gradient(90deg, #00ff00, #00cc00)';
 
-                // Upload to Firebase Storage
-                const storageRef = ref(storage, `albums/${albumId}/${Date.now()}_${file.name}`);
-                const uploadTask = uploadBytesResumable(storageRef, compressedFile);
-
-                uploadTask.on('state_changed',
-                    (snapshot) => {
-                        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                        progressFill.style.width = progress + '%';
-                        progressFill.textContent = Math.round(progress) + '%';
-                        uploadStatus.textContent = `Uploading: ${Math.round(progress)}%`;
-                    },
-                    (error) => {
-                        console.error('Upload error:', error);
-                        uploadStatus.textContent = '❌ Upload failed: ' + error.message;
-                        uploadBtn.disabled = false;
-                    },
-                    async () => {
-                        try {
-                            // Get download URL
-                            const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-                            
-                            uploadStatus.textContent = 'Saving to database...';
-
-                            // Save metadata to Firestore (NOT the actual file data)
-                            await addDoc(collection(db, `albums/${albumId}/photos`), {
-                                name: file.name,
-                                dataUrl: downloadURL, // Store Firebase Storage URL
-                                uploader: uploaderName,
-                                size: compressedFile.size,
-                                timestamp: Date.now()
-                            });
-
-                            uploadStatus.textContent = '✅ Upload successful!';
-                            progressFill.style.width = '100%';
-                            progressFill.textContent = '100%';
-
-                            setTimeout(() => {
-                                window.location.href = `album.html?album=${albumId}`;
-                            }, 1500);
-
-                        } catch (error) {
-                            console.error('Database error:', error);
-                            uploadStatus.textContent = '❌ Error saving to database';
-                            uploadBtn.disabled = false;
-                        }
-                    }
-                );
+                setTimeout(() => {
+                    window.location.href = `album.html?album=${albumId}`;
+                }, 1500);
 
             } catch (error) {
-                console.error('Error:', error);
-                uploadStatus.textContent = '❌ Error: ' + error.message;
+                console.error('Upload error:', error);
+                uploadStatus.textContent = '❌ Upload failed: ' + error.message;
                 uploadBtn.disabled = false;
             }
         });
