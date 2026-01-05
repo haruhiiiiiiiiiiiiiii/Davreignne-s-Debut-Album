@@ -65,6 +65,72 @@
             font-size: 1.1em;
         }
 
+        /* User Identity Section */
+        .user-section {
+            background: linear-gradient(135deg, rgba(0, 26, 77, 0.1) 0%, rgba(192, 192, 192, 0.1) 100%);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            border-left: 5px solid #c0c0c0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .user-input-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .user-input-group label {
+            font-weight: bold;
+            color: #001a4d;
+            white-space: nowrap;
+        }
+
+        .user-input-group input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 2px solid #c0c0c0;
+            border-radius: 8px;
+            font-size: 1em;
+        }
+
+        .user-input-group input:focus {
+            outline: none;
+            border-color: #001a4d;
+        }
+
+        .current-user {
+            background: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            color: #001a4d;
+            font-weight: bold;
+            border: 2px solid #c0c0c0;
+        }
+
+        .btn-change-user {
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #e8e8e8 0%, #f5f5f5 50%, #e8e8e8 100%);
+            color: #001a4d;
+            border: 2px solid #c0c0c0;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-change-user:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(192, 192, 192, 0.4);
+        }
+
         .button-group {
             display: flex;
             gap: 15px;
@@ -123,7 +189,6 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
             transition: all 0.3s ease;
             background: white;
-            cursor: pointer;
         }
 
         .photo-item:hover {
@@ -131,11 +196,42 @@
             box-shadow: 0 10px 25px rgba(0,0,0,0.3);
         }
 
+        .photo-media-wrapper {
+            position: relative;
+            cursor: pointer;
+        }
+
         .photo-item img, .photo-item video {
             width: 100%;
             height: 250px;
             object-fit: cover;
             display: block;
+        }
+
+        /* Delete Button */
+        .delete-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(220, 53, 69, 0.9);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .delete-btn:hover {
+            background: rgba(200, 35, 51, 1);
+            transform: scale(1.1);
         }
 
         .photo-info {
@@ -211,6 +307,7 @@
             align-items: center;
             justify-content: center;
             transition: all 0.3s ease;
+            z-index: 10000;
         }
 
         .lightbox-close:hover {
@@ -230,6 +327,73 @@
             text-align: center;
         }
 
+        /* Delete Confirmation Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 10px 50px rgba(0,0,0,0.3);
+        }
+
+        .modal-content h3 {
+            color: #001a4d;
+            margin-bottom: 15px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+
+        .btn-confirm {
+            padding: 10px 25px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .btn-confirm:hover {
+            background: #c82333;
+        }
+
+        .btn-cancel {
+            padding: 10px 25px;
+            background: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .btn-cancel:hover {
+            background: #5a6268;
+        }
+
         @media (max-width: 768px) {
             body { background-attachment: scroll; }
             .container { padding: 25px; }
@@ -237,6 +401,7 @@
             .photo-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
             .photo-item img, .photo-item video { height: 150px; }
             .button-group { flex-direction: column; }
+            .user-section { flex-direction: column; }
         }
     </style>
 </head>
@@ -248,6 +413,19 @@
         <div class="header">
             <h1 id="albumTitle">📸 Photo Gallery</h1>
             <p class="subtitle" id="photoCount">Loading photos...</p>
+        </div>
+
+        <!-- User Identity Section -->
+        <div class="user-section">
+            <div id="userInputSection" class="user-input-group">
+                <label for="currentUserInput">👤 Your Name:</label>
+                <input type="text" id="currentUserInput" placeholder="Enter your name to manage your photos">
+                <button onclick="setCurrentUser()" class="btn-change-user">Set Name</button>
+            </div>
+            <div id="userDisplaySection" style="display: none;">
+                <span class="current-user">👤 Viewing as: <span id="displayUserName"></span></span>
+                <button onclick="changeUser()" class="btn-change-user">Change Name</button>
+            </div>
         </div>
 
         <div class="button-group">
@@ -270,9 +448,22 @@
         <div class="lightbox-content" id="lightboxContent"></div>
     </div>
 
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteModal" class="modal">
+        <div class="modal-content">
+            <h3>🗑️ Delete Photo?</h3>
+            <p>Are you sure you want to delete this photo? This action cannot be undone.</p>
+            <div class="modal-buttons">
+                <button class="btn-confirm" onclick="confirmDelete()">Yes, Delete</button>
+                <button class="btn-cancel" onclick="cancelDelete()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-        import { getFirestore, collection, getDocs, query, orderBy } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+        import { getFirestore, collection, getDocs, query, orderBy, deleteDoc, doc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+        import { getStorage, ref, deleteObject } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js';
 
         const firebaseConfig = {
             apiKey: "AIzaSyDPaMpRBwk8a10vX4CUvsolfUyn3gpec5s",
@@ -286,6 +477,7 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+        const storage = getStorage(app);
 
         const albumsList = {
             1: 'Table 1', 2: 'Table 2', 3: 'Table 3', 4: 'Table 4', 5: 'Table 5',
@@ -307,12 +499,99 @@
         document.getElementById('uploadBtn').href = `front.html?album=${albumId}`;
         document.getElementById('uploadBtnEmpty').href = `front.html?album=${albumId}`;
 
+        // User management
+        let currentUser = localStorage.getItem('currentUser') || '';
+        let photoToDelete = null;
+
+        window.setCurrentUser = function() {
+            const input = document.getElementById('currentUserInput');
+            const name = input.value.trim();
+            
+            if (name) {
+                currentUser = name;
+                localStorage.setItem('currentUser', name);
+                document.getElementById('displayUserName').textContent = name;
+                document.getElementById('userInputSection').style.display = 'none';
+                document.getElementById('userDisplaySection').style.display = 'flex';
+                loadPhotos(); // Reload to show delete buttons
+            } else {
+                alert('Please enter your name');
+            }
+        };
+
+        window.changeUser = function() {
+            document.getElementById('userInputSection').style.display = 'flex';
+            document.getElementById('userDisplaySection').style.display = 'none';
+            document.getElementById('currentUserInput').value = currentUser;
+        };
+
+        // Initialize user display
+        if (currentUser) {
+            document.getElementById('displayUserName').textContent = currentUser;
+            document.getElementById('userInputSection').style.display = 'none';
+            document.getElementById('userDisplaySection').style.display = 'flex';
+        }
+
+        // Handle Enter key in input
+        document.getElementById('currentUserInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                setCurrentUser();
+            }
+        });
+
+        // Delete functions
+        window.deletePhoto = function(photoId, photoUrl, uploaderName) {
+            photoToDelete = { id: photoId, url: photoUrl, uploader: uploaderName };
+            document.getElementById('deleteModal').classList.add('active');
+        };
+
+        window.confirmDelete = async function() {
+            if (!photoToDelete) return;
+
+            try {
+                console.log(`🗑️ Deleting photo: ${photoToDelete.id}`);
+
+                // Extract storage path from URL
+                const urlParts = photoToDelete.url.split('/o/')[1].split('?')[0];
+                const storagePath = decodeURIComponent(urlParts);
+                
+                // Delete from Storage
+                const storageRef = ref(storage, storagePath);
+                await deleteObject(storageRef);
+                console.log('✅ Deleted from Storage');
+
+                // Delete from Firestore
+                await deleteDoc(doc(db, `albums/${albumId}/photos`, photoToDelete.id));
+                console.log('✅ Deleted from Firestore');
+
+                // Reload photos
+                cancelDelete();
+                loadPhotos();
+
+                alert('✅ Photo deleted successfully!');
+
+            } catch (error) {
+                console.error('❌ Error deleting photo:', error);
+                alert(`Failed to delete photo: ${error.message}`);
+            }
+        };
+
+        window.cancelDelete = function() {
+            photoToDelete = null;
+            document.getElementById('deleteModal').classList.remove('active');
+        };
+
         // Load photos
         async function loadPhotos() {
             const photoGrid = document.getElementById('photoGrid');
             const loadingState = document.getElementById('loadingState');
             const emptyState = document.getElementById('emptyState');
             const photoCount = document.getElementById('photoCount');
+
+            // Clear grid
+            photoGrid.innerHTML = '';
+            loadingState.style.display = 'block';
+            emptyState.style.display = 'none';
 
             try {
                 console.log(`🔍 Loading photos from album ${albumId}...`);
@@ -339,7 +618,7 @@
                     // ✅ VALIDATE URL - Skip photos with missing or undefined URLs
                     if (!photo.url || photo.url === 'undefined' || photo.url === '') {
                         console.warn(`⚠️ Skipping invalid photo from database: ${photo.name || 'Unknown'}`);
-                        return; // Skip this photo
+                        return;
                     }
 
                     photos.push({
@@ -362,7 +641,6 @@
                 photos.forEach((photo) => {
                     const photoItem = document.createElement('div');
                     photoItem.className = 'photo-item';
-                    photoItem.onclick = () => openLightbox(photo);
 
                     const isVideo = photo.type && photo.type.startsWith('video');
                     const mediaElement = isVideo 
@@ -377,8 +655,19 @@
                           })
                         : 'Unknown date';
 
+                    // Show delete button only if current user matches uploader
+                    const canDelete = currentUser && photo.uploader && 
+                                     currentUser.toLowerCase().trim() === photo.uploader.toLowerCase().trim();
+                    
+                    const deleteButton = canDelete 
+                        ? `<button class="delete-btn" onclick="deletePhoto('${photo.id}', '${photo.url}', '${photo.uploader}')" title="Delete this photo">🗑️</button>`
+                        : '';
+
                     photoItem.innerHTML = `
-                        ${mediaElement}
+                        <div class="photo-media-wrapper" onclick="openLightbox(${JSON.stringify(photo).replace(/"/g, '&quot;')})">
+                            ${deleteButton}
+                            ${mediaElement}
+                        </div>
                         <div class="photo-info">
                             <div class="photo-uploader">📤 ${photo.uploader || 'Anonymous'}</div>
                             <div class="photo-date">📅 ${date}</div>
@@ -451,7 +740,11 @@
         // Close lightbox on ESC key
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
-                closeLightbox();
+                if (document.getElementById('deleteModal').classList.contains('active')) {
+                    cancelDelete();
+                } else {
+                    closeLightbox();
+                }
             }
         });
 
