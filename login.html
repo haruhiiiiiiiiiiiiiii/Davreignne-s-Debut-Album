@@ -300,6 +300,50 @@
             height: 80px;
         }
     }
+
+        /* Add this new class */
+.huge-welcome {
+    font-size: 3.8em; /* Very Large */
+    font-weight: 900; /* Extra Bold */
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 5px;
+    
+    /* Silver Gradient Text Effect */
+    background: linear-gradient(to bottom, #ffffff 0%, #c0c0c0 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    
+    /* Glow/Shadow */
+    filter: drop-shadow(0 5px 15px rgba(192, 192, 192, 0.4));
+    
+    /* Pop-in Animation */
+    animation: popIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Adjust the existing .login-title to fit nicely under the huge welcome */
+.login-title {
+    color: #e8e8e8;
+    font-size: 1.8em; /* Slightly smaller to let Welcome shine */
+    font-weight: 600;
+    margin-bottom: 10px;
+    text-shadow: 0 0 20px rgba(192, 192, 192, 0.3);
+    text-transform: none; /* Keep natural casing for the name */
+}
+
+/* Add the animation keyframes if not already there */
+@keyframes popIn {
+    0% { opacity: 0; transform: scale(0.5); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+/* Mobile Adjustment */
+@media (max-width: 480px) {
+    .huge-welcome {
+        font-size: 2.8em; /* Still big on phone, but fits screen */
+    }
+}
+
 </style>
 
 </head>
@@ -314,14 +358,16 @@
 
     <div class="content-wrapper">
         <div class="login-container">
-            <div class="login-header">    
-                <img src="https://raw.githubusercontent.com/haruhiiiiiiiiiiiiiii/Davreignne-s-Debut-Album/main/klogoo.png" alt="Davreignne's Debut Logo" class="login-icon">        
-                <h1 class="login-title">Welcome!</h1>    
-                <h1 class="login-title">Davreignne's Grand Debut</h1>
-                    <p class="login-subtitle">A Night to Remember</p>
+            <div class="login-header">
+    <img src="https://raw.githubusercontent.com/haruhiiiiiiiiiiiiiii/Davreignne-s-Debut-Album/main/klogoo.png" alt="Davreignne's Debut Logo" class="login-icon">
+    
+    <div class="huge-welcome">WELCOME!</div>
 
+    <h1 class="login-title">Davreignne's Grand Debut</h1>
+    
+    <p class="login-subtitle">A Night to Remember</p>
+</div>
 
-            </div>
 
             <div id="errorMessage" class="error-message">
                 <i class="fas fa-exclamation-circle"></i> Please fill in all fields
