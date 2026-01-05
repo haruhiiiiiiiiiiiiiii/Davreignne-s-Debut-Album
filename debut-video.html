@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Official Debut Gallery</title>
-    <style>
+    <meta charset="UTF-8">    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">    
+    <title>Home - Davreignne's Debut</title>    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">    
+
+<style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body { 
@@ -500,13 +502,48 @@
     </style>
 </head>
 <body>
+    <!-- Header -->
+    <header class="main-header">
+        <div class="header-container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-star"></i>
+                <span>Davreignne's Debut</span>
+            </a>
+            
+            <nav class="nav-menu">
+                <a href="index.html">
+                    <i class="fas fa-home"></i>
+                    <span>Home</span>
+                </a>
+                <a href="albums.html">
+                    <i class="fas fa-images"></i>
+                    <span>Albums</span>
+                </a>
+                <a href="front.html">
+                    <i class="fas fa-upload"></i>
+                    <span>Upload</span>
+                </a>
+                <a href="debut-video.html">
+                    <i class="fas fa-video"></i>
+                    <span>Video</span>
+                </a>
+                <button class="logout-btn" onclick="handleLogout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+
+
     <div class="sparkle-1"></div>
     <div class="sparkle-2"></div>
     <div class="sparkle-3"></div>
     <div class="sparkle-4"></div>
     
-    <div class="container">
-        <h1>✨ Official Debut Gallery ✨</h1>
+    <div class="container">        
+    <h1>Welcome to the Debut!</h1>
         <p class="subtitle">Watch the video and browse exclusive photos</p>
         
         <!-- VIDEO SECTION -->
@@ -603,6 +640,13 @@ window.addEventListener('DOMContentLoaded', function() {
     //     document.getElementById('adminSection').style.display = 'block';
     // }
 });
+// Logout functionality
+function handleLogout() {
+    if (confirm('Are you sure you want to logout?')) {
+        localStorage.removeItem('currentUser');
+        window.location.href = 'login.html';
+    }
+}
 
         const STORAGE_KEY = 'qr_photo_albums';
         const ADMIN_KEY = 'debut_admin_logged_in';
@@ -836,5 +880,16 @@ window.addEventListener('DOMContentLoaded', function() {
             loadPhotos();
         };
     </script>
+        <!-- Footer -->
+    <footer class="main-footer">
+        <div class="footer-content">
+            <p><i class="fas fa-heart"></i> Celebrating Davreignne's Debut <i class="fas fa-heart"></i></p>
+            <p>© 2026 - Made with Love</p>
+        </div>
+    </footer>
+
+    <!-- Your existing scripts continue below -->
+</body>
+
 </body>
 </html>
