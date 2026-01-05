@@ -31,7 +31,6 @@
     justify-content: center;
 }
 
-/* Responsive background adjustments */
 @media (max-width: 768px) {
     .hero {
         background-attachment: scroll;
@@ -46,7 +45,6 @@
     }
 }
         
-        /* GLITTERY BACKGROUND EFFECTS */
         .hero::before {
             content: '';
             position: absolute;
@@ -75,7 +73,6 @@
             box-shadow: 0 0 80px rgba(192, 192, 192, 0.5), 0 0 120px rgba(220, 220, 220, 0.3);
         }
         
-        /* FLOATING SPARKLES */
         .sparkle-1 { position: absolute; width: 8px; height: 8px; background: radial-gradient(circle, #ffffff 0%, rgba(255,255,255,0.3) 70%); border-radius: 50%; top: 10%; left: 5%; animation: twinkle 2s ease-in-out infinite, float-random 6s ease-in-out infinite; box-shadow: 0 0 15px rgba(192, 192, 192, 0.8); }
         .sparkle-2 { position: absolute; width: 6px; height: 6px; background: radial-gradient(circle, #e8e8e8 0%, rgba(192,192,192,0.3) 70%); border-radius: 50%; top: 20%; right: 8%; animation: twinkle 2.5s ease-in-out infinite 0.5s, float-random 7s ease-in-out infinite; box-shadow: 0 0 12px rgba(200, 200, 200, 0.7); }
         .sparkle-3 { position: absolute; width: 7px; height: 7px; background: radial-gradient(circle, #f0f0f0 0%, rgba(192,192,192,0.2) 70%); border-radius: 50%; bottom: 15%; left: 10%; animation: twinkle 3s ease-in-out infinite 1s, float-random 8s ease-in-out infinite; box-shadow: 0 0 14px rgba(192, 192, 192, 0.8); }
@@ -140,7 +137,6 @@
     text-rendering: optimizeLegibility;
 }
 
-
 @keyframes cursiveGlow {
     0%, 100% { 
         filter: drop-shadow(0 0 15px rgba(192, 192, 192, 0.6)) drop-shadow(0 0 25px rgba(220, 220, 220, 0.3));
@@ -151,13 +147,6 @@
         text-shadow: 0 0 35px rgba(192, 192, 192, 0.8), 0 0 50px rgba(220, 220, 220, 0.5);
     }
 }
-
-@keyframes shimmer-text {
-    0% { text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3), 0 0 10px rgba(192, 192, 192, 0.3); }
-    50% { text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3), 0 0 20px rgba(192, 192, 192, 0.6), 0 0 30px rgba(220, 220, 220, 0.4); }
-    100% { text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3), 0 0 10px rgba(192, 192, 192, 0.3); }
-}
-
         
         .subtitle {
             font-size: 1.5em;
@@ -173,7 +162,6 @@
             50% { opacity: 1; }
         }
         
-        /* VIDEO SECTION WITH GLITTER */
         .video-section {
             margin-bottom: 50px;
             animation: slideDown 0.8s ease-out 0.5s backwards;
@@ -183,8 +171,8 @@
         .video-container {
     position: relative;
     width: 100%;
-    max-width: 850px;        /* ← Bigger: 700px → 850px */
-    margin: 0 auto;          /* ← Center it */
+    max-width: 850px;
+    margin: 0 auto;
     border-radius: 25px;
     overflow: visible;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 0 50px rgba(192, 192, 192, 0.5), inset 0 0 30px rgba(220, 220, 220, 0.2);
@@ -194,7 +182,6 @@
     animation: pulse-glow 3s ease-in-out infinite;
 }
         
-        /* GLITTER BORDER EFFECT */
         .video-container::before {
             content: '';
             position: absolute;
@@ -215,29 +202,26 @@
         
         .video-container video {
     width: 100%;
-    max-width: 850px;        /* ← Bigger: 700px → 850px */
-    max-height: 480px;       /* ← Taller: 380px → 480px */
+    max-width: 850px;
+    max-height: 480px;
     height: auto;
     display: block;
     margin: 0 auto;
     object-fit: contain;
 }
-
         
         .video-label {
     text-align: center;
     color: rgba(220, 220, 220, 0.98);
     font-size: 1.1em;
-    margin-top: 40px;      /* ← Move to bottom: more space from video */
-    margin-bottom: 60px;   /* ← Even more bottom space */
+    margin-top: 40px;
+    margin-bottom: 60px;
     font-style: italic;
     letter-spacing: 1px;
     animation: slideDown 0.8s ease-out 0.6s backwards;
     text-shadow: 0 0 10px rgba(192, 192, 192, 0.5);
     font-weight: 500;
 }
-
-
         
         .buttons-container {
             display: grid;
@@ -304,17 +288,15 @@
         .btn-card.gallery-btn {
     background: linear-gradient(135deg, #e8e8e8 0%, #ffffff 50%, #e8e8e8 100%);
     color: #001a4d;
-    border: 3px solid transparent; /* same as Upload Now */
+    border: 3px solid transparent;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 0 25px rgba(192, 192, 192, 0.3);
 }
-
 
 .btn-card.gallery-btn:hover {
     background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 50%, #ffffff 100%);
     transform: translateY(-15px) scale(1.02);
     box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3), 0 0 40px rgba(192, 192, 192, 0.5);
 }
-
         
         .btn-icon {
             font-size: 3em;
@@ -416,7 +398,6 @@
 </head>
 <body>
     <div class="hero">
-        <!-- FLOATING SPARKLES -->
         <div class="sparkle-1"></div>
         <div class="sparkle-2"></div>
         <div class="sparkle-3"></div>
@@ -425,7 +406,6 @@
         <div class="container">
             <h1>✨ Davreignne's Debut Gallery ✨</h1>
             
-            <!-- VIDEO SECTION -->
             <div class="video-section">
     <div class="video-container">
         <video controls autoplay playsinline>
@@ -436,7 +416,7 @@
     
             
             <div class="buttons-container">
-                <a href="albums.html" class="btn-card upload-btn">
+                <a href="front.html" class="btn-card upload-btn">
                     <svg class="btn-icon-small" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
     <g fill="currentColor">
         <path d="M12 18 L12 6 M8 10 L12 6 L16 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/>
@@ -500,33 +480,58 @@
         </div>
     </div>
 
-    <script>
-        const STORAGE_KEY = 'qr_photo_albums';
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getFirestore, collection, getDocs } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDPaMpRBwk8a10vX4CUvsolfUyn3gpec5s",
+            authDomain: "debut-photo-gallery.firebaseapp.com",
+            projectId: "debut-photo-gallery",
+            storageBucket: "debut-photo-gallery.firebasestorage.app",
+            messagingSenderId: "954052989718",
+            appId: "1:954052989718:web:8faaeeaa9aebe726f67637",
+            measurementId: "G-WQ0EW238CJ"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
         
-        function updateStats() {
+        async function updateStats() {
             try {
-                const allAlbums = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
                 let totalPhotos = 0;
                 let totalSize = 0;
                 const uploaders = new Set();
                 
-                Object.values(allAlbums).forEach(album => {
-                    totalPhotos += album.length;
-                    album.forEach(p => uploaders.add(p.uploader));
-                });
-                
-                totalSize = localStorage.getItem(STORAGE_KEY)?.length || 0;
+                // Loop through all albums (1-20)
+                for (let albumId = 1; albumId <= 20; albumId++) {
+                    try {
+                        const snapshot = await getDocs(collection(db, `albums/${albumId}/photos`));
+                        totalPhotos += snapshot.size;
+                        
+                        snapshot.forEach(doc => {
+                            const data = doc.data();
+                            if (data.uploader) uploaders.add(data.uploader);
+                            if (data.size) totalSize += data.size;
+                        });
+                    } catch (error) {
+                        // Album doesn't exist yet, skip
+                    }
+                }
                 
                 document.getElementById('photoCount').textContent = totalPhotos;
                 document.getElementById('storageUsed').textContent = Math.round(totalSize / 1024) + ' KB';
                 document.getElementById('uploaderCount').textContent = uploaders.size;
             } catch (e) {
                 console.error('Stats error:', e);
+                document.getElementById('photoCount').textContent = '0';
+                document.getElementById('storageUsed').textContent = '0 KB';
+                document.getElementById('uploaderCount').textContent = '0';
             }
         }
         
         updateStats();
-        setInterval(updateStats, 2000);
+        setInterval(updateStats, 10000); // Update every 10 seconds
     </script>
 </body>
 </html>
