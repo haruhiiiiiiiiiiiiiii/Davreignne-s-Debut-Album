@@ -608,37 +608,45 @@
         };
 
         window.confirmDelete = async function() {
-            if (!photoToDelete) return;
+    if (!photoToDelete) return;
 
-            const modal = document.getElementById('deleteModal');
-            const confirmBtn = modal.querySelector('.btn-confirm');
-            confirmBtn.disabled = true;
-            confirmBtn.textContent = 'Deleting...';
+    // EXTRA SECURITY: Check if current user matches uploader
+    if (!currentUser || currentUser.toLowerCase().trim() !== photoToDelete.uploader.toLowerCase().trim()) {
+        alert('❌ You can only delete your own photos!');
+        cancelDelete();
+        return;
+    }
 
-            try {
-                await deleteDoc(doc(db, `albums/${albumId}/photos`, photoToDelete.id));
+    const modal = document.getElementById('deleteModal');
+    const confirmBtn = modal.querySelector('.btn-confirm');
+    confirmBtn.disabled = true;
+    confirmBtn.textContent = 'Deleting...';
 
-                try {
-                    const urlParts = photoToDelete.url.split('/o/')[1];
-                    if (urlParts) {
-                        const storagePath = decodeURIComponent(urlParts.split('?')[0]);
-                        const storageRef = ref(storage, storagePath);
-                        await deleteObject(storageRef);
-                    }
-                } catch (storageError) {
-                    console.warn('Storage deletion warning:', storageError);
-                }
+    try {
+        await deleteDoc(doc(db, `albums/${albumId}/photos`, photoToDelete.id));
 
-                cancelDelete();
-                await loadPhotos();
-                alert('✅ Photo deleted successfully!');
-
-            } catch (error) {
-                alert(`Failed to delete photo: ${error.message}`);
-                confirmBtn.disabled = false;
-                confirmBtn.textContent = 'Yes, Delete';
+        try {
+            const urlParts = photoToDelete.url.split('/o/')[1];
+            if (urlParts) {
+                const storagePath = decodeURIComponent(urlParts.split('?')[0]);
+                const storageRef = ref(storage, storagePath);
+                await deleteObject(storageRef);
             }
-        };
+        } catch (storageError) {
+            console.warn('Storage deletion warning:', storageError);
+        }
+
+        cancelDelete();
+        await loadPhotos();
+        alert('✅ Photo deleted successfully!');
+
+    } catch (error) {
+        alert(`Failed to delete photo: ${error.message}`);
+        confirmBtn.disabled = false;
+        confirmBtn.textContent = 'Yes, Delete';
+    }
+};
+
 
         window.cancelDelete = function() {
             photoToDelete = null;
