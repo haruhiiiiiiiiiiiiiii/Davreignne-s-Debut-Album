@@ -824,400 +824,324 @@
     </div>
 
     <script type="module">
-
-        // Check if user is logged in and auto-fill nickname
-window.addEventListener('DOMContentLoaded', function() {
-    const currentUser = localStorage.getItem('currentUser');
-    
-    if (!currentUser) {
-        window.location.href = 'login.html';
-        return;
-    }
-    // Logout functionality
-function handleLogout() {
-    if (confirm('Are you sure you want to logout?')) {
-        localStorage.removeItem('currentUser');
-        window.location.href = 'login.html';
-    }
-}
-
-    
-    const userData = JSON.parse(currentUser);
-    const uploaderInput = document.getElementById('uploaderName');
-    
-    if (uploaderInput) {
-        uploaderInput.value = userData.nickname;
-        uploaderInput.readOnly = true;
-        uploaderInput.style.background = 'rgba(255,255,255,0.1)';
-        uploaderInput.style.cursor = 'not-allowed';
-    }
-    
-    console.log('Logged in as:', userData.guestName, '(' + userData.nickname + ')');
-});
-
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-        import { getFirestore, collection, getDocs, query, orderBy, deleteDoc, doc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
-        import { getStorage, ref, deleteObject } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js';
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyDPaMpRBwk8a10vX4CUvsolfUyn3gpec5s",
-            authDomain: "debut-photo-gallery.firebaseapp.com",
-            projectId: "debut-photo-gallery",
-            storageBucket: "debut-photo-gallery.firebasestorage.app",
-            messagingSenderId: "954052989718",
-            appId: "1:954052989718:web:8faaeeaa9aebe726f67637",
-            measurementId: "G-WQ0EW238CJ"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-        const storage = getStorage(app);
-
-        const albumsList = {
-            1: 'Table 1', 2: 'Table 2', 3: 'Table 3', 4: 'Table 4', 5: 'Table 5',
-            6: 'Table 6', 7: 'Table 7', 8: 'Table 8', 9: 'Table 9', 10: 'Table 10',
-            11: 'Table 11', 12: 'Table 12', 13: 'Table 13', 14: 'Table 14',
-            15: '18 Roses', 16: '18 Candles', 17: '18 Blue Bills', 18: '18 Treasures', 19: '18 Shots'
-        };
-
-        const urlParams = new URLSearchParams(window.location.search);
-        const albumId = urlParams.get('album');
-
-        if (!albumId) {
-            window.location.href = 'albums.html';
-        }
-
-        const albumName = albumsList[albumId] || 'Unknown Album';
-        document.getElementById('albumTitle').textContent = `📸 ${albumName}`;
-        document.getElementById('uploadBtn').href = `front.html?album=${albumId}`;
-        document.getElementById('uploadBtnEmpty').href = `front.html?album=${albumId}`;
-
-        // Get user data and extract nickname
-// Get logged-in user's nickname (auto-populated, read-only)
-let currentUserData = null;
-let currentUser = '';
-
-try {
-    const storedUser = localStorage.getItem('currentUser');
-    if (storedUser) {
-        currentUserData = JSON.parse(storedUser);
-        currentUser = currentUserData.nickname; // Use nickname from login
+    // Check if user is logged in
+    window.addEventListener('DOMContentLoaded', function() {
+        const currentUser = localStorage.getItem('currentUser');
         
-        // Display the nickname
-        document.getElementById('displayUserName').textContent = currentUser;
-    } else {
-        // If not logged in, redirect to login page
-        window.location.href = 'login.html';
+        if (!currentUser) {
+            window.location.href = 'login.html';
+            return;
+        }
+        
+        const userData = JSON.parse(currentUser);
+        console.log('Logged in as:', userData.guestName, '(' + userData.nickname + ')');
+    });
+
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+    import { getFirestore, collection, getDocs, query, orderBy, deleteDoc, doc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+    import { getStorage, ref, deleteObject } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js';
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyDPaMpRBwk8a10vX4CUvsolfUyn3gpec5s",
+        authDomain: "debut-photo-gallery.firebaseapp.com",
+        projectId: "debut-photo-gallery",
+        storageBucket: "debut-photo-gallery.firebasestorage.app",
+        messagingSenderId: "954052989718",
+        appId: "1:954052989718:web:8faaeeaa9aebe726f67637",
+        measurementId: "G-WQ0EW238CJ"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const storage = getStorage(app);
+
+    const albumsList = {
+        1: 'Table 1', 2: 'Table 2', 3: 'Table 3', 4: 'Table 4', 5: 'Table 5',
+        6: 'Table 6', 7: 'Table 7', 8: 'Table 8', 9: 'Table 9', 10: 'Table 10',
+        11: 'Table 11', 12: 'Table 12', 13: 'Table 13', 14: 'Table 14',
+        15: '18 Roses', 16: '18 Candles', 17: '18 Blue Bills', 18: '18 Treasures', 19: '18 Shots'
+    };
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const albumId = urlParams.get('album');
+
+    if (!albumId) {
+        window.location.href = 'albums.html';
     }
-} catch (e) {
-    console.error('Error parsing user data:', e);
-    window.location.href = 'login.html';
-}
 
-let photoToDelete = null;
+    const albumName = albumsList[albumId] || 'Unknown Album';
+    document.getElementById('albumTitle').textContent = `📸 ${albumName}`;
+    document.getElementById('uploadBtn').href = `front.html?album=${albumId}`;
+    document.getElementById('uploadBtnEmpty').href = `front.html?album=${albumId}`;
 
-
-try {
-    const storedUser = localStorage.getItem('currentUser');
-    if (storedUser) {
-        currentUserData = JSON.parse(storedUser);
-        currentUser = currentUserData.nickname; // Use nickname for everything
-    }
-} catch (e) {
-    console.error('Error parsing user data:', e);
-    currentUser = '';
-}
-
-let photoToDelete = null;
-
-window.setCurrentUser = function() {
-    const input = document.getElementById('currentUserInput');
-    const name = input.value.trim();
-    
-    if (name) {
-        currentUser = name;
-        // For compatibility, update localStorage with just the nickname
-        document.getElementById('displayUserName').textContent = name;
-        document.getElementById('userInputSection').style.display = 'none';
-        document.getElementById('userDisplaySection').style.display = 'flex';
-        loadPhotos();
-    } else {
-        alert('Please enter your name');
-    }
-};
-
-window.changeUser = function() {
-    document.getElementById('userInputSection').style.display = 'flex';
-    document.getElementById('userDisplaySection').style.display = 'none';
-    document.getElementById('currentUserInput').value = currentUser;
-};
-
-// Display nickname on page load
-if (currentUser) {
-    document.getElementById('displayUserName').textContent = currentUser;
-    document.getElementById('userInputSection').style.display = 'none';
-    document.getElementById('userDisplaySection').style.display = 'flex';
-}
-
-
-        document.getElementById('currentUserInput').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                setCurrentUser();
-            }
-        });
-
-        window.deletePhoto = function(photoId, photoUrl, uploaderName, event) {
-    if (event) {
-        event.stopPropagation();
-    }
-    
-    // Decode the uploader name
-    const decodedUploader = decodeURIComponent(uploaderName);
-    
-    // Security check: Verify current user matches uploader
-    // Security check: Verify current user matches uploader (CASE-SENSITIVE)
-if (!currentUser || currentUser.trim() !== decodedUploader.trim()) {
-    alert('❌ You can only delete your own photos!\n\nYour name: ' + currentUser + '\nPhoto uploader: ' + decodedUploader);
-    return;
-}
-
-    
-    photoToDelete = { id: photoId, url: photoUrl, uploader: decodedUploader };
-    document.getElementById('deleteModal').classList.add('active');
-};
-
-
-        window.confirmDelete = async function() {
-    if (!photoToDelete) return;
-
-    // EXTRA SECURITY: Check if current user matches uploader
-    // EXTRA SECURITY: Check if current user matches uploader
-// EXTRA SECURITY: Check if current user matches uploader (CASE-SENSITIVE)
-if (!currentUser || currentUser.trim() !== photoToDelete.uploader.trim()) {
-    alert('❌ You can only delete your own photos!');
-    cancelDelete();
-    return;
-}
-
-
-
-    const modal = document.getElementById('deleteModal');
-    const confirmBtn = modal.querySelector('.btn-confirm');
-    confirmBtn.disabled = true;
-    confirmBtn.textContent = 'Deleting...';
+    // Get logged-in user's nickname
+    let currentUserData = null;
+    let currentUser = '';
 
     try {
-        await deleteDoc(doc(db, `albums/${albumId}/photos`, photoToDelete.id));
+        const storedUser = localStorage.getItem('currentUser');
+        if (storedUser) {
+            currentUserData = JSON.parse(storedUser);
+            currentUser = currentUserData.nickname;
+            document.getElementById('displayUserName').textContent = currentUser;
+        } else {
+            window.location.href = 'login.html';
+        }
+    } catch (e) {
+        console.error('Error parsing user data:', e);
+        window.location.href = 'login.html';
+    }
+
+    let photoToDelete = null;
+
+    // Delete photo function
+    window.deletePhoto = function(photoId, photoUrl, uploaderName, event) {
+        if (event) {
+            event.stopPropagation();
+        }
+        
+        const decodedUploader = decodeURIComponent(uploaderName);
+        
+        if (!currentUser || currentUser.trim() !== decodedUploader.trim()) {
+            alert('❌ You can only delete your own photos!\n\nYour name: ' + currentUser + '\nPhoto uploader: ' + decodedUploader);
+            return;
+        }
+        
+        photoToDelete = { id: photoId, url: photoUrl, uploader: decodedUploader };
+        document.getElementById('deleteModal').classList.add('active');
+    };
+
+    // Confirm delete
+    window.confirmDelete = async function() {
+        if (!photoToDelete) return;
+
+        if (!currentUser || currentUser.trim() !== photoToDelete.uploader.trim()) {
+            alert('❌ You can only delete your own photos!');
+            cancelDelete();
+            return;
+        }
+
+        const modal = document.getElementById('deleteModal');
+        const confirmBtn = modal.querySelector('.btn-confirm');
+        confirmBtn.disabled = true;
+        confirmBtn.textContent = 'Deleting...';
 
         try {
-            const urlParts = photoToDelete.url.split('/o/')[1];
-            if (urlParts) {
-                const storagePath = decodeURIComponent(urlParts.split('?')[0]);
-                const storageRef = ref(storage, storagePath);
-                await deleteObject(storageRef);
-            }
-        } catch (storageError) {
-            console.warn('Storage deletion warning:', storageError);
-        }
-
-        cancelDelete();
-        await loadPhotos();
-        alert('✅ Photo deleted successfully!');
-
-    } catch (error) {
-        alert(`Failed to delete photo: ${error.message}`);
-        confirmBtn.disabled = false;
-        confirmBtn.textContent = 'Yes, Delete';
-    }
-};
-
-
-        window.cancelDelete = function() {
-            photoToDelete = null;
-            const modal = document.getElementById('deleteModal');
-            modal.classList.remove('active');
-            
-            const confirmBtn = modal.querySelector('.btn-confirm');
-            confirmBtn.disabled = false;
-            confirmBtn.textContent = 'Yes, Delete';
-        };
-
-        async function loadPhotos() {
-            const photoGrid = document.getElementById('photoGrid');
-            const loadingState = document.getElementById('loadingState');
-            const emptyState = document.getElementById('emptyState');
-            const photoCount = document.getElementById('photoCount');
-
-            photoGrid.innerHTML = '';
-            loadingState.style.display = 'block';
-            emptyState.style.display = 'none';
+            await deleteDoc(doc(db, `albums/${albumId}/photos`, photoToDelete.id));
 
             try {
-                const photosRef = collection(db, `albums/${albumId}/photos`);
-                const q = query(photosRef, orderBy('timestamp', 'desc'));
-                const querySnapshot = await getDocs(q);
-
-                loadingState.style.display = 'none';
-
-                if (querySnapshot.empty) {
-                    emptyState.style.display = 'block';
-                    photoCount.textContent = 'No photos yet';
-                    return;
+                const urlParts = photoToDelete.url.split('/o/')[1];
+                if (urlParts) {
+                    const storagePath = decodeURIComponent(urlParts.split('?')[0]);
+                    const storageRef = ref(storage, storagePath);
+                    await deleteObject(storageRef);
                 }
-
-                let validPhotoCount = 0;
-                const photos = [];
-
-                querySnapshot.forEach((doc) => {
-                    const photo = doc.data();
-                    
-                    if (!photo.url || photo.url === 'undefined' || photo.url === '') {
-                        return;
-                    }
-
-                    photos.push({
-                        id: doc.id,
-                        ...photo
-                    });
-                    validPhotoCount++;
-                });
-
-                if (validPhotoCount === 0) {
-                    emptyState.style.display = 'block';
-                    photoCount.textContent = 'No valid photos to display';
-                    return;
-                }
-
-                photoCount.textContent = `${validPhotoCount} photo${validPhotoCount !== 1 ? 's' : ''}`;
-
-                photos.forEach((photo) => {
-                    const photoItem = document.createElement('div');
-                    photoItem.className = 'photo-item';
-
-                    const isVideo = photo.type && photo.type.startsWith('video');
-                    const mediaElement = isVideo 
-                        ? `<video src="${photo.url}" controls></video>`
-                        : `<img src="${photo.url}" alt="${photo.name}" loading="lazy">`;
-
-                    const date = photo.timestamp 
-                        ? new Date(photo.timestamp).toLocaleDateString('en-US', { 
-                            month: 'short', 
-                            day: 'numeric', 
-                            year: 'numeric' 
-                          })
-                        : 'Unknown date';
-
-
-let canDelete = false;
-if (currentUser && photo.uploader) {
-    const normalizedCurrentUser = currentUser.trim();
-    const normalizedUploader = photo.uploader.trim();
-    canDelete = normalizedCurrentUser === normalizedUploader;
-    console.log(`User: "${normalizedCurrentUser}" | Uploader: "${normalizedUploader}" | Can Delete: ${canDelete}`);
-}
-
-
-const deleteButton = canDelete 
-    ? `<button class="delete-btn" onclick="deletePhoto('${photo.id}', '${photo.url}', '${encodeURIComponent(photo.uploader)}', event)" title="Delete this photo">🗑️</button>`
-    : '';
-
-
-                    photoItem.innerHTML = `
-                        <div class="photo-media-wrapper" onclick='openLightbox(${JSON.stringify(photo).replace(/'/g, "\\'")})'>
-                            ${deleteButton}
-                            ${mediaElement}
-                        </div>
-                        <div class="photo-info">
-                            <div class="photo-uploader">📤 ${photo.uploader || 'Anonymous'}</div>
-                            <div class="photo-date">📅 ${date}</div>
-                        </div>
-                    `;
-
-                    photoGrid.appendChild(photoItem);
-                });
-
-            } catch (error) {
-                loadingState.innerHTML = `
-                    <p style="color: #dc3545;">❌ Error loading photos</p>
-                    <p style="font-size: 0.9em; color: #666;">${error.message}</p>
-                `;
+            } catch (storageError) {
+                console.warn('Storage deletion warning:', storageError);
             }
+
+            cancelDelete();
+            await loadPhotos();
+            alert('✅ Photo deleted successfully!');
+
+        } catch (error) {
+            alert(`Failed to delete photo: ${error.message}`);
+            confirmBtn.disabled = false;
+            confirmBtn.textContent = 'Yes, Delete';
         }
+    };
 
-        window.openLightbox = function(photo) {
-            const lightbox = document.getElementById('lightbox');
-            const lightboxContent = document.getElementById('lightboxContent');
-            
-            const isVideo = photo.type && photo.type.startsWith('video');
-            const mediaElement = isVideo 
-                ? `<video src="${photo.url}" controls autoplay style="max-width: 100%; max-height: 90vh;"></video>`
-                : `<img src="${photo.url}" alt="${photo.name}">`;
+    // Cancel delete
+    window.cancelDelete = function() {
+        photoToDelete = null;
+        const modal = document.getElementById('deleteModal');
+        modal.classList.remove('active');
+        
+        const confirmBtn = modal.querySelector('.btn-confirm');
+        confirmBtn.disabled = false;
+        confirmBtn.textContent = 'Yes, Delete';
+    };
 
-            const date = photo.timestamp 
-                ? new Date(photo.timestamp).toLocaleDateString('en-US', { 
-                    month: 'long', 
-                    day: 'numeric', 
-                    year: 'numeric' 
-                  })
-                : 'Unknown date';
+    // Load photos function
+    async function loadPhotos() {
+        const photoGrid = document.getElementById('photoGrid');
+        const loadingState = document.getElementById('loadingState');
+        const emptyState = document.getElementById('emptyState');
+        const photoCount = document.getElementById('photoCount');
 
-            lightboxContent.innerHTML = `
-                ${mediaElement}
-                <div class="lightbox-info">
-                    <div style="font-weight: bold; margin-bottom: 5px;">${photo.name || 'Untitled'}</div>
-                    <div>Uploaded by: ${photo.uploader || 'Anonymous'}</div>
-                    <div>${date}</div>
-                </div>
-            `;
+        photoGrid.innerHTML = '';
+        loadingState.style.display = 'block';
+        emptyState.style.display = 'none';
 
-            lightbox.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        };
+        try {
+            const photosRef = collection(db, `albums/${albumId}/photos`);
+            const q = query(photosRef, orderBy('timestamp', 'desc'));
+            const querySnapshot = await getDocs(q);
 
-        window.closeLightbox = function() {
-            const lightbox = document.getElementById('lightbox');
-            lightbox.classList.remove('active');
-            document.body.style.overflow = 'auto';
-            
-            const videos = lightbox.querySelectorAll('video');
-            videos.forEach(video => {
-                video.pause();
-                video.currentTime = 0;
+            loadingState.style.display = 'none';
+
+            if (querySnapshot.empty) {
+                emptyState.style.display = 'block';
+                photoCount.textContent = 'No photos yet';
+                return;
+            }
+
+            let validPhotoCount = 0;
+            const photos = [];
+
+            querySnapshot.forEach((doc) => {
+                const photo = doc.data();
+                
+                if (!photo.url || photo.url === 'undefined' || photo.url === '') {
+                    return;
+                }
+
+                photos.push({
+                    id: doc.id,
+                    ...photo
+                });
+                validPhotoCount++;
             });
-        };
 
-        document.getElementById('lightbox').addEventListener('click', function(e) {
-            if (e.target === this) {
+            if (validPhotoCount === 0) {
+                emptyState.style.display = 'block';
+                photoCount.textContent = 'No valid photos to display';
+                return;
+            }
+
+            photoCount.textContent = `${validPhotoCount} photo${validPhotoCount !== 1 ? 's' : ''}`;
+
+            photos.forEach((photo) => {
+                const photoItem = document.createElement('div');
+                photoItem.className = 'photo-item';
+
+                const isVideo = photo.type && photo.type.startsWith('video');
+                const mediaElement = isVideo 
+                    ? `<video src="${photo.url}" controls></video>`
+                    : `<img src="${photo.url}" alt="${photo.name}" loading="lazy">`;
+
+                const date = photo.timestamp 
+                    ? new Date(photo.timestamp).toLocaleDateString('en-US', { 
+                        month: 'short', 
+                        day: 'numeric', 
+                        year: 'numeric' 
+                      })
+                    : 'Unknown date';
+
+                let canDelete = false;
+                if (currentUser && photo.uploader) {
+                    const normalizedCurrentUser = currentUser.trim();
+                    const normalizedUploader = photo.uploader.trim();
+                    canDelete = normalizedCurrentUser === normalizedUploader;
+                }
+
+                const deleteButton = canDelete 
+                    ? `<button class="delete-btn" onclick="deletePhoto('${photo.id}', '${photo.url}', '${encodeURIComponent(photo.uploader)}', event)" title="Delete this photo">🗑️</button>`
+                    : '';
+
+                photoItem.innerHTML = `
+                    <div class="photo-media-wrapper" onclick='openLightbox(${JSON.stringify(photo).replace(/'/g, "\\'")})'>
+                        ${deleteButton}
+                        ${mediaElement}
+                    </div>
+                    <div class="photo-info">
+                        <div class="photo-uploader">📤 ${photo.uploader || 'Anonymous'}</div>
+                        <div class="photo-date">📅 ${date}</div>
+                    </div>
+                `;
+
+                photoGrid.appendChild(photoItem);
+            });
+
+        } catch (error) {
+            console.error('Load photos error:', error);
+            loadingState.innerHTML = `
+                <p style="color: #dc3545;">❌ Error loading photos</p>
+                <p style="font-size: 0.9em; color: #666;">${error.message}</p>
+            `;
+        }
+    }
+
+    // Lightbox functions
+    window.openLightbox = function(photo) {
+        const lightbox = document.getElementById('lightbox');
+        const lightboxContent = document.getElementById('lightboxContent');
+        
+        const isVideo = photo.type && photo.type.startsWith('video');
+        const mediaElement = isVideo 
+            ? `<video src="${photo.url}" controls autoplay style="max-width: 100%; max-height: 90vh;"></video>`
+            : `<img src="${photo.url}" alt="${photo.name}">`;
+
+        const date = photo.timestamp 
+            ? new Date(photo.timestamp).toLocaleDateString('en-US', { 
+                month: 'long', 
+                day: 'numeric', 
+                year: 'numeric' 
+              })
+            : 'Unknown date';
+
+        lightboxContent.innerHTML = `
+            ${mediaElement}
+            <div class="lightbox-info">
+                <div style="font-weight: bold; margin-bottom: 5px;">${photo.name || 'Untitled'}</div>
+                <div>Uploaded by: ${photo.uploader || 'Anonymous'}</div>
+                <div>${date}</div>
+            </div>
+        `;
+
+        lightbox.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    };
+
+    window.closeLightbox = function() {
+        const lightbox = document.getElementById('lightbox');
+        lightbox.classList.remove('active');
+        document.body.style.overflow = 'auto';
+        
+        const videos = lightbox.querySelectorAll('video');
+        videos.forEach(video => {
+            video.pause();
+            video.currentTime = 0;
+        });
+    };
+
+    // Event listeners
+    document.getElementById('lightbox').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeLightbox();
+        }
+    });
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            if (document.getElementById('deleteModal').classList.contains('active')) {
+                cancelDelete();
+            } else {
                 closeLightbox();
             }
-        });
+        }
+    });
 
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                if (document.getElementById('deleteModal').classList.contains('active')) {
-                    cancelDelete();
-                } else {
-                    closeLightbox();
-                }
+    // Logout functionality
+    const logoutBtn = document.getElementById('logoutBtn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('currentUser');
+                window.location.href = 'login.html';
             }
         });
-
-        loadPhotos();
-        // Logout functionality (for future use)
-document.getElementById('logoutBtn').addEventListener('click', function(e) {
-    e.preventDefault();
-    if (confirm('Are you sure you want to logout?')) {
-        localStorage.removeItem('currentUser');
-        window.location.reload();
+        
+        if (currentUser) {
+            logoutBtn.style.display = 'flex';
+        }
     }
-});
 
-// Show logout button if user is logged in
-if (currentUser) {
-    document.getElementById('logoutBtn').style.display = 'flex';
-}
-
-     </script>    <!-- ==================== FOOTER ==================== -->    
+    // Load photos on page load
+    loadPhotos();
+</script>
+    <!-- ==================== FOOTER ==================== -->    
      <footer class="site-footer">    
         <div class="footer-content">
             <p><i class="fas fa-heart"></i> Celebrating Davreignne's Debut <i class="fas fa-heart"></i></p>
