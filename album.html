@@ -608,10 +608,12 @@
     const decodedUploader = decodeURIComponent(uploaderName);
     
     // Security check: Verify current user matches uploader
-    if (!currentUser || currentUser.toLowerCase().trim() !== decodedUploader.toLowerCase().trim()) {
-        alert('❌ You can only delete your own photos!\n\nYour name: ' + currentUser + '\nPhoto uploader: ' + decodedUploader);
-        return;
-    }
+    // Security check: Verify current user matches uploader (CASE-SENSITIVE)
+if (!currentUser || currentUser.trim() !== decodedUploader.trim()) {
+    alert('❌ You can only delete your own photos!\n\nYour name: ' + currentUser + '\nPhoto uploader: ' + decodedUploader);
+    return;
+}
+
     
     photoToDelete = { id: photoId, url: photoUrl, uploader: decodedUploader };
     document.getElementById('deleteModal').classList.add('active');
@@ -622,11 +624,15 @@
     if (!photoToDelete) return;
 
     // EXTRA SECURITY: Check if current user matches uploader
-    if (!currentUser || currentUser.toLowerCase().trim() !== photoToDelete.uploader.toLowerCase().trim()) {
-        alert('❌ You can only delete your own photos!');
-        cancelDelete();
-        return;
-    }
+    // EXTRA SECURITY: Check if current user matches uploader
+// EXTRA SECURITY: Check if current user matches uploader (CASE-SENSITIVE)
+if (!currentUser || currentUser.trim() !== photoToDelete.uploader.trim()) {
+    alert('❌ You can only delete your own photos!');
+    cancelDelete();
+    return;
+}
+
+
 
     const modal = document.getElementById('deleteModal');
     const confirmBtn = modal.querySelector('.btn-confirm');
@@ -734,14 +740,15 @@
                           })
                         : 'Unknown date';
 
-                    // Check if current user can delete this photo
+
 let canDelete = false;
 if (currentUser && photo.uploader) {
-    const normalizedCurrentUser = currentUser.toLowerCase().trim();
-    const normalizedUploader = photo.uploader.toLowerCase().trim();
+    const normalizedCurrentUser = currentUser.trim();
+    const normalizedUploader = photo.uploader.trim();
     canDelete = normalizedCurrentUser === normalizedUploader;
     console.log(`User: "${normalizedCurrentUser}" | Uploader: "${normalizedUploader}" | Can Delete: ${canDelete}`);
 }
+
 
 const deleteButton = canDelete 
     ? `<button class="delete-btn" onclick="deletePhoto('${photo.id}', '${photo.url}', '${encodeURIComponent(photo.uploader)}', event)" title="Delete this photo">🗑️</button>`
