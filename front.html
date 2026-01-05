@@ -51,7 +51,6 @@
             display: block;
             margin-bottom: 10px;
             font-size: 1.1em;
-            color: #001a4d;
         }
 
         .info-box ul {
@@ -282,12 +281,10 @@
         <div class="info-box">
             <strong>📌 How to Upload:</strong>
             <ul>
-                <li>✅ <strong>Select multiple files</strong> at once (hold Ctrl/Cmd)</li>
-                <li>📏 <strong>Each file must be under 5MB</strong></li>
-                <li>📁 <strong>Supported:</strong> JPG, PNG, GIF, MP4, MOV</li>
-                <li>⏱️ <strong>Files upload one by one</strong> - please wait</li>
-                <li>✅ <strong>Green checkmark</strong> = ready to upload</li>
-                <li>❌ <strong>Red X</strong> = file too large</li>
+                <li>✅ Select multiple files (hold Ctrl/Cmd)</li>
+                <li>📏 Each file must be under 5MB</li>
+                <li>📁 Supported: JPG, PNG, GIF, MP4, MOV</li>
+                <li>⏱️ Files upload one by one</li>
             </ul>
         </div>
 
@@ -318,7 +315,7 @@
             <div class="progress-bar">
                 <div class="progress-fill" id="progressFill">0%</div>
             </div>
-            <div class="upload-status" id="uploadStatus">Preparing upload...</div>
+            <div class="upload-status" id="uploadStatus">Preparing...</div>
         </div>
 
         <a href="albums.html" class="back-link">← Back to Albums</a>
@@ -363,17 +360,7 @@
 
         const urlParams = new URLSearchParams(window.location.search);
         const preselectedAlbum = urlParams.get('album');
-        if (preselectedAlbum) {
-            albumSelect.value = preselectedAlbum;
-        }
-
-        function generateUniqueId() {
-            return `${Date.now()}_${Math.random().toString(36).substring(2, 15)}_${Math.random().toString(36).substring(2, 15)}`;
-        }
-
-        function sleep(ms) {
-            return new Promise(resolve => setTimeout(resolve, ms));
-        }
+        if (preselectedAlbum) albumSelect.value = preselectedAlbum;
 
         document.getElementById('photoFile').addEventListener('change', (e) => {
             const files = Array.from(e.target.files);
@@ -390,10 +377,10 @@
                 fileInfo.style.display = 'block';
                 if (oversizedFiles.length > 0) {
                     fileInfo.className = 'file-info error';
-                    fileInfo.textContent = `⚠️ ${oversizedFiles.length} file(s) exceed 5MB! Only ${validFiles.length} can upload.`;
+                    fileInfo.textContent = `⚠️ ${oversizedFiles.length} file(s) exceed 5MB! Only ${validFiles.length} valid.`;
                 } else {
                     fileInfo.className = 'file-info success';
-                    fileInfo.textContent = `✅ ${files.length} file(s) ready • Total: ${totalSizeMB} MB`;
+                    fileInfo.textContent = `✅ ${files.length} file(s) ready • ${totalSizeMB} MB`;
                 }
 
                 fileList.style.display = 'block';
@@ -419,42 +406,60 @@
         });
 
         function compressFile(file) {
-            return new Promise((resolve) => {
+            return new Promise((resolve, reject) => {
                 if (file.type.startsWith('video/')) {
+                    console.log(`      ⏭️ Video - no compression`);
                     resolve(file);
                     return;
                 }
 
+                console.log(`      🗜️ Compressing...`);
                 const reader = new FileReader();
+                
+                reader.onerror = () => reject(new Error('FileReader error'));
+                
                 reader.onload = (e) => {
                     const img = new Image();
+                    
+                    img.onerror = () => reject(new Error('Image load error'));
+                    
                     img.onload = () => {
-                        const canvas = document.createElement('canvas');
-                        let width = img.width;
-                        let height = img.height;
-                        
-                        const maxDimension = 1920;
-                        if (width > maxDimension || height > maxDimension) {
-                            if (width > height) {
-                                height = (height / width) * maxDimension;
-                                width = maxDimension;
-                            } else {
-                                width = (width / height) * maxDimension;
-                                height = maxDimension;
+                        try {
+                            const canvas = document.createElement('canvas');
+                            let width = img.width;
+                            let height = img.height;
+                            
+                            const maxDimension = 1920;
+                            if (width > maxDimension || height > maxDimension) {
+                                if (width > height) {
+                                    height = (height / width) * maxDimension;
+                                    width = maxDimension;
+                                } else {
+                                    width = (width / height) * maxDimension;
+                                    height = maxDimension;
+                                }
                             }
+                            
+                            canvas.width = width;
+                            canvas.height = height;
+                            const ctx = canvas.getContext('2d');
+                            ctx.drawImage(img, 0, 0, width, height);
+                            
+                            canvas.toBlob((blob) => {
+                                if (!blob) {
+                                    reject(new Error('Canvas to blob failed'));
+                                    return;
+                                }
+                                const compressed = new File([blob], file.name, {
+                                    type: 'image/jpeg',
+                                    lastModified: Date.now()
+                                });
+                                console.log(`      ✅ ${(file.size/1024).toFixed(0)}KB → ${(compressed.size/1024).toFixed(0)}KB`);
+                                resolve(compressed);
+                            }, 'image/jpeg', 0.85);
+                        } catch (err) {
+                            reject(err);
                         }
-                        
-                        canvas.width = width;
-                        canvas.height = height;
-                        const ctx = canvas.getContext('2d');
-                        ctx.drawImage(img, 0, 0, width, height);
-                        
-                        canvas.toBlob((blob) => {
-                            resolve(new File([blob], file.name, {
-                                type: 'image/jpeg',
-                                lastModified: Date.now()
-                            }));
-                        }, 'image/jpeg', 0.85);
                     };
                     img.src = e.target.result;
                 };
@@ -463,54 +468,72 @@
         }
 
         async function uploadSingleFile(file, albumId, uploaderName, fileIndex, totalFiles, progressFill, uploadStatus) {
-            const uniqueId = generateUniqueId();
-            const storageFileName = `${uniqueId}_${file.name}`;
+            const startTime = Date.now();
+            console.log(`\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`);
+            console.log(`📤 FILE ${fileIndex + 1}/${totalFiles}`);
+            console.log(`   Name: ${file.name}`);
+            console.log(`   Size: ${(file.size / 1024).toFixed(1)} KB`);
             
-            console.log(`\n📤 [${fileIndex + 1}/${totalFiles}] ${file.name} (${(file.size / 1024).toFixed(1)} KB)`);
-            
-            const compressedFile = await compressFile(file);
-            console.log(`   Compressed: ${(compressedFile.size / 1024).toFixed(1)} KB`);
-            
-            const storageRef = ref(storage, `albums/${albumId}/${storageFileName}`);
-            
-            return new Promise((resolve, reject) => {
-                const uploadTask = uploadBytesResumable(storageRef, compressedFile);
+            try {
+                const compressedFile = await compressFile(file);
+                
+                const uniqueId = `${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+                const storageFileName = `${uniqueId}_${file.name}`;
+                const storageRef = ref(storage, `albums/${albumId}/${storageFileName}`);
+                
+                console.log(`   📁 Path: albums/${albumId}/${storageFileName.substring(0, 30)}...`);
+                
+                return await new Promise((resolve, reject) => {
+                    const uploadTask = uploadBytesResumable(storageRef, compressedFile);
+                    let lastLoggedProgress = 0;
 
-                uploadTask.on('state_changed',
-                    (snapshot) => {
-                        const fileProgress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                        const overallProgress = ((fileIndex + (fileProgress / 100)) / totalFiles) * 100;
-                        
-                        progressFill.style.width = overallProgress + '%';
-                        progressFill.textContent = Math.round(overallProgress) + '%';
-                        uploadStatus.textContent = `Uploading ${fileIndex + 1}/${totalFiles}: ${file.name}`;
-                    },
-                    (error) => {
-                        console.error(`   ❌ Upload error:`, error);
-                        reject(error);
-                    },
-                    async () => {
-                        try {
-                            uploadStatus.textContent = `Saving ${fileIndex + 1}/${totalFiles}...`;
-                            const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-
-                            const docRef = await addDoc(collection(db, `albums/${albumId}/photos`), {
-                                name: file.name,
-                                dataUrl: downloadURL,
-                                uploader: uploaderName,
-                                size: compressedFile.size,
-                                timestamp: Date.now()
-                            });
-
-                            console.log(`   ✅ Complete (ID: ${docRef.id})\n`);
-                            resolve(docRef.id);
-                        } catch (error) {
-                            console.error(`   ❌ Database error:`, error);
+                    uploadTask.on('state_changed',
+                        (snapshot) => {
+                            const fileProgress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                            const overallProgress = ((fileIndex + (fileProgress / 100)) / totalFiles) * 100;
+                            
+                            progressFill.style.width = overallProgress.toFixed(1) + '%';
+                            progressFill.textContent = Math.round(overallProgress) + '%';
+                            uploadStatus.textContent = `[${fileIndex + 1}/${totalFiles}] ${file.name} - ${Math.round(fileProgress)}%`;
+                            
+                            if (Math.floor(fileProgress / 25) > lastLoggedProgress) {
+                                console.log(`   📊 ${Math.round(fileProgress)}%`);
+                                lastLoggedProgress = Math.floor(fileProgress / 25);
+                            }
+                        },
+                        (error) => {
+                            console.error(`   ❌ UPLOAD FAILED:`, error.code, error.message);
                             reject(error);
+                        },
+                        async () => {
+                            try {
+                                console.log(`   ⬆️ Upload complete, getting URL...`);
+                                const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+                                
+                                console.log(`   💾 Saving to database...`);
+                                const docRef = await addDoc(collection(db, `albums/${albumId}/photos`), {
+                                    name: file.name,
+                                    dataUrl: downloadURL,
+                                    uploader: uploaderName,
+                                    size: compressedFile.size,
+                                    timestamp: Date.now()
+                                });
+
+                                const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
+                                console.log(`   ✅ SUCCESS in ${elapsed}s (ID: ${docRef.id})`);
+                                console.log(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`);
+                                resolve(docRef.id);
+                            } catch (dbError) {
+                                console.error(`   ❌ DATABASE FAILED:`, dbError.message);
+                                reject(dbError);
+                            }
                         }
-                    }
-                );
-            });
+                    );
+                });
+            } catch (compressError) {
+                console.error(`   ❌ COMPRESSION FAILED:`, compressError.message);
+                throw compressError;
+            }
         }
 
         document.getElementById('uploadForm').addEventListener('submit', async (e) => {
@@ -518,22 +541,25 @@
 
             const albumId = parseInt(albumSelect.value);
             const uploaderName = document.getElementById('uploaderName').value.trim();
-            const fileInput = document.getElementById('photoFile');
-            const files = Array.from(fileInput.files);
+            const files = Array.from(document.getElementById('photoFile').files);
 
-            console.log(`\n🚀 Upload started: ${files.length} files`);
+            console.log(`\n🚀 ═══════════════════════════════════`);
+            console.log(`   BATCH UPLOAD STARTED`);
+            console.log(`   Album: ${albumId}`);
+            console.log(`   Uploader: ${uploaderName}`);
+            console.log(`   Files: ${files.length}`);
+            console.log(`═══════════════════════════════════\n`);
 
             if (!albumId || !uploaderName || files.length === 0) {
-                alert('❌ Please fill all fields');
+                alert('❌ Fill all fields');
                 return;
             }
 
             const MAX_SIZE = 5 * 1024 * 1024;
             const validFiles = files.filter(f => f.size <= MAX_SIZE);
-            const oversizedFiles = files.filter(f => f.size > MAX_SIZE);
             
-            if (oversizedFiles.length > 0) {
-                alert(`❌ ${oversizedFiles.length} file(s) exceed 5MB.\nPlease remove them and try again.`);
+            if (validFiles.length !== files.length) {
+                alert(`❌ ${files.length - validFiles.length} file(s) too large`);
                 return;
             }
 
@@ -543,58 +569,55 @@
             const uploadStatus = document.getElementById('uploadStatus');
 
             uploadBtn.disabled = true;
+            uploadBtn.textContent = '⏳ Uploading...';
             progressContainer.style.display = 'block';
-            progressFill.style.width = '0%';
-            uploadStatus.textContent = 'Starting...';
 
-            let successCount = 0;
-            let failCount = 0;
+            const results = { success: [], failed: [] };
 
-            try {
-                for (let i = 0; i < validFiles.length; i++) {
-                    try {
-                        await uploadSingleFile(
-                            validFiles[i], 
-                            albumId, 
-                            uploaderName, 
-                            i, 
-                            validFiles.length, 
-                            progressFill, 
-                            uploadStatus
-                        );
-                        successCount++;
-                        
-                        if (i < validFiles.length - 1) {
-                            await sleep(200);
-                        }
-                    } catch (error) {
-                        failCount++;
-                        console.error(`Failed file ${i + 1}:`, error);
+            for (let i = 0; i < validFiles.length; i++) {
+                try {
+                    const docId = await uploadSingleFile(
+                        validFiles[i],
+                        albumId,
+                        uploaderName,
+                        i,
+                        validFiles.length,
+                        progressFill,
+                        uploadStatus
+                    );
+                    results.success.push({ file: validFiles[i].name, id: docId });
+                    
+                    if (i < validFiles.length - 1) {
+                        console.log(`⏳ Waiting 300ms...\n`);
+                        await new Promise(resolve => setTimeout(resolve, 300));
                     }
+                } catch (error) {
+                    console.error(`\n❌❌❌ FILE ${i + 1} COMPLETELY FAILED ❌❌❌`);
+                    console.error(`Error:`, error);
+                    results.failed.push({ file: validFiles[i].name, error: error.message });
                 }
-
-                console.log(`\n✅ Batch complete: ${successCount} success, ${failCount} failed\n`);
-                
-                progressFill.style.width = '100%';
-                progressFill.textContent = '100%';
-                
-                if (successCount === validFiles.length) {
-                    uploadStatus.textContent = `Done! ✅ All ${successCount} files uploaded`;
-                } else if (successCount > 0) {
-                    uploadStatus.textContent = `Done! ⚠️ ${successCount}/${validFiles.length} uploaded`;
-                } else {
-                    uploadStatus.textContent = `Failed! ❌ No files uploaded`;
-                }
-                
-                setTimeout(() => {
-                    window.location.href = `album.html?album=${albumId}`;
-                }, 1500);
-
-            } catch (error) {
-                console.error('Critical error:', error);
-                uploadStatus.textContent = '❌ Upload failed: ' + error.message;
-                uploadBtn.disabled = false;
             }
+
+            console.log(`\n🏁 ═══════════════════════════════════`);
+            console.log(`   BATCH COMPLETE`);
+            console.log(`   ✅ Success: ${results.success.length}`);
+            console.log(`   ❌ Failed: ${results.failed.length}`);
+            console.log(`═══════════════════════════════════\n`);
+
+            progressFill.style.width = '100%';
+            progressFill.textContent = '100%';
+
+            if (results.success.length === validFiles.length) {
+                uploadStatus.textContent = `✅ All ${results.success.length} files uploaded!`;
+            } else if (results.success.length > 0) {
+                uploadStatus.textContent = `⚠️ ${results.success.length}/${validFiles.length} uploaded`;
+            } else {
+                uploadStatus.textContent = `❌ All uploads failed`;
+            }
+
+            setTimeout(() => {
+                window.location.href = `album.html?album=${albumId}`;
+            }, 2000);
         });
     </script>
 </body>
