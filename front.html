@@ -3,125 +3,180 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Upload Photos & Videos</title>
+    <title>Upload Photo</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+
         body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-image: 
                 linear-gradient(135deg, rgba(0, 26, 77, 0.5) 0%, rgba(13, 59, 102, 0.6) 100%),
                 url('https://raw.githubusercontent.com/haruhiiiiiiiiiiiiiii/Davreignne-s-Debut-Album/main/MOT04452.JPG');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
-            background-repeat: no-repeat;
-            min-height: 100vh; 
-            padding: 20px; 
-            position: relative; 
-            overflow-x: hidden; 
+            min-height: 100vh;
+            padding: 20px;
         }
-        
-        .sparkle-1 { position: fixed; width: 8px; height: 8px; background: radial-gradient(circle, #ffffff 0%, rgba(255,255,255,0.3) 70%); border-radius: 50%; top: 15%; left: 5%; animation: twinkle 2s ease-in-out infinite, float-random 6s ease-in-out infinite; box-shadow: 0 0 15px rgba(192, 192, 192, 0.8); z-index: 1; }
-        .sparkle-2 { position: fixed; width: 6px; height: 6px; background: radial-gradient(circle, #e8e8e8 0%, rgba(192,192,192,0.3) 70%); border-radius: 50%; top: 30%; right: 8%; animation: twinkle 2.5s ease-in-out infinite 0.5s, float-random 7s ease-in-out infinite; box-shadow: 0 0 12px rgba(200, 200, 200, 0.7); z-index: 1; }
-        
-        @keyframes twinkle { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
-        @keyframes float-random { 0% { transform: translateY(0px) translateX(0px); } 25% { transform: translateY(-15px) translateX(10px); } 50% { transform: translateY(-30px) translateX(-10px); } 75% { transform: translateY(-15px) translateX(15px); } 100% { transform: translateY(0px) translateX(0px); } }
-        @keyframes slideDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
-        
-        .container { max-width: 800px; margin: 0 auto; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border-radius: 25px; box-shadow: 0 20px 40px rgba(0,0,0,0.3), 0 0 30px rgba(192, 192, 192, 0.2); padding: 40px; border: 3px solid; border-image: linear-gradient(135deg, #c0c0c0 0%, #e8e8e8 50%, #c0c0c0 100%) 1; position: relative; z-index: 10; animation: slideDown 0.8s ease-out; }
-        h1 { text-align: center; color: #001a4d; margin-bottom: 10px; font-size: 2.5em; background: linear-gradient(135deg, #001a4d 0%, #c0c0c0 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-        .subtitle { text-align: center; color: #555; margin-bottom: 30px; font-size: 1.1em; }
-        
-        .album-selector { background: linear-gradient(135deg, #f5f5f5 0%, #fafafa 100%); padding: 25px; border-radius: 15px; border: 2px solid #c0c0c0; margin-bottom: 20px; }
-        .album-selector-label { display: block; font-size: 1.1em; font-weight: bold; color: #001a4d; margin-bottom: 12px; }
-        .album-selector-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
-        .album-option { padding: 12px; border: 2px solid #c0c0c0; border-radius: 10px; background: white; cursor: pointer; transition: all 0.3s ease; text-align: center; font-size: 0.95em; }
-        .album-option:hover { border-color: #001a4d; background: #fafafa; transform: scale(1.02); }
-        .album-option.selected { background: linear-gradient(135deg, #001a4d 0%, #0d3b66 100%); color: #c0c0c0; border-color: #001a4d; font-weight: bold; box-shadow: 0 5px 15px rgba(0, 26, 77, 0.3); }
-        
-        .current-album-info { text-align: center; background: linear-gradient(135deg, #001a4d 0%, #0d3b66 100%); color: #c0c0c0; padding: 15px; border-radius: 12px; margin-bottom: 20px; font-size: 1.2em; font-weight: bold; box-shadow: 0 0 15px rgba(192, 192, 192, 0.2); }
-        
-        .upload-area { border: 4px dashed #001a4d; border-radius: 20px; padding: 60px 30px; text-align: center; margin-bottom: 20px; transition: all 0.3s ease; background: rgba(250, 250, 250, 0.8); cursor: pointer; }
-        .upload-area:hover { border-color: #c0c0c0; background: rgba(245, 245, 245, 0.9); transform: scale(1.02); }
-        .upload-area.dragover { border-color: #c0c0c0; background: rgba(240, 240, 240, 0.9); border-width: 5px; }
-        .upload-area div { font-size: 1.3em; margin-bottom: 20px; }
-        #fileInput { display: none; }
-        .upload-btn { background: linear-gradient(135deg, #001a4d 0%, #0d3b66 100%); color: #c0c0c0; padding: 15px 40px; border: none; border-radius: 50px; font-size: 1.2em; cursor: pointer; transition: all 0.3s ease; margin-top: 15px; font-weight: bold; box-shadow: 0 5px 15px rgba(0, 26, 77, 0.4); }
-        .upload-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0, 26, 77, 0.6); }
-        .upload-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-        
-        .name-input { width: 100%; padding: 15px; margin: 20px 0; border: 2px solid #c0c0c0; border-radius: 12px; font-size: 1.1em; transition: all 0.3s ease; background: white; }
-        .name-input:focus { outline: none; border-color: #001a4d; box-shadow: 0 0 10px rgba(0, 26, 77, 0.3); }
-        
-        .view-gallery { text-align: center; margin: 25px 0; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
-        .view-gallery a { background: linear-gradient(135deg, #e8e8e8 0%, #f5f5f5 50%, #e8e8e8 100%); color: #001a4d; padding: 14px 30px; border-radius: 50px; text-decoration: none; font-weight: bold; transition: all 0.3s ease; box-shadow: 0 5px 15px rgba(192, 192, 192, 0.4); border: 2px solid rgba(192, 192, 192, 0.5); }
-        .view-gallery a:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(192, 192, 192, 0.6); }
-        
-        .success { background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%); color: #155724; padding: 18px; border-radius: 12px; margin: 20px 0; display: none; border: 2px solid #28a745; }
-        .error { background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%); color: #721c24; padding: 18px; border-radius: 12px; margin: 20px 0; display: none; border: 2px solid #f5365c; }
-        
-        .stats { text-align: center; margin-top: 25px; padding: 20px; background: rgba(250, 250, 250, 0.8); border-radius: 12px; border: 2px solid #c0c0c0; }
-        .stat-number { font-size: 2em; font-weight: bold; color: #001a4d; }
-        .stat-label { color: #666; font-size: 0.95em; }
-        
-        .loading { text-align: center; padding: 20px; display: none; }
-        .loading-spinner { display: inline-block; width: 40px; height: 40px; border: 4px solid #f3f3f3; border-top: 4px solid #001a4d; border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 10px; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        
-        @media (max-width: 768px) { body { background-attachment: scroll; } }
-        @media (max-width: 600px) { .container { padding: 20px; } h1 { font-size: 2em; } .upload-area { padding: 40px 20px; } }
+
+        .container { 
+            max-width: 600px; 
+            margin: 50px auto; 
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 25px; 
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3); 
+            padding: 40px;
+        }
+
+        h1 { 
+            text-align: center; 
+            color: #001a4d; 
+            margin-bottom: 30px; 
+            font-size: 2.5em;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #001a4d;
+            font-size: 1.1em;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #c0c0c0;
+            border-radius: 12px;
+            font-size: 1em;
+            font-family: inherit;
+            background: white;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #001a4d;
+        }
+
+        .upload-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #001a4d 0%, #0d3b66 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .upload-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 26, 77, 0.4);
+        }
+
+        .upload-btn:disabled {
+            background: #999;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .progress-container {
+            margin-top: 20px;
+            display: none;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: #e0e0e0;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00ff00, #00cc00);
+            width: 0%;
+            transition: width 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000;
+            font-weight: bold;
+        }
+
+        .upload-status {
+            text-align: center;
+            padding: 15px;
+            background: #f0f0f0;
+            border-radius: 10px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #001a4d;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
-    <div class="sparkle-1"></div>
-    <div class="sparkle-2"></div>
-    
     <div class="container">
-        <h1>Upload Photos & Videos</h1>
-        <p class="subtitle">Share your memories with everyone 🌟</p>
-        
-        <div class="album-selector">
-            <label class="album-selector-label">Select Album:</label>
-            <div class="album-selector-grid" id="albumGrid"></div>
+        <h1>📸 Upload Photo</h1>
+
+        <form id="uploadForm">
+            <div class="form-group">
+                <label for="albumSelect">Select Album:</label>
+                <select id="albumSelect" required>
+                    <option value="">-- Choose Album --</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="uploaderName">Your Name:</label>
+                <input type="text" id="uploaderName" placeholder="Enter your name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="photoFile">Choose Photo/Video (Max 5MB):</label>
+                <input type="file" id="photoFile" accept="image/*,video/*" required>
+            </div>
+
+            <button type="submit" class="upload-btn" id="uploadBtn">Upload</button>
+        </form>
+
+        <div class="progress-container" id="progressContainer">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill">0%</div>
+            </div>
+            <div class="upload-status" id="uploadStatus">Preparing upload...</div>
         </div>
-        
-        <div class="current-album-info" id="currentAlbumInfo">
-            <span id="currentAlbumName">Table 1</span>
-        </div>
-        
-        <div class="view-gallery">
-            <a href="#" id="viewGalleryLink">View This Album</a>
-            <a href="albums.html">All Albums</a>
-        </div>
-        
-        <div class="success" id="successMsg"></div>
-        <div class="error" id="errorMsg"></div>
-        
-        <div class="upload-area" id="uploadArea" onclick="document.getElementById('fileInput').click()">
-            <div>📸</div>
-            <div>Drag & drop photos/videos here or click to browse</div>
-            <input type="file" id="fileInput" multiple accept="image/*,video/*">
-            <button class="upload-btn" onclick="event.stopPropagation(); document.getElementById('fileInput').click()">
-                Choose Files
-            </button>
-        </div>
-        
-        <div class="loading" id="loading">
-            <div class="loading-spinner"></div>
-            <div style="font-size: 1.2em; color: #001a4d; font-weight: bold;">Uploading to cloud...</div>
-        </div>
-        
-        <input type="text" class="name-input" id="uploaderName" placeholder="Your name" required>
-        
-        <div class="stats">
-            <div class="stat-number" id="photoCount">Loading...</div>
-            <div class="stat-label">Photos/Videos in this album (visible to everyone)</div>
-        </div>
+
+        <a href="albums.html" class="back-link">← Back to Albums</a>
     </div>
 
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-        import { getFirestore, collection, addDoc, getDocs, query } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+        import { getFirestore, collection, addDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+        import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js';
 
         const firebaseConfig = {
             apiKey: "AIzaSyDPaMpRBwk8a10vX4CUvsolfUyn3gpec5s",
@@ -135,7 +190,8 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
-        
+        const storage = getStorage(app);
+
         const albumsList = [
             { id: 1, name: 'Table 1' }, { id: 2, name: 'Table 2' }, { id: 3, name: 'Table 3' },
             { id: 4, name: 'Table 4' }, { id: 5, name: 'Table 5' }, { id: 6, name: 'Table 6' },
@@ -145,157 +201,159 @@
             { id: 16, name: '18 Candles' }, { id: 17, name: '18 Blue Bills' }, 
             { id: 18, name: '18 Treasures' }, { id: 19, name: '18 Shots' }
         ];
-        
-        let currentAlbumId = 1;
-        
-        const uploadArea = document.getElementById('uploadArea');
-        const fileInput = document.getElementById('fileInput');
-        const loading = document.getElementById('loading');
-        const successMsg = document.getElementById('successMsg');
-        const errorMsg = document.getElementById('errorMsg');
-        const uploaderName = document.getElementById('uploaderName');
-        const photoCount = document.getElementById('photoCount');
-        const currentAlbumName = document.getElementById('currentAlbumName');
-        const viewGalleryLink = document.getElementById('viewGalleryLink');
-        const albumGrid = document.getElementById('albumGrid');
 
-        function renderAlbumSelector() {
-            albumGrid.innerHTML = '';
-            albumsList.forEach(album => {
-                const option = document.createElement('div');
-                option.className = 'album-option' + (album.id === currentAlbumId ? ' selected' : '');
-                option.id = `album-${album.id}`;
-                option.onclick = () => selectAlbum(album.id, album.name);
-                option.innerHTML = `<span>${album.name}</span>`;
-                albumGrid.appendChild(option);
-            });
-        }
-
-        function selectAlbum(id, name) {
-            currentAlbumId = id;
-            document.querySelectorAll('.album-option').forEach(el => el.classList.remove('selected'));
-            const selected = document.getElementById(`album-${id}`);
-            if (selected) selected.classList.add('selected');
-            currentAlbumName.textContent = name;
-            viewGalleryLink.href = `album.html?album=${id}`;
-            updatePhotoCount();
-        }
-
-        async function updatePhotoCount() {
-            try {
-                const q = query(collection(db, `albums/${currentAlbumId}/photos`));
-                const snapshot = await getDocs(q);
-                photoCount.textContent = snapshot.size;
-            } catch (e) {
-                console.error('Error counting photos:', e);
-                photoCount.textContent = '0';
-            }
-        }
-
-        function showError(msg) {
-            errorMsg.textContent = msg;
-            errorMsg.style.display = 'block';
-            setTimeout(() => { errorMsg.style.display = 'none'; }, 5000);
-        }
-
-        function showSuccess(msg) {
-            successMsg.textContent = msg;
-            successMsg.style.display = 'block';
-            setTimeout(() => { successMsg.style.display = 'none'; }, 5000);
-        }
-
-        ['dragover', 'dragenter'].forEach(event => {
-            uploadArea.addEventListener(event, (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                uploadArea.classList.add('dragover');
-            });
+        // Load albums into dropdown
+        const albumSelect = document.getElementById('albumSelect');
+        albumsList.forEach(album => {
+            const option = document.createElement('option');
+            option.value = album.id;
+            option.textContent = album.name;
+            albumSelect.appendChild(option);
         });
 
-        ['dragleave', 'drop'].forEach(event => {
-            uploadArea.addEventListener(event, (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                uploadArea.classList.remove('dragover');
-            });
-        });
+        // Pre-select album from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const preselectedAlbum = urlParams.get('album');
+        if (preselectedAlbum) {
+            albumSelect.value = preselectedAlbum;
+        }
 
-        uploadArea.addEventListener('drop', (e) => {
-            fileInput.files = e.dataTransfer.files;
-            handleFiles();
-        });
-
-        fileInput.addEventListener('change', handleFiles);
-
-        async function handleFiles() {
-            const files = Array.from(fileInput.files);
-            if (files.length === 0) return;
-
-            const nameValue = uploaderName.value.trim();
-            if (!nameValue) {
-                showError('Please enter your name before uploading.');
-                fileInput.value = '';
-                return;
-            }
-
-            loading.style.display = 'block';
-            uploadArea.style.display = 'none';
-
-            let uploadedCount = 0;
-            let errors = 0;
-
-            for (const file of files) {
-                if (!file.type.startsWith('image/') && !file.type.startsWith('video/')) {
-                    errors++;
-                    continue;
+        // Compress image before upload
+        function compressFile(file) {
+            return new Promise((resolve) => {
+                // If video, don't compress
+                if (file.type.startsWith('video/')) {
+                    resolve(file);
+                    return;
                 }
 
-                try {
-                    const dataUrl = await readFileAsDataURL(file);
-                    
-                    await addDoc(collection(db, `albums/${currentAlbumId}/photos`), {
-                        name: file.name,
-                        dataUrl: dataUrl,
-                        timestamp: Date.now(),
-                        uploader: nameValue,
-                        size: file.size,
-                        type: file.type
-                    });
-
-                    uploadedCount++;
-                    console.log(`✓ Uploaded: ${file.name}`);
-                } catch (error) {
-                    console.error('Upload error:', error);
-                    errors++;
-                }
-            }
-
-            loading.style.display = 'none';
-            uploadArea.style.display = 'block';
-            fileInput.value = '';
-
-            await updatePhotoCount();
-
-            if (uploadedCount > 0) {
-                showSuccess(`✓ ${uploadedCount} file(s) uploaded successfully! Everyone can now see them! 🎉`);
-            }
-            if (errors > 0) {
-                showError(`${errors} file(s) failed to upload.`);
-            }
-        }
-
-        function readFileAsDataURL(file) {
-            return new Promise((resolve, reject) => {
                 const reader = new FileReader();
-                reader.onload = (e) => resolve(e.target.result);
-                reader.onerror = reject;
+                reader.onload = (e) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        let width = img.width;
+                        let height = img.height;
+                        
+                        // Resize if too large
+                        const maxDimension = 1920;
+                        if (width > maxDimension || height > maxDimension) {
+                            if (width > height) {
+                                height = (height / width) * maxDimension;
+                                width = maxDimension;
+                            } else {
+                                width = (width / height) * maxDimension;
+                                height = maxDimension;
+                            }
+                        }
+                        
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+                        
+                        canvas.toBlob((blob) => {
+                            resolve(new File([blob], file.name, {
+                                type: 'image/jpeg',
+                                lastModified: Date.now()
+                            }));
+                        }, 'image/jpeg', 0.85);
+                    };
+                    img.src = e.target.result;
+                };
                 reader.readAsDataURL(file);
             });
         }
 
-        renderAlbumSelector();
-        selectAlbum(1, 'Table 1');
-        updatePhotoCount();
+        // Handle form submission
+        document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const albumId = parseInt(albumSelect.value);
+            const uploaderName = document.getElementById('uploaderName').value.trim();
+            const fileInput = document.getElementById('photoFile');
+            const file = fileInput.files[0];
+
+            if (!albumId || !uploaderName || !file) {
+                alert('Please fill all fields');
+                return;
+            }
+
+            if (file.size > 5 * 1024 * 1024) {
+                alert('File too large! Maximum 5MB allowed.');
+                return;
+            }
+
+            const uploadBtn = document.getElementById('uploadBtn');
+            const progressContainer = document.getElementById('progressContainer');
+            const progressFill = document.getElementById('progressFill');
+            const uploadStatus = document.getElementById('uploadStatus');
+
+            uploadBtn.disabled = true;
+            progressContainer.style.display = 'block';
+            uploadStatus.textContent = 'Compressing file...';
+
+            try {
+                // Compress file
+                const compressedFile = await compressFile(file);
+                console.log('Original size:', file.size, 'Compressed:', compressedFile.size);
+
+                uploadStatus.textContent = 'Uploading to Firebase Storage...';
+
+                // Upload to Firebase Storage
+                const storageRef = ref(storage, `albums/${albumId}/${Date.now()}_${file.name}`);
+                const uploadTask = uploadBytesResumable(storageRef, compressedFile);
+
+                uploadTask.on('state_changed',
+                    (snapshot) => {
+                        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                        progressFill.style.width = progress + '%';
+                        progressFill.textContent = Math.round(progress) + '%';
+                        uploadStatus.textContent = `Uploading: ${Math.round(progress)}%`;
+                    },
+                    (error) => {
+                        console.error('Upload error:', error);
+                        uploadStatus.textContent = '❌ Upload failed: ' + error.message;
+                        uploadBtn.disabled = false;
+                    },
+                    async () => {
+                        try {
+                            // Get download URL
+                            const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+                            
+                            uploadStatus.textContent = 'Saving to database...';
+
+                            // Save metadata to Firestore (NOT the actual file data)
+                            await addDoc(collection(db, `albums/${albumId}/photos`), {
+                                name: file.name,
+                                dataUrl: downloadURL, // Store Firebase Storage URL
+                                uploader: uploaderName,
+                                size: compressedFile.size,
+                                timestamp: Date.now()
+                            });
+
+                            uploadStatus.textContent = '✅ Upload successful!';
+                            progressFill.style.width = '100%';
+                            progressFill.textContent = '100%';
+
+                            setTimeout(() => {
+                                window.location.href = `album.html?album=${albumId}`;
+                            }, 1500);
+
+                        } catch (error) {
+                            console.error('Database error:', error);
+                            uploadStatus.textContent = '❌ Error saving to database';
+                            uploadBtn.disabled = false;
+                        }
+                    }
+                );
+
+            } catch (error) {
+                console.error('Error:', error);
+                uploadStatus.textContent = '❌ Error: ' + error.message;
+                uploadBtn.disabled = false;
+            }
+        });
     </script>
 </body>
 </html>
