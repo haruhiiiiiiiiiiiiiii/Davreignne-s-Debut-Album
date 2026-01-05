@@ -33,8 +33,6 @@
             max-width: 1400px; 
             margin: 0 auto; 
             background: transparent;
-            backdrop-filter: blur(10px);
-            border-radius: 25px; 
             padding: 40px;
             position: relative;
             animation: slideDown 0.8s ease-out;
@@ -156,13 +154,15 @@
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #001a4d 0%, #0d3b66 100%);
-            color: white;
-            border-color: #001a4d;
+            background: linear-gradient(135deg, #c0c0c0 0%, #e8e8e8 50%, #c0c0c0 100%);
+            color: #001a4d;
+            border: 2px solid #c0c0c0;
+            box-shadow: 0 5px 15px rgba(192, 192, 192, 0.4);
         }
 
         .btn-primary:hover {
-            box-shadow: 0 5px 15px rgba(0, 26, 77, 0.5);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(192, 192, 192, 0.6);
         }
 
         .loading {
