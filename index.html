@@ -5,25 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">    
     <title>Home - Davreignne's Debut</title>    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">    
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    
-    html {
-        height: 100%;
+ <style>
+    * { 
+        margin: 0; 
+        padding: 0; 
+        box-sizing: border-box; 
     }
     
     body { 
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        min-height: 100vh;
-        margin: 0;
-        padding: 0;
         background: linear-gradient(135deg, #001a4d 0%, #0d3b66 100%);
-        display: flex;
-        flex-direction: column;
     }
     
     .hero {
-        width: 100%;
         min-height: 100vh;
         background-image: 
             linear-gradient(135deg, rgba(0, 26, 77, 0.5) 0%, rgba(13, 59, 102, 0.6) 100%),
@@ -33,12 +27,11 @@
         background-attachment: fixed;
         background-repeat: no-repeat;
         padding: 20px;
-        padding-bottom: 60px;
+        padding-bottom: 100px;
         position: relative;
         display: flex;
         align-items: center;
         justify-content: center;
-        flex: 1 0 auto;
     }
 
     @media (max-width: 768px) {
@@ -398,8 +391,7 @@
     }
     
     @media (max-width: 480px) {
-        body { padding: 0; }
-        .hero { padding: 15px; }
+        .hero { padding: 15px; padding-bottom: 100px; }
         h1 { font-size: 2em; }
         .subtitle { font-size: 1em; margin-bottom: 30px; }
         .buttons-container { gap: 15px; }
@@ -415,7 +407,6 @@
         top: 0;
         z-index: 1000;
         backdrop-filter: blur(10px);
-        width: 100%;
     }
 
     .site-header .header-content {
@@ -505,7 +496,7 @@
 
     .dropdown:hover .dropdown-menu {
         opacity: 1;
-        visibility: visible;
+        visibility: hidden;
         transform: translateY(0);
     }
 
@@ -536,11 +527,10 @@
         background: linear-gradient(135deg, #001a4d 0%, #4a5568 50%, #c0c0c0 100%);
         color: #fff;
         padding: 20px 40px;
-        margin-top: auto;
         text-align: center;
         box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
-        width: 100%;
-        flex-shrink: 0;
+        position: relative;
+        clear: both;
     }
 
     .footer-content {
