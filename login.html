@@ -19,11 +19,20 @@
             background-repeat: no-repeat;
             min-height: 100vh;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             padding: 20px;
             position: relative;
-            overflow: hidden;
+            overflow-x: hidden;
+        }
+
+        .content-wrapper {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
         }
 
         /* Animated Sparkles */
@@ -89,10 +98,15 @@
         }
 
         .login-icon {
-            width: 100px;
-            height: 100px;
+            width: 120px;
+            height: 120px;
             margin: 0 auto 20px;
+            display: block;
             filter: drop-shadow(0 0 20px rgba(192, 192, 192, 0.6));
+            border-radius: 50%;
+            border: 3px solid #c0c0c0;
+            object-fit: cover;
+            background: rgba(255, 255, 255, 0.1);
         }
 
         .login-title {
@@ -218,6 +232,30 @@
             margin: 0 3px;
         }
 
+        /* Footer Container */
+        .creator-footer {
+            width: 100%;
+            background: linear-gradient(135deg, #001f3f, #003366);
+            border-top: 2px solid #C0C0C0;
+            padding: 20px 0;
+            margin-top: auto;
+            text-align: center;
+        }
+
+        .creator-footer p {
+            color: #C0C0C0;
+            font-family: sans-serif;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        .creator-name {
+            font-weight: bold;
+            color: #ffffff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
         @media (max-width: 768px) {
             .login-container {
                 padding: 40px 30px;
@@ -229,6 +267,11 @@
 
             .login-subtitle {
                 font-size: 1em;
+            }
+
+            .login-icon {
+                width: 100px;
+                height: 100px;
             }
         }
 
@@ -250,32 +293,6 @@
                 height: 80px;
             }
         }
-        /* Footer Container */
-.creator-footer {
-    width: 100%;
-    background: linear-gradient(135deg, #001f3f, #003366); /* Navy Blue Gradient */
-    border-top: 2px solid #C0C0C0; /* Silver border line at top */
-    padding: 20px 0;
-    margin-top: auto; /* Pushes footer to bottom if using Flexbox */
-    text-align: center;
-}
-
-/* Text Styling */
-.creator-footer p {
-    color: #C0C0C0; /* Silver text */
-    font-family: sans-serif; /* Or your site's font */
-    font-size: 0.9rem;
-    margin: 0;
-}
-
-/* Your Name Styling */
-.creator-name {
-    font-weight: bold;
-    color: #ffffff; /* Bright white/silver to make your name pop */
-    text-transform: uppercase; /* Optional: Makes name uppercase */
-    letter-spacing: 1px;
-}
-
     </style>
 </head>
 <body>
@@ -287,62 +304,65 @@
     <div class="sparkle"></div>
     <div class="sparkle"></div>
 
-    <div class="login-container">
-        <div class="login-header">
-            <svg class="login-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-                <g fill="#e8e8e8">
-                    <circle cx="32" cy="32" r="28" fill="none" stroke="#c0c0c0" stroke-width="3"/>
-                    <path d="M32 16 L36 28 L48 30 L40 38 L42 50 L32 44 L22 50 L24 38 L16 30 L28 28 Z" fill="#e8e8e8"/>
-                </g>
-            </svg>
-            <h1 class="login-title">Welcome!</h1>
-            <p class="login-subtitle">Davreignne's 18th Birthday</p>
-        </div>
-
-        <div id="errorMessage" class="error-message">
-            <i class="fas fa-exclamation-circle"></i> Please fill in all fields
-        </div>
-
-        <form id="loginForm">
-            <div class="form-group">
-                <label for="guestName">
-                    <i class="fas fa-user"></i> Guest Name
-                </label>
-                <input 
-                    type="text" 
-                    id="guestName" 
-                    class="form-input" 
-                    placeholder="Enter your full name (e.g., John Smith)"
-                    required
-                    autocomplete="name"
-                >
+    <div class="content-wrapper">
+        <div class="login-container">
+            <div class="login-header">    
+                <img src="https://raw.githubusercontent.com/haruhiiiiiiiiiiiiiii/Davreignne-s-Debut-Album/main/klogoo.png" alt="Davreignne's Debut Logo" class="login-icon">        
+                <h1 class="login-title">Welcome!</h1>    
+                <p class="login-subtitle">Davreignne's 18th Birthday</p>
             </div>
 
-            <div class="form-group">
-                <label for="nickname">
-                    <i class="fas fa-tag"></i> Nickname (For Uploads)
-                </label>
-                <input 
-                    type="text" 
-                    id="nickname" 
-                    class="form-input" 
-                    placeholder="Enter one word (e.g., John)"
-                    required
-                    autocomplete="off"
-                    maxlength="20"
-                >
+            <div id="errorMessage" class="error-message">
+                <i class="fas fa-exclamation-circle"></i> Please fill in all fields
             </div>
 
-            <button type="submit" class="login-button">
-                <i class="fas fa-sign-in-alt"></i>
-                Enter Gallery
-            </button>
-        </form>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="guestName">
+                        <i class="fas fa-user"></i> Guest Name
+                    </label>
+                    <input 
+                        type="text" 
+                        id="guestName" 
+                        class="form-input" 
+                        placeholder="Enter your full name (e.g., John Smith)"
+                        required
+                        autocomplete="name"
+                    >
+                </div>
 
-        <p class="info-text">
-            <i class="fas fa-info-circle"></i> Your nickname will be shown when you upload photos
-        </p>
+                <div class="form-group">
+                    <label for="nickname">
+                        <i class="fas fa-tag"></i> Nickname (For Uploads)
+                    </label>
+                    <input 
+                        type="text" 
+                        id="nickname" 
+                        class="form-input" 
+                        placeholder="Enter one word (e.g., John)"
+                        required
+                        autocomplete="off"
+                        maxlength="20"
+                    >
+                </div>
+
+                <button type="submit" class="login-button">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Enter Gallery
+                </button>
+            </form>
+
+            <p class="info-text">
+                <i class="fas fa-info-circle"></i> Your nickname will be shown when you upload photos
+            </p>
+        </div>
     </div>
+
+    <footer class="creator-footer">    
+        <div class="footer-container">        
+            <p>&copy; 2026 Davreignne's Debut. Designed & Developed by <span class="creator-name">Ma. Dannielle Louiesse Valdez</span></p>    
+        </div>
+    </footer>
 
     <script>
         // Check if user is already logged in
@@ -410,11 +430,5 @@
             guestNameInput.focus();
         });
     </script>
-    <footer class="creator-footer">    
-        <div class="footer-container">        
-            <p> &copy; 2026 Davreignne's Debut. Designed & Developed by <span class="creator-name">Ma. Dannielle Louiesse Valdez</span>        
-            </p>    
-        </div>
-    </footer>
 </body>
 </html>
