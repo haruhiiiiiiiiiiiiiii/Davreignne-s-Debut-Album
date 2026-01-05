@@ -441,13 +441,14 @@
             card.className = 'photo-card';
             card.onclick = () => openLightbox(index);
             
-            const isVideo = photo.dataUrl && photo.dataUrl.startsWith('data:video');
+            const imageUrl = photo.dataUrl;
+            const isVideo = photo.type && photo.type.startsWith('video/');
             
             card.innerHTML = `
                 <div class="photo-thumbnail-wrapper">
                     ${isVideo ? 
-                        `<video src="${photo.dataUrl}" muted preload="metadata"></video>` : 
-                        `<img src="${photo.dataUrl}" alt="${photo.name}" loading="lazy">`
+                        `<video src="${imageUrl}" muted preload="metadata"></video>` : 
+                        `<img src="${imageUrl}" alt="${photo.name}" loading="lazy">`
                     }
                 </div>
                 <div class="photo-info">
@@ -474,7 +475,8 @@
             const photo = allPhotos[currentPhotoIndex];
             if (!photo) return;
 
-            const isVideo = photo.dataUrl && photo.dataUrl.startsWith('data:video');
+            const imageUrl = photo.dataUrl;
+            const isVideo = photo.type && photo.type.startsWith('video/');
             
             const prevBtn = lightboxImageContainer.querySelector('.nav-prev');
             const nextBtn = lightboxImageContainer.querySelector('.nav-next');
@@ -483,18 +485,18 @@
             
             if (isVideo) {
                 const video = document.createElement('video');
-                video.src = photo.dataUrl;
+                video.src = imageUrl;
                 video.controls = true;
                 lightboxImageContainer.appendChild(video);
             } else {
                 const img = document.createElement('img');
-                img.src = photo.dataUrl;
+                img.src = imageUrl;
                 img.alt = photo.name;
                 lightboxImageContainer.appendChild(img);
             }
             
-            lightboxImageContainer.appendChild(prevBtn);
-            lightboxImageContainer.appendChild(nextBtn);
+            if (prevBtn) lightboxImageContainer.appendChild(prevBtn);
+            if (nextBtn) lightboxImageContainer.appendChild(nextBtn);
 
             const date = new Date(photo.timestamp);
             document.getElementById('detailName').textContent = photo.name;
@@ -547,6 +549,7 @@
                     noPhotos.style.display = 'block';
                     storageInfo.textContent = '0 photos';
                 } else {
+                    photosGrid.innerHTML = '';
                     allPhotos.forEach((photo, index) => addPhotoCard(photo, index));
                     storageInfo.textContent = `${allPhotos.length} photos shared by everyone`;
                 }
