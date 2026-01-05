@@ -437,11 +437,17 @@
         uploadLink.href = `front.html?album=${currentAlbumId}`;
 
         function addPhotoCard(photo, index) {
+            // ✅ FIX 1: Skip photos with missing or invalid URLs
+            if (!photo.url || photo.url === 'undefined') {
+                console.warn('⚠️ Skipping photo with missing URL:', photo.name || photo.id);
+                return;
+            }
+
             const card = document.createElement('div');
             card.className = 'photo-card';
             card.onclick = () => openLightbox(index);
 
-            // ✅ FIXED: Use photo.url and check photo.type
+            // ✅ FIX 2: Use photo.type instead of checking dataUrl
             const isVideo = photo.type && photo.type.startsWith('video');
 
             card.innerHTML = `
@@ -475,7 +481,7 @@
             const photo = allPhotos[currentPhotoIndex];
             if (!photo) return;
 
-            // ✅ FIXED: Use photo.url and check photo.type
+            // ✅ FIX 3: Use photo.type and photo.url
             const isVideo = photo.type && photo.type.startsWith('video');
 
             const prevBtn = lightboxImageContainer.querySelector('.nav-prev');
@@ -485,12 +491,12 @@
 
             if (isVideo) {
                 const video = document.createElement('video');
-                video.src = photo.url; // ✅ FIXED: Changed from photo.dataUrl
+                video.src = photo.url; // ✅ Changed from photo.dataUrl
                 video.controls = true;
                 lightboxImageContainer.appendChild(video);
             } else {
                 const img = document.createElement('img');
-                img.src = photo.url; // ✅ FIXED: Changed from photo.dataUrl
+                img.src = photo.url; // ✅ Changed from photo.dataUrl
                 img.alt = photo.name;
                 lightboxImageContainer.appendChild(img);
             }
@@ -540,7 +546,14 @@
 
                 allPhotos = [];
                 snapshot.forEach(doc => {
-                    allPhotos.push({ id: doc.id, ...doc.data() });
+                    const photoData = { id: doc.id, ...doc.data() };
+                    
+                    // ✅ FIX 4: Only add photos with valid URLs to the array
+                    if (photoData.url && photoData.url !== 'undefined') {
+                        allPhotos.push(photoData);
+                    } else {
+                        console.warn('⚠️ Skipping invalid photo from database:', photoData.name || doc.id);
+                    }
                 });
 
                 loading.style.display = 'none';
