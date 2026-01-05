@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Davreignne's Debut</title>
+<head>    
+    <meta charset="UTF-8">    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">    
+    <title>Home - Davreignne's Debut</title>    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">    
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
@@ -397,6 +398,37 @@
     </style>
 </head>
 <body>
+    <body>    <!-- ===== ADD HEADER HERE ===== -->    
+        <header class="main-header">        
+            <div class="header-container">            
+                <a href="index.html" class="logo">                
+                    <i class="fas fa-star"></i>                
+                    <span>Davreignne's Debut</span>            
+                </a>                        
+                <nav class="nav-menu">                
+                    <a href="index.html">                    
+                        <i class="fas fa-home"></i>                    
+                        <span>Home</span>                
+                    </a>                
+                    <a href="albums.html">                    
+                        <i class="fas fa-images"></i>                    
+                        <span>Albums</span>                
+                    </a>                
+                    <a href="front.html">                    
+                        <i class="fas fa-upload"></i>                    
+                        <span>Upload</span>                
+                    </a>                
+                    <a href="debut-video.html">                    
+                        <i class="fas fa-video"></i>                    
+                        <span>Video</span>                
+                    </a>                
+                    <button class="logout-btn" onclick="handleLogout()">                    
+                        <i class="fas fa-sign-out-alt"></i>                    
+                        <span>Logout</span>                
+                    </button>            
+                </nav>        
+            </div>    
+        </header>
     <div class="hero">
         <div class="sparkle-1"></div>
         <div class="sparkle-2"></div>
@@ -483,14 +515,21 @@
     <script type="module">
 
         // Check if user is logged in
-window.addEventListener('DOMContentLoaded', function() {
-    const currentUser = localStorage.getItem('currentUser');
-    
-    if (!currentUser) {
-        window.location.href = 'login.html';
-        return;
-    }
-    
+ window.addEventListener('DOMContentLoaded', function() {            
+     const currentUser = localStorage.getItem('currentUser');            
+     if (!currentUser) {                
+         window.location.href = 'login.html';                
+         return;            
+     }            
+     const userData = JSON.parse(currentUser);            
+     console.log('Logged in as:', userData.guestName);        });        
+        // ===== ADD LOGOUT FUNCTION HERE =====        
+        function handleLogout() {            
+            if (confirm('Are you sure you want to logout?')) {                
+                localStorage.removeItem('currentUser');                
+                window.location.href = 'login.html';            
+            }        
+        }
     const userData = JSON.parse(currentUser);
     console.log('Logged in as:', userData.guestName, '(' + userData.nickname + ')');
     
@@ -552,5 +591,11 @@ window.addEventListener('DOMContentLoaded', function() {
         updateStats();
         setInterval(updateStats, 10000); // Update every 10 seconds
     </script>
+        <footer class="main-footer">        
+            <div class="footer-content">            
+                <p><i class="fas fa-heart"></i> Celebrating Davreignne's Debut <i class="fas fa-heart"></i></p>            
+            <p>© 2026 - Made with Love</p>        
+        </div>    
+        </footer>
 </body>
 </html>
