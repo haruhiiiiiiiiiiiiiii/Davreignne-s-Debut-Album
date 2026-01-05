@@ -600,12 +600,23 @@
         });
 
         window.deletePhoto = function(photoId, photoUrl, uploaderName, event) {
-            if (event) {
-                event.stopPropagation();
-            }
-            photoToDelete = { id: photoId, url: photoUrl, uploader: uploaderName };
-            document.getElementById('deleteModal').classList.add('active');
-        };
+    if (event) {
+        event.stopPropagation();
+    }
+    
+    // Decode the uploader name
+    const decodedUploader = decodeURIComponent(uploaderName);
+    
+    // Security check: Verify current user matches uploader
+    if (!currentUser || currentUser.toLowerCase().trim() !== decodedUploader.toLowerCase().trim()) {
+        alert('❌ You can only delete your own photos!\n\nYour name: ' + currentUser + '\nPhoto uploader: ' + decodedUploader);
+        return;
+    }
+    
+    photoToDelete = { id: photoId, url: photoUrl, uploader: decodedUploader };
+    document.getElementById('deleteModal').classList.add('active');
+};
+
 
         window.confirmDelete = async function() {
     if (!photoToDelete) return;
@@ -723,12 +734,19 @@
                           })
                         : 'Unknown date';
 
-                    const canDelete = currentUser && photo.uploader && 
-                                     currentUser.toLowerCase().trim() === photo.uploader.toLowerCase().trim();
-                    
-                    const deleteButton = canDelete 
-                        ? `<button class="delete-btn" onclick="deletePhoto('${photo.id}', '${photo.url}', '${photo.uploader}', event)" title="Delete this photo">🗑️</button>`
-                        : '';
+                    // Check if current user can delete this photo
+let canDelete = false;
+if (currentUser && photo.uploader) {
+    const normalizedCurrentUser = currentUser.toLowerCase().trim();
+    const normalizedUploader = photo.uploader.toLowerCase().trim();
+    canDelete = normalizedCurrentUser === normalizedUploader;
+    console.log(`User: "${normalizedCurrentUser}" | Uploader: "${normalizedUploader}" | Can Delete: ${canDelete}`);
+}
+
+const deleteButton = canDelete 
+    ? `<button class="delete-btn" onclick="deletePhoto('${photo.id}', '${photo.url}', '${encodeURIComponent(photo.uploader)}', event)" title="Delete this photo">🗑️</button>`
+    : '';
+
 
                     photoItem.innerHTML = `
                         <div class="photo-media-wrapper" onclick='openLightbox(${JSON.stringify(photo).replace(/'/g, "\\'")})'>
