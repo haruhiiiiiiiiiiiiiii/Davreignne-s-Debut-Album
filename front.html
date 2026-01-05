@@ -501,6 +501,33 @@
     }
 }
 
+        /* Footer Container */
+.creator-footer {
+    width: 100%;
+    background: linear-gradient(135deg, #001f3f, #003366); /* Navy Blue Gradient */
+    border-top: 2px solid #C0C0C0; /* Silver border line at top */
+    padding: 20px 0;
+    margin-top: auto; /* Pushes footer to bottom if using Flexbox */
+    text-align: center;
+}
+
+/* Text Styling */
+.creator-footer p {
+    color: #C0C0C0; /* Silver text */
+    font-family: sans-serif; /* Or your site's font */
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+/* Your Name Styling */
+.creator-name {
+    font-weight: bold;
+    color: #ffffff; /* Bright white/silver to make your name pop */
+    text-transform: uppercase; /* Optional: Makes name uppercase */
+    letter-spacing: 1px;
+}
+
+
 </style>
 
 </head>
@@ -513,6 +540,9 @@
         </a>
         <nav>
             <a href="index.html">
+                <i class="fas fa-tachometer-alt"></i> Dashboard
+            </a>
+            <a href="albums.html">
                 <i class="fas fa-home"></i> Home
             </a>
             <div class="dropdown">
@@ -555,16 +585,16 @@
     <div class="sparkle-2"></div>
 
     <div class="container">
-        <h1>📸 Upload Photos</h1>
+        <h1> Upload Photos</h1>
         <p class="subtitle">Share your moments from the celebration!</p>
 
         <div class="info-box">
-            <strong>📋 Upload Guidelines:</strong>
+            <strong> Upload Guidelines:</strong>
             <ul>
-                <li>✅ Max file size: <strong>5MB per file</strong></li>
-                <li>📸 Accepted: Photos (JPG, PNG) & Videos (MP4, MOV)</li>
-                <li>🗜️ Images auto-compressed for faster upload</li>
-                <li>🚀 Multiple files processed sequentially</li>
+                <li> Max file size: <strong>5MB per file</strong></li>
+                <li> Accepted: Photos (JPG, PNG) & Videos (MP4, MOV)</li>
+                <li> Images auto-compressed for faster upload</li>
+                <li> Multiple files processed sequentially</li>
             </ul>
         </div>
 
@@ -598,7 +628,7 @@
             </button>
 
             <div class="button-group">
-                <a href="albums.html" class="btn-secondary">📚 View All Albums</a>
+                <a href="albums.html" class="btn-secondary"> View All Albums </a>
                 <a href="#" id="viewCurrentAlbum" class="btn-secondary" style="display: none;">👁️ View This Album</a>
             </div>
         </form>
@@ -960,10 +990,10 @@ function handleLogout() {
 
     </script>
         <!-- Footer -->
-    <footer class="site-footer">    
-        <div class="footer-content">
-            <p><i class="fas fa-heart"></i> Celebrating Davreignne's Debut <i class="fas fa-heart"></i></p>
-            <p>© 2026 - Made with Love</p>
+    <footer class="creator-footer">    
+        <div class="footer-container">        
+            <p> &copy; 2026 Davreignne's Debut. Designed & Developed by <span class="creator-name">Ma. Dannielle Louiesse Valdez</span>        
+            </p>    
         </div>
     </footer>
 
