@@ -391,7 +391,7 @@
     }
 
     /* ==================== HEADER STYLES ==================== */
-    .site-header {
+       .site-header {
         background: linear-gradient(135deg, #001a4d 0%, #4a5568 50%, #c0c0c0 100%);
         color: #fff;
         padding: 12px 40px;
@@ -537,11 +537,14 @@
 
     /* Mobile Responsive */
     @media (max-width: 768px) { 
-        h1 { font-size: 2.5em; }
-        .subtitle { font-size: 1.2em; margin-bottom: 40px; }
-        .buttons-container { grid-template-columns: 1fr; gap: 20px; }
-        .btn-card { padding: 30px 20px; min-height: 240px; }
-        .video-container { max-width: 100%; }
+        body { background-attachment: scroll; } 
+        .container { padding: 30px 20px; } 
+        h1 { font-size: 2.2em; } 
+        .debut-video-content { flex-direction: column; text-align: center; gap: 20px; } 
+        .debut-video-title { font-size: 1.8em; } 
+        .debut-video-subtitle { font-size: 1.1em; } 
+        .albums-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; } 
+        .section-divider h2 { font-size: 1.4em; padding: 8px 20px; }
         
         .site-header {
             padding: 10px 20px;
@@ -571,10 +574,14 @@
         }
     }
     
-    @media (max-width: 480px) {
-        h1 { font-size: 2em; }
-        .subtitle { font-size: 1em; margin-bottom: 30px; }
-        .buttons-container { gap: 15px; }
+    @media (max-width: 480px) { 
+        body { padding: 10px; } 
+        .container { padding: 20px 15px; } 
+        h1 { font-size: 1.8em; } 
+        .debut-video-card { padding: 25px; } 
+        .debut-video-title { font-size: 1.5em; } 
+        .albums-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; } 
+        .section-divider h2 { font-size: 1.2em; padding: 6px 15px; } 
     }
 </style>
 
