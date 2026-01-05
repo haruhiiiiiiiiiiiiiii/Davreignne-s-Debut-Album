@@ -81,12 +81,27 @@
         <div class="section-divider"><h2>18 COLLECTION</h2></div>
         <div class="albums-grid" id="specialAlbumsGrid"></div>
         <div class="button-group">
-            <div class="upload-button"><a href="index.html" class="btn-link"><svg class="btn-icon-small" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><path d="M32 10 L32 44 M20 32 L32 10 L44 32" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/><rect x="12" y="50" width="40" height="6" rx="2" fill="currentColor"/></g></svg>Upload Only</a></div>
-            <div class="back-button"><a href="front.html" class="btn-link"><svg class="btn-icon-small" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><path d="M44 54 L20 32 L44 10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/></g></svg>Back to Home</a></div>
+            <div class="upload-button"><a href="front.html" class="btn-link"><svg class="btn-icon-small" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><path d="M32 10 L32 44 M20 32 L32 10 L44 32" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/><rect x="12" y="50" width="40" height="6" rx="2" fill="currentColor"/></g></svg>Upload Only</a></div>
+            <div class="back-button"><a href="index.html" class="btn-link"><svg class="btn-icon-small" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><path d="M44 54 L20 32 L44 10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/></g></svg>Back to Home</a></div>
         </div>
     </div>
-    <script>
-        const STORAGE_KEY = 'qr_photo_albums';
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getFirestore, collection, getDocs } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDPaMpRBwk8a10vX4CUvsolfUyn3gpec5s",
+            authDomain: "debut-photo-gallery.firebaseapp.com",
+            projectId: "debut-photo-gallery",
+            storageBucket: "debut-photo-gallery.firebasestorage.app",
+            messagingSenderId: "954052989718",
+            appId: "1:954052989718:web:8faaeeaa9aebe726f67637",
+            measurementId: "G-WQ0EW238CJ"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
         const albums = [{id: 1, name: 'Table 1', description: 'Family'},{id: 2, name: 'Table 2', description: 'Guests'},{id: 3, name: 'Table 3', description: 'Guests'},{id: 4, name: 'Table 4', description: 'Guests'},{id: 5, name: 'Table 5', description: 'Guests'},{id: 6, name: 'Table 6', description: 'Guests'},{id: 7, name: 'Table 7', description: 'Guests'},{id: 8, name: 'Table 8', description: 'Guests'},{id: 9, name: 'Table 9', description: 'Guests'},{id: 10, name: 'Table 10', description: 'Guests'},{id: 11, name: 'Table 11', description: 'Guests'},{id: 12, name: 'Table 12', description: 'Guests'},{id: 13, name: 'Table 13', description: 'Guests'},{id: 14, name: 'Table 14', description: 'Guests'}];
         const specialAlbums = [{id: 15, name: '18 Roses', description: 'Rose dance moments'},{id: 16, name: '18 Candles', description: 'Candle ceremony'},{id: 17, name: '18 Blue Bills', description: 'Blue bills collection'},{id: 18, name: '18 Treasures', description: 'Wisdom & gifts'},{id: 19, name: '18 Shots', description: 'Photo booth shots'}];
         const albumIcons = {
@@ -97,27 +112,50 @@
             treasure: '<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g fill="#e8e8e8"><rect x="16" y="28" width="32" height="20" rx="2"/><path d="M16 32 Q16 24 20 20 Q24 16 32 16 Q40 16 44 20 Q48 24 48 32" fill="none" stroke="#e8e8e8" stroke-width="2"/><circle cx="32" cy="38" r="4" fill="#001a4d"/><rect x="30" y="38" width="4" height="6" fill="#001a4d"/><rect x="20" y="32" width="24" height="2" opacity="0.5"/></g></svg>',
             shot: '<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g fill="#e8e8e8"><path d="M24 34 L24 50 Q24 52 26 52 L38 52 Q40 52 40 50 L40 34 Z"/><ellipse cx="32" cy="34" rx="8" ry="2"/><path d="M26 34 L26 46 Q26 44 32 44 Q38 44 38 46 L38 34" opacity="0.3"/><rect x="28" y="28" width="8" height="6" opacity="0.6"/><ellipse cx="32" cy="28" rx="4" ry="1.5"/><path d="M29 28 L29 22 L35 22 L35 28" opacity="0.4"/></g></svg>'
         };
-        function getAlbumPhotoCount(albumId) { const allAlbums = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; return (allAlbums[albumId] || []).length; }
-        function renderAlbums() {
-            const grid = document.getElementById('albumsGrid'); grid.innerHTML = '';
-            albums.forEach(album => {
-                const count = getAlbumPhotoCount(album.id); const iconSvg = albumIcons.table; const card = document.createElement('a');
-                card.href = `album.html?album=${album.id}`; card.className = 'album-card';
+        
+        async function getAlbumPhotoCount(albumId) {
+            try {
+                const snapshot = await getDocs(collection(db, `albums/${albumId}/photos`));
+                return snapshot.size;
+            } catch (error) {
+                console.error(`Error counting photos for album ${albumId}:`, error);
+                return 0;
+            }
+        }
+
+        async function renderAlbums() {
+            const grid = document.getElementById('albumsGrid');
+            grid.innerHTML = '';
+            
+            for (const album of albums) {
+                const count = await getAlbumPhotoCount(album.id);
+                const iconSvg = albumIcons.table;
+                const card = document.createElement('a');
+                card.href = `album.html?album=${album.id}`;
+                card.className = 'album-card';
                 card.innerHTML = `<div class="album-thumbnail"><div class="album-icon">${iconSvg}</div></div><div class="album-info"><div class="album-title">${album.name}</div><div class="album-subtitle">${album.description}</div><div class="album-count"><svg class="count-icon" viewBox="0 0 64 64"><rect x="12" y="20" width="16" height="20" rx="2" fill="#e8e8e8" opacity="0.7"/><rect x="32" y="16" width="16" height="24" rx="2" fill="#e8e8e8" opacity="0.9"/><rect x="52" y="24" width="8" height="16" rx="1" fill="#e8e8e8" opacity="0.6"/></svg>${count}</div></div>`;
                 grid.appendChild(card);
-            });
+            }
         }
-        function renderSpecialAlbums() {
-            const grid = document.getElementById('specialAlbumsGrid'); grid.innerHTML = '';
+
+        async function renderSpecialAlbums() {
+            const grid = document.getElementById('specialAlbumsGrid');
+            grid.innerHTML = '';
             const iconMap = {15: albumIcons.rose, 16: albumIcons.candle, 17: albumIcons.bill, 18: albumIcons.treasure, 19: albumIcons.shot};
-            specialAlbums.forEach(album => {
-                const count = getAlbumPhotoCount(album.id); const iconSvg = iconMap[album.id]; const card = document.createElement('a');
-                card.href = `album.html?album=${album.id}`; card.className = 'album-card';
+            
+            for (const album of specialAlbums) {
+                const count = await getAlbumPhotoCount(album.id);
+                const iconSvg = iconMap[album.id];
+                const card = document.createElement('a');
+                card.href = `album.html?album=${album.id}`;
+                card.className = 'album-card';
                 card.innerHTML = `<div class="album-thumbnail"><div class="album-icon">${iconSvg}</div></div><div class="album-info"><div class="album-title">${album.name}</div><div class="album-subtitle">${album.description}</div><div class="album-count"><svg class="count-icon" viewBox="0 0 64 64"><rect x="12" y="20" width="16" height="20" rx="2" fill="#e8e8e8" opacity="0.7"/><rect x="32" y="16" width="16" height="24" rx="2" fill="#e8e8e8" opacity="0.9"/><rect x="52" y="24" width="8" height="16" rx="1" fill="#e8e8e8" opacity="0.6"/></svg>${count}</div></div>`;
                 grid.appendChild(card);
-            });
+            }
         }
-        renderAlbums(); renderSpecialAlbums();
+
+        renderAlbums();
+        renderSpecialAlbums();
     </script>
 </body>
-</html>
+</html
