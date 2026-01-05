@@ -32,13 +32,10 @@
         .container { 
             max-width: 1400px; 
             margin: 0 auto; 
-            background: rgba(255, 255, 255, 0.95);
+            background: transparent;
             backdrop-filter: blur(10px);
             border-radius: 25px; 
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3), 0 0 40px rgba(192, 192, 192, 0.2); 
             padding: 40px;
-            border: 3px solid;
-            border-image: linear-gradient(135deg, #c0c0c0 0%, #e8e8e8 50%, #c0c0c0 100%) 1;
             position: relative;
             animation: slideDown 0.8s ease-out;
             z-index: 10;
@@ -50,23 +47,21 @@
         }
 
         h1 { 
-            color: #001a4d; 
+            color: #c0c0c0; 
             margin-bottom: 15px; 
             font-size: 2.5em;
-            background: linear-gradient(135deg, #001a4d 0%, #c0c0c0 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            text-shadow: 0 0 20px rgba(192, 192, 192, 0.8), 0 0 40px rgba(192, 192, 192, 0.5);
         }
 
         .subtitle { 
-            color: #555; 
+            color: #e8e8e8; 
             margin-bottom: 20px;
             font-size: 1.1em;
+            text-shadow: 0 0 10px rgba(192, 192, 192, 0.5);
         }
 
         .user-section {
-            background: linear-gradient(135deg, rgba(0, 26, 77, 0.1) 0%, rgba(192, 192, 192, 0.1) 100%);
+            background: linear-gradient(135deg, rgba(0, 26, 77, 0.3) 0%, rgba(192, 192, 192, 0.3) 100%);
             padding: 20px;
             border-radius: 15px;
             margin-bottom: 25px;
@@ -76,6 +71,7 @@
             justify-content: space-between;
             flex-wrap: wrap;
             gap: 15px;
+            backdrop-filter: blur(10px);
         }
 
         .user-input-group {
@@ -88,8 +84,9 @@
 
         .user-input-group label {
             font-weight: bold;
-            color: #001a4d;
+            color: #e8e8e8;
             white-space: nowrap;
+            text-shadow: 0 0 10px rgba(192, 192, 192, 0.5);
         }
 
         .user-input-group input {
@@ -98,6 +95,7 @@
             border: 2px solid #c0c0c0;
             border-radius: 8px;
             font-size: 1em;
+            background: rgba(255, 255, 255, 0.9);
         }
 
         .user-input-group input:focus {
@@ -106,7 +104,7 @@
         }
 
         .current-user {
-            background: white;
+            background: rgba(255, 255, 255, 0.9);
             padding: 10px 20px;
             border-radius: 8px;
             color: #001a4d;
@@ -170,34 +168,44 @@
         .loading {
             text-align: center;
             padding: 40px;
-            color: #001a4d;
+            color: #e8e8e8;
             font-size: 1.2em;
+            text-shadow: 0 0 10px rgba(192, 192, 192, 0.5);
         }
 
         .photo-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
+            gap: 30px;
             margin-top: 30px;
         }
 
         .photo-item {
             position: relative;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            background: transparent;
             transition: all 0.3s ease;
-            background: white;
         }
 
         .photo-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            transform: scale(1.02);
         }
 
         .photo-media-wrapper {
             position: relative;
             cursor: pointer;
+            border-radius: 15px;
+            overflow: hidden;
+            background: transparent;
+        }
+
+        .photo-item:nth-child(odd) .photo-media-wrapper {
+            border: 8px solid #001a4d;
+            box-shadow: 0 10px 30px rgba(0, 26, 77, 0.4);
+        }
+
+        .photo-item:nth-child(even) .photo-media-wrapper {
+            border: 8px solid #c0c0c0;
+            box-shadow: 0 10px 30px rgba(192, 192, 192, 0.4);
         }
 
         .photo-item img, .photo-item video {
@@ -234,7 +242,10 @@
 
         .photo-info {
             padding: 15px;
-            background: white;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 0 0 15px 15px;
+            margin-top: -5px;
         }
 
         .photo-uploader {
@@ -251,11 +262,12 @@
         .empty-state {
             text-align: center;
             padding: 60px 20px;
-            color: #666;
+            color: #e8e8e8;
+            text-shadow: 0 0 10px rgba(192, 192, 192, 0.5);
         }
 
         .empty-state h2 {
-            color: #001a4d;
+            color: #c0c0c0;
             margin-bottom: 15px;
         }
 
@@ -399,8 +411,12 @@
             body { background-attachment: scroll; }
             .container { padding: 25px; }
             h1 { font-size: 2em; }
-            .photo-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+            .photo-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 20px; }
             .photo-item img, .photo-item video { height: 150px; }
+            .photo-item:nth-child(odd) .photo-media-wrapper,
+            .photo-item:nth-child(even) .photo-media-wrapper {
+                border-width: 5px;
+            }
             .button-group { flex-direction: column; }
             .user-section { flex-direction: column; }
         }
@@ -550,43 +566,25 @@
             confirmBtn.textContent = 'Deleting...';
 
             try {
-                console.log(`🗑️ Starting deletion process for photo: ${photoToDelete.id}`);
-                console.log(`📍 Photo URL: ${photoToDelete.url}`);
-
-                console.log(`📝 Deleting from Firestore...`);
                 await deleteDoc(doc(db, `albums/${albumId}/photos`, photoToDelete.id));
-                console.log('✅ Deleted from Firestore');
 
                 try {
-                    console.log(`☁️ Deleting from Storage...`);
-                    
                     const urlParts = photoToDelete.url.split('/o/')[1];
-                    if (!urlParts) {
-                        throw new Error('Invalid storage URL format');
+                    if (urlParts) {
+                        const storagePath = decodeURIComponent(urlParts.split('?')[0]);
+                        const storageRef = ref(storage, storagePath);
+                        await deleteObject(storageRef);
                     }
-                    
-                    const storagePath = decodeURIComponent(urlParts.split('?')[0]);
-                    console.log(`📂 Storage path: ${storagePath}`);
-                    
-                    const storageRef = ref(storage, storagePath);
-                    await deleteObject(storageRef);
-                    console.log('✅ Deleted from Storage');
-                    
                 } catch (storageError) {
-                    console.warn('⚠️ Storage deletion failed (file may not exist):', storageError);
+                    console.warn('Storage deletion warning:', storageError);
                 }
 
-                console.log('🔄 Reloading photos...');
                 cancelDelete();
-                
                 await loadPhotos();
-
                 alert('✅ Photo deleted successfully!');
 
             } catch (error) {
-                console.error('❌ Error deleting photo:', error);
                 alert(`Failed to delete photo: ${error.message}`);
-                
                 confirmBtn.disabled = false;
                 confirmBtn.textContent = 'Yes, Delete';
             }
@@ -613,8 +611,6 @@
             emptyState.style.display = 'none';
 
             try {
-                console.log(`🔍 Loading photos from album ${albumId}...`);
-                
                 const photosRef = collection(db, `albums/${albumId}/photos`);
                 const q = query(photosRef, orderBy('timestamp', 'desc'));
                 const querySnapshot = await getDocs(q);
@@ -622,7 +618,6 @@
                 loadingState.style.display = 'none';
 
                 if (querySnapshot.empty) {
-                    console.log('📭 No photos found in this album');
                     emptyState.style.display = 'block';
                     photoCount.textContent = 'No photos yet';
                     return;
@@ -635,7 +630,6 @@
                     const photo = doc.data();
                     
                     if (!photo.url || photo.url === 'undefined' || photo.url === '') {
-                        console.warn(`⚠️ Skipping invalid photo from database: ${photo.name || 'Unknown'}`);
                         return;
                     }
 
@@ -645,8 +639,6 @@
                     });
                     validPhotoCount++;
                 });
-
-                console.log(`✅ Loaded ${validPhotoCount} valid photos (skipped ${querySnapshot.size - validPhotoCount} broken)`);
 
                 if (validPhotoCount === 0) {
                     emptyState.style.display = 'block';
@@ -695,7 +687,6 @@
                 });
 
             } catch (error) {
-                console.error('❌ Error loading photos:', error);
                 loadingState.innerHTML = `
                     <p style="color: #dc3545;">❌ Error loading photos</p>
                     <p style="font-size: 0.9em; color: #666;">${error.message}</p>
