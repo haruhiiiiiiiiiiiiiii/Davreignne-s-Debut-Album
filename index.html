@@ -19,21 +19,23 @@
     }
     
     .hero {
-        min-height: 100vh;
-        background-image: 
-            linear-gradient(135deg, rgba(0, 26, 77, 0.5) 0%, rgba(13, 59, 102, 0.6) 100%),
-            url('https://raw.githubusercontent.com/haruhiiiiiiiiiiiiiii/Davreignne-s-Debut-Album/main/MOT04452.JPG');
-        background-size: cover;
-        background-position: center;
-        background-attachment: fixed;
-        background-repeat: no-repeat;
-        padding: 20px;
-        position: relative;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex: 1;
-    }
+    min-height: calc(100vh - 56px); /* Subtract header height */
+    background-image: 
+        linear-gradient(135deg, rgba(0, 26, 77, 0.5) 0%, rgba(13, 59, 102, 0.6) 100%),
+        url('https://raw.githubusercontent.com/haruhiiiiiiiiiiiiiii/Davreignne-s-Debut-Album/main/MOT04452.JPG');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    padding: 20px;
+    padding-bottom: 60px; /* Extra space for footer */
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto; /* Changed from flex: 1 */
+}
+
 
     @media (max-width: 768px) {
         .hero {
