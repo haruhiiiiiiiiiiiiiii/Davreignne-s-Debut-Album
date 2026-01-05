@@ -658,7 +658,8 @@
                 <i class="fas fa-video"></i> Video
             </a>
             <a href="#" id="logoutBtn" style="display: none;">                
-                    <i class="fas fa-sign-out-alt"></i>                Logout            </a>   
+                    <i class="fas fa-sign-out-alt"></i> Logout            
+            </a>   
         </nav>
     </div>
 </header>
@@ -750,82 +751,85 @@
 
 
     <script type="module">
-        // Display welcome message with logged-in user
-const userData = JSON.parse(currentUser);
-document.getElementById('welcomeMessage').textContent = 
-    `Welcome, ${userData.guestName}! 🎉`;
+    // Get current user FIRST (outside DOMContentLoaded for global access)
+    let currentUser = '';
+    let userData = null;
 
-        // Check if user is logged in
-        window.addEventListener('DOMContentLoaded', function() {            
-            const currentUser = localStorage.getItem('currentUser');            
-            if (!currentUser) {                
-                window.location.href = 'login.html';                
-                return;            
-            }            
-            const userData = JSON.parse(currentUser);            
-            console.log('Logged in as:', userData.guestName);
-        });
+    window.addEventListener('DOMContentLoaded', function() {            
+        const storedUser = localStorage.getItem('currentUser');            
+        if (!storedUser) {                
+            window.location.href = 'login.html';                
+            return;            
+        }            
         
-        // Logout functionality - MUST BE GLOBAL
-        window.handleLogout = function() {            
-            if (confirm('Are you sure you want to logout?')) {                
-                localStorage.removeItem('currentUser');                
-                window.location.href = 'login.html';            
-            }
-        };
-
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-        import { getFirestore, collection, getDocs } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyDPaMpRBwk8a10vX4CUvsolfUyn3gpec5s",
-            authDomain: "debut-photo-gallery.firebaseapp.com",
-            projectId: "debut-photo-gallery",
-            storageBucket: "debut-photo-gallery.firebasestorage.app",
-            messagingSenderId: "954052989718",
-            appId: "1:954052989718:web:8faaeeaa9aebe726f67637",
-            measurementId: "G-WQ0EW238CJ"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
+        userData = JSON.parse(storedUser);
+        currentUser = storedUser; // Store for later use
         
-        async function updateStats() {
-            try {
-                let totalPhotos = 0;
-                let totalSize = 0;
-                const uploaders = new Set();
-                
-                for (let albumId = 1; albumId <= 20; albumId++) {
-                    try {
-                        const snapshot = await getDocs(collection(db, `albums/${albumId}/photos`));
-                        totalPhotos += snapshot.size;
-                        
-                        snapshot.forEach(doc => {
-                            const data = doc.data();
-                            if (data.uploader) uploaders.add(data.uploader);
-                            if (data.size) totalSize += data.size;
-                        });
-                    } catch (error) {
-                        // Album doesn't exist yet, skip
-                    }
-                }
-                
-                document.getElementById('photoCount').textContent = totalPhotos;
-                document.getElementById('storageUsed').textContent = Math.round(totalSize / 1024) + ' KB';
-                document.getElementById('uploaderCount').textContent = uploaders.size;
-            } catch (e) {
-                console.error('Stats error:', e);
-                document.getElementById('photoCount').textContent = '0';
-                document.getElementById('storageUsed').textContent = '0 KB';
-                document.getElementById('uploaderCount').textContent = '0';
-            }
+        // Display welcome message
+        document.getElementById('welcomeMessage').textContent = 
+            `Welcome, ${userData.guestName}! 🎉`;
+        
+        console.log('Logged in as:', userData.guestName);
+        
+        // Show logout button
+        const logoutBtn = document.getElementById('logoutBtn');
+        if (logoutBtn && userData) {
+            logoutBtn.style.display = 'flex';
         }
-        
-        updateStats();
-        setInterval(updateStats, 10000);
+    });
 
-        // Logout functionality
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+    import { getFirestore, collection, getDocs } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyDPaMpRBwk8a10vX4CUvsolfUyn3gpec5s",
+        authDomain: "debut-photo-gallery.firebaseapp.com",
+        projectId: "debut-photo-gallery",
+        storageBucket: "debut-photo-gallery.firebasestorage.app",
+        messagingSenderId: "954052989718",
+        appId: "1:954052989718:web:8faaeeaa9aebe726f67637",
+        measurementId: "G-WQ0EW238CJ"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    
+    async function updateStats() {
+        try {
+            let totalPhotos = 0;
+            let totalSize = 0;
+            const uploaders = new Set();
+            
+            for (let albumId = 1; albumId <= 20; albumId++) {
+                try {
+                    const snapshot = await getDocs(collection(db, `albums/${albumId}/photos`));
+                    totalPhotos += snapshot.size;
+                    
+                    snapshot.forEach(doc => {
+                        const data = doc.data();
+                        if (data.uploader) uploaders.add(data.uploader);
+                        if (data.size) totalSize += data.size;
+                    });
+                } catch (error) {
+                    // Album doesn't exist yet, skip
+                }
+            }
+            
+            document.getElementById('photoCount').textContent = totalPhotos;
+            document.getElementById('storageUsed').textContent = Math.round(totalSize / 1024) + ' KB';
+            document.getElementById('uploaderCount').textContent = uploaders.size;
+        } catch (e) {
+            console.error('Stats error:', e);
+            document.getElementById('photoCount').textContent = '0';
+            document.getElementById('storageUsed').textContent = '0 KB';
+            document.getElementById('uploaderCount').textContent = '0';
+        }
+    }
+    
+    updateStats();
+    setInterval(updateStats, 10000);
+
+    // Logout functionality
     const logoutBtn = document.getElementById('logoutBtn');
     if (logoutBtn) {
         logoutBtn.addEventListener('click', function(e) {
@@ -835,11 +839,8 @@ document.getElementById('welcomeMessage').textContent =
                 window.location.href = 'login.html';
             }
         });
-        
-        if (currentUser) {
-            logoutBtn.style.display = 'flex';
-        }
     }
+</script>
 
     </script>
          <footer class="site-footer">    
