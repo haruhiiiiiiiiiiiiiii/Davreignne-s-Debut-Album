@@ -763,18 +763,13 @@
         </div>
 
         <div class="user-section">
-            <div id="userInputSection" class="user-input-group">
-                <label for="currentUserInput">👤 Your Name:</label>
-                <input type="text" id="currentUserInput" placeholder="Enter your name to manage your photos">
-                <button onclick="setCurrentUser()" class="btn-change-user">Set Name</button>
-            </div>
-            <div id="userDisplaySection" style="display: none;">
-                <span class="current-user">👤 Viewing as: <span id="displayUserName"></span></span>
-                <button onclick="changeUser()" class="btn-change-user">Change Name</button>
-            </div>
-        </div>
+    <div id="userDisplaySection" style="display: flex; justify-content: center;">
+        <span class="current-user">👤 Viewing as: <span id="displayUserName"></span></span>
+    </div>
+</div>
 
-        <<div class="button-group" style="justify-content: center;">
+
+        <div class="button-group" style="justify-content: center;">
     <a href="#" id="uploadBtn" class="btn btn-primary">
         <i class="fas fa-upload"></i> Upload Photos
     </a>
@@ -877,8 +872,29 @@ function handleLogout() {
         document.getElementById('uploadBtnEmpty').href = `front.html?album=${albumId}`;
 
         // Get user data and extract nickname
+// Get logged-in user's nickname (auto-populated, read-only)
 let currentUserData = null;
 let currentUser = '';
+
+try {
+    const storedUser = localStorage.getItem('currentUser');
+    if (storedUser) {
+        currentUserData = JSON.parse(storedUser);
+        currentUser = currentUserData.nickname; // Use nickname from login
+        
+        // Display the nickname
+        document.getElementById('displayUserName').textContent = currentUser;
+    } else {
+        // If not logged in, redirect to login page
+        window.location.href = 'login.html';
+    }
+} catch (e) {
+    console.error('Error parsing user data:', e);
+    window.location.href = 'login.html';
+}
+
+let photoToDelete = null;
+
 
 try {
     const storedUser = localStorage.getItem('currentUser');
