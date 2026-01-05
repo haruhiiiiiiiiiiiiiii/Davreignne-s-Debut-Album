@@ -795,6 +795,14 @@ window.addEventListener('DOMContentLoaded', function() {
         window.location.href = 'login.html';
         return;
     }
+    // Logout functionality
+function handleLogout() {
+    if (confirm('Are you sure you want to logout?')) {
+        localStorage.removeItem('currentUser');
+        window.location.href = 'login.html';
+    }
+}
+
     
     const userData = JSON.parse(currentUser);
     const uploaderInput = document.getElementById('uploaderName');
@@ -1135,13 +1143,12 @@ if (currentUser) {
 }
 
      </script>    <!-- ==================== FOOTER ==================== -->    
-    <footer class="site-footer">        
-        <div class="footer-content">            
-            <div class="footer-section">                
-                <h3>✨ About the Event</h3>                
-                <p>Celebrating Davreignne's 18th birthday with memories captured by friends and family.</p>                <p>📅 January 5, 2026</p>            </div>                        <div class="footer-section">                <h3>🔗 Quick Links</h3>                <a href="albums.html">📚 View All Albums</a>                <a href="debut-video.html">🎥 Watch Debut Video</a>                <a href="front.html?album=1">📤 Upload Photos</a>            </div>                        <div class="footer-section">                <h3>📞 Contact</h3>                <p>📧 Email: info@example.com</p>                <p>📱 Phone: +1 234 567 8900</p>                                <div class="social-links">                    <a href="#" title="Facebook">📘</a>                    <a href="#" title="Instagram">📷</a>                    <a href="#" title="Twitter">🐦</a>                </div>            </div>        </div>                <div class="footer-bottom">            
-         <p>© 2026 Davreignne's 18th Birthday | Made with 💙 and 🥈</p>        
-     </div>    
-     </footer>
+       <!-- Footer -->
+    <footer class="main-footer">
+        <div class="footer-content">
+            <p><i class="fas fa-heart"></i> Celebrating Davreignne's Debut <i class="fas fa-heart"></i></p>
+            <p>© 2026 - Made with Love</p>
+        </div>
+    </footer>
 </body>
 </html>
