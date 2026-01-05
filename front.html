@@ -483,53 +483,68 @@
                 
                 console.log(`   📁 Path: albums/${albumId}/${storageFileName.substring(0, 30)}...`);
                 
-                return await new Promise((resolve, reject) => {
-                    const uploadTask = uploadBytesResumable(storageRef, compressedFile);
-                    let lastLoggedProgress = 0;
+                return await Promise.race([
+                    new Promise((resolve, reject) => {
+                        const uploadTask = uploadBytesResumable(storageRef, compressedFile);
+                        let lastLoggedProgress = 0;
 
-                    uploadTask.on('state_changed',
-                        (snapshot) => {
-                            const fileProgress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                            const overallProgress = ((fileIndex + (fileProgress / 100)) / totalFiles) * 100;
-                            
-                            progressFill.style.width = overallProgress.toFixed(1) + '%';
-                            progressFill.textContent = Math.round(overallProgress) + '%';
-                            uploadStatus.textContent = `[${fileIndex + 1}/${totalFiles}] ${file.name} - ${Math.round(fileProgress)}%`;
-                            
-                            if (Math.floor(fileProgress / 25) > lastLoggedProgress) {
-                                console.log(`   📊 ${Math.round(fileProgress)}%`);
-                                lastLoggedProgress = Math.floor(fileProgress / 25);
-                            }
-                        },
-                        (error) => {
-                            console.error(`   ❌ UPLOAD FAILED:`, error.code, error.message);
-                            reject(error);
-                        },
-                        async () => {
-                            try {
-                                console.log(`   ⬆️ Upload complete, getting URL...`);
-                                const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+                        uploadTask.on('state_changed',
+                            (snapshot) => {
+                                const fileProgress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                                const overallProgress = ((fileIndex + (fileProgress / 100)) / totalFiles) * 100;
                                 
-                                console.log(`   💾 Saving to database...`);
-                                const docRef = await addDoc(collection(db, `albums/${albumId}/photos`), {
-                                    name: file.name,
-                                    dataUrl: downloadURL,
-                                    uploader: uploaderName,
-                                    size: compressedFile.size,
-                                    timestamp: Date.now()
-                                });
+                                progressFill.style.width = overallProgress.toFixed(1) + '%';
+                                progressFill.textContent = Math.round(overallProgress) + '%';
+                                uploadStatus.textContent = `[${fileIndex + 1}/${totalFiles}] ${file.name} - ${Math.round(fileProgress)}%`;
+                                
+                                if (Math.floor(fileProgress / 25) > lastLoggedProgress) {
+                                    console.log(`   📊 ${Math.round(fileProgress)}%`);
+                                    lastLoggedProgress = Math.floor(fileProgress / 25);
+                                }
+                            },
+                            (error) => {
+                                console.error(`   ❌ UPLOAD FAILED:`, error.code, error.message);
+                                reject(error);
+                            },
+                            async () => {
+                                try {
+                                    console.log(`   ⬆️ Upload complete, getting URL...`);
+                                    
+                                    const urlPromise = getDownloadURL(uploadTask.snapshot.ref);
+                                    const urlTimeout = new Promise((_, reject) => 
+                                        setTimeout(() => reject(new Error('URL timeout after 10s')), 10000)
+                                    );
+                                    const downloadURL = await Promise.race([urlPromise, urlTimeout]);
+                                    console.log(`   🔗 URL: ${downloadURL.substring(0, 50)}...`);
+                                    
+                                    console.log(`   💾 Saving to database...`);
+                                    const dbPromise = addDoc(collection(db, `albums/${albumId}/photos`), {
+                                        name: file.name,
+                                        dataUrl: downloadURL,
+                                        uploader: uploaderName,
+                                        size: compressedFile.size,
+                                        timestamp: Date.now()
+                                    });
+                                    const dbTimeout = new Promise((_, reject) => 
+                                        setTimeout(() => reject(new Error('Database timeout after 10s')), 10000)
+                                    );
+                                    const docRef = await Promise.race([dbPromise, dbTimeout]);
 
-                                const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
-                                console.log(`   ✅ SUCCESS in ${elapsed}s (ID: ${docRef.id})`);
-                                console.log(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`);
-                                resolve(docRef.id);
-                            } catch (dbError) {
-                                console.error(`   ❌ DATABASE FAILED:`, dbError.message);
-                                reject(dbError);
+                                    const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
+                                    console.log(`   ✅ SUCCESS in ${elapsed}s (ID: ${docRef.id})`);
+                                    console.log(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`);
+                                    resolve(docRef.id);
+                                } catch (dbError) {
+                                    console.error(`   ❌ POST-UPLOAD FAILED:`, dbError.message);
+                                    reject(dbError);
+                                }
                             }
-                        }
-                    );
-                });
+                        );
+                    }),
+                    new Promise((_, reject) => 
+                        setTimeout(() => reject(new Error('Overall timeout after 30s')), 30000)
+                    )
+                ]);
             } catch (compressError) {
                 console.error(`   ❌ COMPRESSION FAILED:`, compressError.message);
                 throw compressError;
@@ -588,13 +603,14 @@
                     results.success.push({ file: validFiles[i].name, id: docId });
                     
                     if (i < validFiles.length - 1) {
-                        console.log(`⏳ Waiting 300ms...\n`);
-                        await new Promise(resolve => setTimeout(resolve, 300));
+                        console.log(`⏳ Waiting 500ms before next file...\n`);
+                        await new Promise(resolve => setTimeout(resolve, 500));
                     }
                 } catch (error) {
-                    console.error(`\n❌❌❌ FILE ${i + 1} COMPLETELY FAILED ❌❌❌`);
+                    console.error(`\n❌❌❌ FILE ${i + 1} FAILED ❌❌❌`);
                     console.error(`Error:`, error);
                     results.failed.push({ file: validFiles[i].name, error: error.message });
+                    console.log(`⏩ Continuing to next file...\n`);
                 }
             }
 
@@ -604,20 +620,25 @@
             console.log(`   ❌ Failed: ${results.failed.length}`);
             console.log(`═══════════════════════════════════\n`);
 
+            if (results.failed.length > 0) {
+                console.log(`Failed files:`);
+                results.failed.forEach(f => console.log(`   - ${f.file}: ${f.error}`));
+            }
+
             progressFill.style.width = '100%';
             progressFill.textContent = '100%';
 
             if (results.success.length === validFiles.length) {
                 uploadStatus.textContent = `✅ All ${results.success.length} files uploaded!`;
             } else if (results.success.length > 0) {
-                uploadStatus.textContent = `⚠️ ${results.success.length}/${validFiles.length} uploaded`;
+                uploadStatus.textContent = `⚠️ ${results.success.length}/${validFiles.length} uploaded (${results.failed.length} failed)`;
             } else {
                 uploadStatus.textContent = `❌ All uploads failed`;
             }
 
             setTimeout(() => {
                 window.location.href = `album.html?album=${albumId}`;
-            }, 2000);
+            }, 2500);
         });
     </script>
 </body>
