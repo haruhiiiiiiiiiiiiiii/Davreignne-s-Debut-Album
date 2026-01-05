@@ -441,13 +441,14 @@
             card.className = 'photo-card';
             card.onclick = () => openLightbox(index);
 
-            const isVideo = photo.dataUrl && photo.dataUrl.startsWith('data:video');
+            // ✅ FIXED: Use photo.url and check photo.type
+            const isVideo = photo.type && photo.type.startsWith('video');
 
             card.innerHTML = `
                 <div class="photo-thumbnail-wrapper">
                     ${isVideo ? 
-                        `<video src="${photo.dataUrl}" muted preload="metadata"></video>` : 
-                        `<img src="${photo.dataUrl}" alt="${photo.name}" loading="lazy">`
+                        `<video src="${photo.url}" muted preload="metadata"></video>` : 
+                        `<img src="${photo.url}" alt="${photo.name}" loading="lazy">`
                     }
                 </div>
                 <div class="photo-info">
@@ -474,7 +475,8 @@
             const photo = allPhotos[currentPhotoIndex];
             if (!photo) return;
 
-            const isVideo = photo.dataUrl && photo.dataUrl.startsWith('data:video');
+            // ✅ FIXED: Use photo.url and check photo.type
+            const isVideo = photo.type && photo.type.startsWith('video');
 
             const prevBtn = lightboxImageContainer.querySelector('.nav-prev');
             const nextBtn = lightboxImageContainer.querySelector('.nav-next');
@@ -483,12 +485,12 @@
 
             if (isVideo) {
                 const video = document.createElement('video');
-                video.src = photo.dataUrl;
+                video.src = photo.url; // ✅ FIXED: Changed from photo.dataUrl
                 video.controls = true;
                 lightboxImageContainer.appendChild(video);
             } else {
                 const img = document.createElement('img');
-                img.src = photo.dataUrl;
+                img.src = photo.url; // ✅ FIXED: Changed from photo.dataUrl
                 img.alt = photo.name;
                 lightboxImageContainer.appendChild(img);
             }
