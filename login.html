@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Davreignne's Debut</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: 
+                linear-gradient(135deg, rgba(0, 26, 77, 0.85) 0%, rgba(13, 59, 102, 0.85) 50%, rgba(26, 26, 46, 0.9) 100%),
+                url('debut-bg.jpg') center/cover no-repeat fixed;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Animated Background Sparkles */
+        .sparkle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: #c0c0c0;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #c0c0c0;
+            animation: sparkle 3s infinite;
+        }
+
+        @keyframes sparkle {
+            0%, 100% { opacity: 0; transform: scale(0); }
+            50% { opacity: 1; transform: scale(1); }
+        }
+
+        .sparkle:nth-child(1) { top: 20%; left: 10%; animation-delay: 0s; }
+        .sparkle:nth-child(2) { top: 40%; left: 80%; animation-delay: 1s; }
+        .sparkle:nth-child(3) { top: 70%; left: 20%; animation-delay: 2s; }
+        .sparkle:nth-child(4) { top: 30%; left: 50%; animation-delay: 1.5s; }
+        .sparkle:nth-child(5) { top: 80%; left: 70%; animation-delay: 0.5s; }
+
+        /* Login Container */
+        .login-container {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(192, 192, 192, 0.2);
+            border-radius: 20px;
+            padding: 50px 40px;
+            width: 90%;
+            max-width: 450px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5);
+            position: relative;
+            z-index: 10;
+            animation: slideIn 0.6s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .login-header i {
+            font-size: 3.5em;
+            color: #c0c0c0;
+            text-shadow: 0 0 20px rgba(192, 192, 192, 0.6);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .login-header h1 {
+            color: #e8e8e8;
+            font-size: 1.8em;
+            margin: 15px 0 5px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .login-header p {
+            color: #c0c0c0;
+            font-size: 0.95em;
+            margin-top: 8px;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #c0c0c0;
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 0.95em;
+        }
+
+        .form-group label i {
+            color: #c0c0c0;
+            font-size: 1.1em;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px 18px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(192, 192, 192, 0.3);
+            border-radius: 10px;
+            color: #e8e8e8;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #c0c0c0;
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 15px rgba(192, 192, 192, 0.3);
+        }
+
+        .form-group input::placeholder {
+            color: rgba(192, 192, 192, 0.5);
+        }
+
+        .form-note {
+            font-size: 0.85em;
+            color: #a0a0a0;
+            margin-top: 6px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .form-note i {
+            font-size: 0.9em;
+        }
+
+        /* Error Message */
+        .error-message {
+            background: rgba(220, 53, 69, 0.2);
+            border: 1px solid rgba(220, 53, 69, 0.5);
+            color: #ff6b6b;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+            font-size: 0.9em;
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        /* Submit Button */
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #001a4d 0%, #0d3b66 100%);
+            border: 2px solid #c0c0c0;
+            border-radius: 10px;
+            color: #c0c0c0;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            text-shadow: 0 0 10px rgba(192, 192, 192, 0.5);
+        }
+
+        .submit-btn:hover {
+            background: linear-gradient(135deg, #0d3b66 0%, #001a4d 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(192, 192, 192, 0.3);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .login-container {
+                padding: 40px 30px;
+                max-width: 400px;
+            }
+
+            .login-header h1 {
+                font-size: 1.6em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 35px 25px;
+                max-width: 340px;
+            }
+
+            .login-header h1 {
+                font-size: 1.4em;
+            }
+
+            .login-header i {
+                font-size: 3em;
+            }
+
+            .form-group input {
+                padding: 12px 16px;
+                font-size: 0.95em;
+            }
+
+            .submit-btn {
+                padding: 13px;
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Sparkles -->
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+
+    <div class="login-container">
+        <div class="login-header">
+            <i class="fas fa-star"></i>
+            <h1>Welcome!</h1>
+            <p>Please enter your details to continue</p>
+        </div>
+
+        <div class="error-message" id="errorMessage">
+            <i class="fas fa-exclamation-circle"></i>
+            <span id="errorText"></span>
+        </div>
+
+        <form id="loginForm">
+            <div class="form-group">
+                <label>
+                    <i class="fas fa-user"></i>
+                    Guest Name
+                </label>
+                <input 
+                    type="text" 
+                    id="guestName" 
+                    placeholder="Enter your full name"
+                    required
+                    autocomplete="name"
+                >
+                <div class="form-note">
+                    <i class="fas fa-info-circle"></i>
+                    This will be displayed as your identity
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>
+                    <i class="fas fa-tag"></i>
+                    Nickname
+                </label>
+                <input 
+                    type="text" 
+                    id="nickname" 
+                    placeholder="Enter one-word nickname"
+                    required
+                    pattern="^\S+$"
+                    title="Please enter only one word (no spaces)"
+                >
+                <div class="form-note">
+                    <i class="fas fa-info-circle"></i>
+                    One word only - used for photo uploads
+                </div>
+            </div>
+
+            <button type="submit" class="submit-btn">
+                <i class="fas fa-arrow-right"></i>
+                Continue
+            </button>
+        </form>
+    </div>
+
+    <script>
+        const loginForm = document.getElementById('loginForm');
+        const guestNameInput = document.getElementById('guestName');
+        const nicknameInput = document.getElementById('nickname');
+        const errorMessage = document.getElementById('errorMessage');
+        const errorText = document.getElementById('errorText');
+
+        // Auto-capitalize first letter of each word in guest name
+        guestNameInput.addEventListener('input', function() {
+            const words = this.value.split(' ');
+            const capitalized = words.map(word => {
+                if (word.length > 0) {
+                    return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+                }
+                return word;
+            });
+            this.value = capitalized.join(' ');
+        });
+
+        // Remove spaces from nickname automatically
+        nicknameInput.addEventListener('input', function() {
+            this.value = this.value.replace(/\s+/g, '');
+        });
+
+        // Handle form submission
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const guestName = guestNameInput.value.trim();
+            const nickname = nicknameInput.value.trim();
+
+            // Validation
+            if (!guestName || guestName.length < 2) {
+                showError('Please enter a valid guest name (at least 2 characters)');
+                return;
+            }
+
+            if (!nickname || nickname.length < 2) {
+                showError('Please enter a valid nickname (at least 2 characters)');
+                return;
+            }
+
+            if (nickname.includes(' ')) {
+                showError('Nickname must be one word only (no spaces)');
+                return;
+            }
+
+            // Save to localStorage
+            const userData = {
+                guestName: guestName,
+                nickname: nickname,
+                loginTime: new Date().toISOString()
+            };
+
+            localStorage.setItem('currentUser', JSON.stringify(userData));
+
+            // Success! Redirect to albums page
+            window.location.href = 'albums.html';
+        });
+
+        function showError(message) {
+            errorText.textContent = message;
+            errorMessage.classList.add('show');
+
+            setTimeout(() => {
+                errorMessage.classList.remove('show');
+            }, 4000);
+        }
+
+        // Check if user is already logged in
+        window.addEventListener('load', function() {
+            const currentUser = localStorage.getItem('currentUser');
+            if (currentUser) {
+                // User already logged in, redirect
+                window.location.href = 'albums.html';
+            }
+        });
+    </script>
+</body>
+</html>
