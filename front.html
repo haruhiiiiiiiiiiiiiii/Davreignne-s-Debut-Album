@@ -36,21 +36,32 @@
             font-size: 2.5em;
         }
 
-        /* Info box styling */
         .info-box {
-            background: #e3f2fd;
-            border-left: 4px solid #001a4d;
-            padding: 15px;
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            border-left: 5px solid #001a4d;
+            padding: 20px;
             margin-bottom: 25px;
-            border-radius: 8px;
-            font-size: 0.9em;
+            border-radius: 10px;
+            font-size: 0.95em;
             color: #001a4d;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
         .info-box strong {
             display: block;
-            margin-bottom: 5px;
-            font-size: 1em;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+            color: #001a4d;
+        }
+
+        .info-box ul {
+            margin-left: 20px;
+            margin-top: 8px;
+        }
+
+        .info-box li {
+            margin: 5px 0;
+            line-height: 1.6;
         }
 
         .form-group {
@@ -74,33 +85,37 @@
             font-size: 1em;
             font-family: inherit;
             background: white;
+            transition: border-color 0.3s;
         }
 
         .form-group input:focus,
         .form-group select:focus {
             outline: none;
             border-color: #001a4d;
+            box-shadow: 0 0 0 3px rgba(0, 26, 77, 0.1);
         }
 
         .file-info {
             margin-top: 10px;
-            padding: 10px;
+            padding: 12px;
             background: #f0f0f0;
             border-radius: 8px;
             font-size: 0.9em;
             color: #555;
+            border: 2px solid transparent;
+            transition: all 0.3s;
         }
 
         .file-info.success {
             background: #e8f5e9;
             color: #2e7d32;
-            border: 1px solid #4caf50;
+            border-color: #4caf50;
         }
 
         .file-info.error {
             background: #ffebee;
             color: #c62828;
-            border: 1px solid #f44336;
+            border-color: #f44336;
         }
 
         .upload-btn {
@@ -114,6 +129,7 @@
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 26, 77, 0.3);
         }
 
         .upload-btn:hover {
@@ -125,6 +141,7 @@
             background: #999;
             cursor: not-allowed;
             transform: none;
+            box-shadow: none;
         }
 
         .progress-container {
@@ -134,75 +151,71 @@
 
         .progress-bar {
             width: 100%;
-            height: 30px;
+            height: 35px;
             background: #e0e0e0;
-            border-radius: 15px;
+            border-radius: 17px;
             overflow: hidden;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
         }
 
         .progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, #00ff00, #00cc00);
+            background: linear-gradient(90deg, #4caf50, #66bb6a);
             width: 0%;
-            transition: width 0.3s;
+            transition: width 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #000;
+            color: white;
             font-weight: bold;
-            font-size: 0.9em;
+            font-size: 1em;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
         }
 
         .upload-status {
             text-align: center;
             padding: 15px;
-            background: #f0f0f0;
+            background: #f9f9f9;
             border-radius: 10px;
             color: #333;
             font-weight: 500;
+            border: 1px solid #e0e0e0;
         }
 
-        .back-link {
-            display: block;
-            text-align: center;
-            margin-top: 20px;
-            color: #001a4d;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .back-link:hover {
-            text-decoration: underline;
-        }
-
-        /* File list preview */
         .file-list {
-            margin-top: 10px;
+            margin-top: 15px;
             padding: 10px;
-            background: #f9f9f9;
-            border-radius: 8px;
-            max-height: 200px;
+            background: #fafafa;
+            border-radius: 10px;
+            max-height: 250px;
             overflow-y: auto;
+            border: 1px solid #e0e0e0;
         }
 
         .file-item {
-            padding: 8px;
-            margin: 5px 0;
+            padding: 12px;
+            margin: 8px 0;
             background: white;
-            border-radius: 6px;
+            border-radius: 8px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             border: 1px solid #e0e0e0;
+            transition: all 0.2s;
+        }
+
+        .file-item:hover {
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
         .file-item.valid {
-            border-left: 3px solid #4caf50;
+            border-left: 4px solid #4caf50;
         }
 
         .file-item.invalid {
-            border-left: 3px solid #f44336;
+            border-left: 4px solid #f44336;
+            background: #fff5f5;
         }
 
         .file-name {
@@ -212,17 +225,53 @@
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
+            margin-right: 10px;
         }
 
         .file-size {
             font-size: 0.85em;
             color: #666;
             margin-left: 10px;
+            white-space: nowrap;
         }
 
         .file-status {
             margin-left: 10px;
-            font-size: 1.2em;
+            font-size: 1.3em;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 25px;
+            color: #001a4d;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1em;
+            transition: color 0.3s;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+            color: #0d3b66;
+        }
+
+        .file-list::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .file-list::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+
+        .file-list::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+
+        .file-list::-webkit-scrollbar-thumb:hover {
+            background: #555;
         }
     </style>
 </head>
@@ -230,30 +279,33 @@
     <div class="container">
         <h1>📸 Upload Photo</h1>
 
-        <!-- Instructions box -->
         <div class="info-box">
-            <strong>📌 Upload Instructions:</strong>
-            • Select one or multiple photos/videos<br>
-            • Each file must be under 5MB<br>
-            • All files will be uploaded to the selected album<br>
-            • Supported formats: JPG, PNG, GIF, MP4, MOV
+            <strong>📌 How to Upload:</strong>
+            <ul>
+                <li>✅ <strong>Select multiple files</strong> at once (hold Ctrl/Cmd)</li>
+                <li>📏 <strong>Each file must be under 5MB</strong></li>
+                <li>📁 <strong>Supported:</strong> JPG, PNG, GIF, MP4, MOV</li>
+                <li>⏱️ <strong>Files upload one by one</strong> - please wait</li>
+                <li>✅ <strong>Green checkmark</strong> = ready to upload</li>
+                <li>❌ <strong>Red X</strong> = file too large</li>
+            </ul>
         </div>
 
         <form id="uploadForm">
             <div class="form-group">
-                <label for="albumSelect">Select Album:</label>
+                <label for="albumSelect">📁 Select Album:</label>
                 <select id="albumSelect" required>
                     <option value="">-- Choose Album --</option>
                 </select>
             </div>
 
             <div class="form-group">
-                <label for="uploaderName">Your Name:</label>
-                <input type="text" id="uploaderName" placeholder="Enter your name" required>
+                <label for="uploaderName">👤 Your Name:</label>
+                <input type="text" id="uploaderName" placeholder="Enter your name" required maxlength="50">
             </div>
 
             <div class="form-group">
-                <label for="photoFile">Choose Files (Max 5MB each):</label>
+                <label for="photoFile">📷 Choose Files (Max 5MB each):</label>
                 <input type="file" id="photoFile" accept="image/*,video/*" multiple required>
                 <div class="file-info" id="fileInfo" style="display: none;"></div>
                 <div class="file-list" id="fileList" style="display: none;"></div>
@@ -273,9 +325,6 @@
     </div>
 
     <script type="module">
-        // ========================================
-        // FIREBASE CONFIGURATION
-        // ========================================
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
         import { getFirestore, collection, addDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
         import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js';
@@ -294,9 +343,6 @@
         const db = getFirestore(app);
         const storage = getStorage(app);
 
-        // ========================================
-        // ALBUM LIST CONFIGURATION
-        // ========================================
         const albumsList = [
             { id: 1, name: 'Table 1' }, { id: 2, name: 'Table 2' }, { id: 3, name: 'Table 3' },
             { id: 4, name: 'Table 4' }, { id: 5, name: 'Table 5' }, { id: 6, name: 'Table 6' },
@@ -307,9 +353,6 @@
             { id: 18, name: '18 Treasures' }, { id: 19, name: '18 Shots' }
         ];
 
-        // ========================================
-        // POPULATE ALBUM DROPDOWN
-        // ========================================
         const albumSelect = document.getElementById('albumSelect');
         albumsList.forEach(album => {
             const option = document.createElement('option');
@@ -318,52 +361,52 @@
             albumSelect.appendChild(option);
         });
 
-        // Pre-select album from URL parameter (if exists)
         const urlParams = new URLSearchParams(window.location.search);
         const preselectedAlbum = urlParams.get('album');
         if (preselectedAlbum) {
             albumSelect.value = preselectedAlbum;
         }
 
-        // ========================================
-        // FILE SELECTION HANDLER
-        // ========================================
+        function generateUniqueId() {
+            return `${Date.now()}_${Math.random().toString(36).substring(2, 15)}_${Math.random().toString(36).substring(2, 15)}`;
+        }
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
         document.getElementById('photoFile').addEventListener('change', (e) => {
             const files = Array.from(e.target.files);
             const fileInfo = document.getElementById('fileInfo');
             const fileList = document.getElementById('fileList');
             
             if (files.length > 0) {
-                // Calculate total size
                 const totalSize = files.reduce((sum, file) => sum + file.size, 0);
                 const totalSizeMB = (totalSize / (1024 * 1024)).toFixed(2);
-                
-                // Check for oversized files
-                const oversizedFiles = files.filter(f => f.size > 5 * 1024 * 1024);
-                const validFiles = files.filter(f => f.size <= 5 * 1024 * 1024);
+                const MAX_SIZE = 5 * 1024 * 1024;
+                const oversizedFiles = files.filter(f => f.size > MAX_SIZE);
+                const validFiles = files.filter(f => f.size <= MAX_SIZE);
 
-                // Show summary
                 fileInfo.style.display = 'block';
                 if (oversizedFiles.length > 0) {
                     fileInfo.className = 'file-info error';
-                    fileInfo.textContent = `⚠️ ${oversizedFiles.length} file(s) exceed 5MB limit! Only ${validFiles.length} valid files.`;
+                    fileInfo.textContent = `⚠️ ${oversizedFiles.length} file(s) exceed 5MB! Only ${validFiles.length} can upload.`;
                 } else {
                     fileInfo.className = 'file-info success';
                     fileInfo.textContent = `✅ ${files.length} file(s) ready • Total: ${totalSizeMB} MB`;
                 }
 
-                // Display individual file list
                 fileList.style.display = 'block';
                 fileList.innerHTML = '';
                 
                 files.forEach(file => {
                     const fileSizeMB = (file.size / (1024 * 1024)).toFixed(2);
-                    const isValid = file.size <= 5 * 1024 * 1024;
+                    const isValid = file.size <= MAX_SIZE;
                     
                     const fileItem = document.createElement('div');
                     fileItem.className = `file-item ${isValid ? 'valid' : 'invalid'}`;
                     fileItem.innerHTML = `
-                        <span class="file-name">${file.name}</span>
+                        <span class="file-name" title="${file.name}">${file.name}</span>
                         <span class="file-size">${fileSizeMB} MB</span>
                         <span class="file-status">${isValid ? '✅' : '❌'}</span>
                     `;
@@ -375,12 +418,8 @@
             }
         });
 
-        // ========================================
-        // IMAGE COMPRESSION FUNCTION
-        // ========================================
         function compressFile(file) {
             return new Promise((resolve) => {
-                // Skip compression for videos
                 if (file.type.startsWith('video/')) {
                     resolve(file);
                     return;
@@ -394,7 +433,6 @@
                         let width = img.width;
                         let height = img.height;
                         
-                        // Resize if image is too large
                         const maxDimension = 1920;
                         if (width > maxDimension || height > maxDimension) {
                             if (width > height) {
@@ -411,7 +449,6 @@
                         const ctx = canvas.getContext('2d');
                         ctx.drawImage(img, 0, 0, width, height);
                         
-                        // Convert to JPEG with 85% quality
                         canvas.toBlob((blob) => {
                             resolve(new File([blob], file.name, {
                                 type: 'image/jpeg',
@@ -425,46 +462,39 @@
             });
         }
 
-        // ========================================
-        // SINGLE FILE UPLOAD FUNCTION
-        // ========================================
         async function uploadSingleFile(file, albumId, uploaderName, fileIndex, totalFiles, progressFill, uploadStatus) {
-            console.log(`📤 [${fileIndex + 1}/${totalFiles}] Starting: ${file.name}`);
+            const uniqueId = generateUniqueId();
+            const storageFileName = `${uniqueId}_${file.name}`;
             
-            // Compress the file
+            console.log(`\n📤 [${fileIndex + 1}/${totalFiles}] ${file.name} (${(file.size / 1024).toFixed(1)} KB)`);
+            
             const compressedFile = await compressFile(file);
-            console.log(`📦 Compressed: ${(compressedFile.size / 1024).toFixed(1)} KB`);
+            console.log(`   Compressed: ${(compressedFile.size / 1024).toFixed(1)} KB`);
             
-            // Create unique storage reference
-            const uniqueId = `${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-            const storageRef = ref(storage, `albums/${albumId}/${uniqueId}_${file.name}`);
+            const storageRef = ref(storage, `albums/${albumId}/${storageFileName}`);
             
             return new Promise((resolve, reject) => {
                 const uploadTask = uploadBytesResumable(storageRef, compressedFile);
 
                 uploadTask.on('state_changed',
                     (snapshot) => {
-                        // Update progress bar
                         const fileProgress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
                         const overallProgress = ((fileIndex + (fileProgress / 100)) / totalFiles) * 100;
                         
                         progressFill.style.width = overallProgress + '%';
                         progressFill.textContent = Math.round(overallProgress) + '%';
-                        uploadStatus.textContent = `Uploading ${fileIndex + 1}/${totalFiles}: ${file.name} (${Math.round(fileProgress)}%)`;
+                        uploadStatus.textContent = `Uploading ${fileIndex + 1}/${totalFiles}: ${file.name}`;
                     },
                     (error) => {
-                        console.error(`❌ Upload failed:`, error);
+                        console.error(`   ❌ Upload error:`, error);
                         reject(error);
                     },
                     async () => {
                         try {
-                            // Get download URL
                             uploadStatus.textContent = `Saving ${fileIndex + 1}/${totalFiles}...`;
                             const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-                            console.log(`🔗 URL obtained`);
 
-                            // Save metadata to Firestore
-                            await addDoc(collection(db, `albums/${albumId}/photos`), {
+                            const docRef = await addDoc(collection(db, `albums/${albumId}/photos`), {
                                 name: file.name,
                                 dataUrl: downloadURL,
                                 uploader: uploaderName,
@@ -472,10 +502,10 @@
                                 timestamp: Date.now()
                             });
 
-                            console.log(`✅ [${fileIndex + 1}/${totalFiles}] Complete: ${file.name}`);
-                            resolve();
+                            console.log(`   ✅ Complete (ID: ${docRef.id})\n`);
+                            resolve(docRef.id);
                         } catch (error) {
-                            console.error(`❌ Database save failed:`, error);
+                            console.error(`   ❌ Database error:`, error);
                             reject(error);
                         }
                     }
@@ -483,34 +513,30 @@
             });
         }
 
-        // ========================================
-        // FORM SUBMISSION HANDLER
-        // ========================================
         document.getElementById('uploadForm').addEventListener('submit', async (e) => {
             e.preventDefault();
 
-            // Get form values
             const albumId = parseInt(albumSelect.value);
             const uploaderName = document.getElementById('uploaderName').value.trim();
             const fileInput = document.getElementById('photoFile');
             const files = Array.from(fileInput.files);
 
-            // Validation
+            console.log(`\n🚀 Upload started: ${files.length} files`);
+
             if (!albumId || !uploaderName || files.length === 0) {
                 alert('❌ Please fill all fields');
                 return;
             }
 
-            // Check for oversized files
-            const validFiles = files.filter(f => f.size <= 5 * 1024 * 1024);
-            const oversizedFiles = files.filter(f => f.size > 5 * 1024 * 1024);
+            const MAX_SIZE = 5 * 1024 * 1024;
+            const validFiles = files.filter(f => f.size <= MAX_SIZE);
+            const oversizedFiles = files.filter(f => f.size > MAX_SIZE);
             
             if (oversizedFiles.length > 0) {
-                alert(`❌ ${oversizedFiles.length} file(s) exceed 5MB limit.\n\nPlease remove them and try again.`);
+                alert(`❌ ${oversizedFiles.length} file(s) exceed 5MB.\nPlease remove them and try again.`);
                 return;
             }
 
-            // Prepare UI for upload
             const uploadBtn = document.getElementById('uploadBtn');
             const progressContainer = document.getElementById('progressContainer');
             const progressFill = document.getElementById('progressFill');
@@ -519,15 +545,12 @@
             uploadBtn.disabled = true;
             progressContainer.style.display = 'block';
             progressFill.style.width = '0%';
-            uploadStatus.textContent = 'Starting upload...';
+            uploadStatus.textContent = 'Starting...';
 
             let successCount = 0;
             let failCount = 0;
 
             try {
-                console.log(`🚀 Starting batch upload: ${validFiles.length} files`);
-                
-                // Upload each file sequentially
                 for (let i = 0; i < validFiles.length; i++) {
                     try {
                         await uploadSingleFile(
@@ -540,30 +563,35 @@
                             uploadStatus
                         );
                         successCount++;
+                        
+                        if (i < validFiles.length - 1) {
+                            await sleep(200);
+                        }
                     } catch (error) {
                         failCount++;
-                        console.error(`❌ Failed to upload file ${i + 1}:`, error);
+                        console.error(`Failed file ${i + 1}:`, error);
                     }
                 }
 
-                // Show completion status
-                console.log(`✅ Upload complete: ${successCount} succeeded, ${failCount} failed`);
+                console.log(`\n✅ Batch complete: ${successCount} success, ${failCount} failed\n`);
+                
                 progressFill.style.width = '100%';
                 progressFill.textContent = '100%';
                 
                 if (successCount === validFiles.length) {
-                    uploadStatus.textContent = 'Done! ✅';
+                    uploadStatus.textContent = `Done! ✅ All ${successCount} files uploaded`;
+                } else if (successCount > 0) {
+                    uploadStatus.textContent = `Done! ⚠️ ${successCount}/${validFiles.length} uploaded`;
                 } else {
-                    uploadStatus.textContent = `Done! ${successCount}/${validFiles.length} uploaded ⚠️`;
+                    uploadStatus.textContent = `Failed! ❌ No files uploaded`;
                 }
                 
-                // Redirect after 1 second
                 setTimeout(() => {
                     window.location.href = `album.html?album=${albumId}`;
-                }, 1000);
+                }, 1500);
 
             } catch (error) {
-                console.error('❌ Critical error:', error);
+                console.error('Critical error:', error);
                 uploadStatus.textContent = '❌ Upload failed: ' + error.message;
                 uploadBtn.disabled = false;
             }
