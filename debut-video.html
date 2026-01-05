@@ -691,7 +691,31 @@
         height: 38px;
     }
 }
+/* Footer Container */
+.creator-footer {
+    width: 100%;
+    background: linear-gradient(135deg, #001f3f, #003366); /* Navy Blue Gradient */
+    border-top: 2px solid #C0C0C0; /* Silver border line at top */
+    padding: 20px 0;
+    margin-top: auto; /* Pushes footer to bottom if using Flexbox */
+    text-align: center;
+}
 
+/* Text Styling */
+.creator-footer p {
+    color: #C0C0C0; /* Silver text */
+    font-family: sans-serif; /* Or your site's font */
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+/* Your Name Styling */
+.creator-name {
+    font-weight: bold;
+    color: #ffffff; /* Bright white/silver to make your name pop */
+    text-transform: uppercase; /* Optional: Makes name uppercase */
+    letter-spacing: 1px;
+}
     </style>
 </head>
 <body>
@@ -1101,14 +1125,12 @@
     };
 </script>
         <!-- Footer -->
-    <footer class="site-footer">    
-        <div class="footer-content">
-            <p><i class="fas fa-heart"></i> Celebrating Davreignne's Debut <i class="fas fa-heart"></i></p>
-            <p>© 2026 - Made with Love</p>
+    <footer class="creator-footer">    
+        <div class="footer-container">        
+            <p> &copy; 2026 Davreignne's Debut. Designed & Developed by <span class="creator-name">Ma. Dannielle Louiesse Valdez</span>        
+            </p>    
         </div>
     </footer>
-
-    <!-- Your existing scripts continue below -->
 </body>
 
 </body>
