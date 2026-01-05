@@ -65,7 +65,6 @@
             font-size: 1.1em;
         }
 
-        /* User Identity Section */
         .user-section {
             background: linear-gradient(135deg, rgba(0, 26, 77, 0.1) 0%, rgba(192, 192, 192, 0.1) 100%);
             padding: 20px;
@@ -208,7 +207,6 @@
             display: block;
         }
 
-        /* Delete Button */
         .delete-btn {
             position: absolute;
             top: 10px;
@@ -261,7 +259,6 @@
             margin-bottom: 15px;
         }
 
-        /* Lightbox styles */
         .lightbox {
             display: none;
             position: fixed;
@@ -327,7 +324,6 @@
             text-align: center;
         }
 
-        /* Delete Confirmation Modal */
         .modal {
             display: none;
             position: fixed;
@@ -376,8 +372,13 @@
             cursor: pointer;
         }
 
-        .btn-confirm:hover {
+        .btn-confirm:hover:not(:disabled) {
             background: #c82333;
+        }
+
+        .btn-confirm:disabled {
+            background: #ccc;
+            cursor: not-allowed;
         }
 
         .btn-cancel {
@@ -415,7 +416,6 @@
             <p class="subtitle" id="photoCount">Loading photos...</p>
         </div>
 
-        <!-- User Identity Section -->
         <div class="user-section">
             <div id="userInputSection" class="user-input-group">
                 <label for="currentUserInput">👤 Your Name:</label>
@@ -442,13 +442,11 @@
         </div>
     </div>
 
-    <!-- Lightbox -->
     <div id="lightbox" class="lightbox">
         <div class="lightbox-close" onclick="closeLightbox()">×</div>
         <div class="lightbox-content" id="lightboxContent"></div>
     </div>
 
-    <!-- Delete Confirmation Modal -->
     <div id="deleteModal" class="modal">
         <div class="modal-content">
             <h3>🗑️ Delete Photo?</h3>
@@ -486,7 +484,6 @@
             15: '18 Roses', 16: '18 Candles', 17: '18 Blue Bills', 18: '18 Treasures', 19: '18 Shots'
         };
 
-        // Get album ID from URL
         const urlParams = new URLSearchParams(window.location.search);
         const albumId = urlParams.get('album');
 
@@ -499,7 +496,6 @@
         document.getElementById('uploadBtn').href = `front.html?album=${albumId}`;
         document.getElementById('uploadBtnEmpty').href = `front.html?album=${albumId}`;
 
-        // User management
         let currentUser = localStorage.getItem('currentUser') || '';
         let photoToDelete = null;
 
@@ -513,7 +509,7 @@
                 document.getElementById('displayUserName').textContent = name;
                 document.getElementById('userInputSection').style.display = 'none';
                 document.getElementById('userDisplaySection').style.display = 'flex';
-                loadPhotos(); // Reload to show delete buttons
+                loadPhotos();
             } else {
                 alert('Please enter your name');
             }
@@ -525,22 +521,22 @@
             document.getElementById('currentUserInput').value = currentUser;
         };
 
-        // Initialize user display
         if (currentUser) {
             document.getElementById('displayUserName').textContent = currentUser;
             document.getElementById('userInputSection').style.display = 'none';
             document.getElementById('userDisplaySection').style.display = 'flex';
         }
 
-        // Handle Enter key in input
         document.getElementById('currentUserInput').addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 setCurrentUser();
             }
         });
 
-        // Delete functions
-        window.deletePhoto = function(photoId, photoUrl, uploaderName) {
+        window.deletePhoto = function(photoId, photoUrl, uploaderName, event) {
+            if (event) {
+                event.stopPropagation();
+            }
             photoToDelete = { id: photoId, url: photoUrl, uploader: uploaderName };
             document.getElementById('deleteModal').classList.add('active');
         };
@@ -548,47 +544,70 @@
         window.confirmDelete = async function() {
             if (!photoToDelete) return;
 
+            const modal = document.getElementById('deleteModal');
+            const confirmBtn = modal.querySelector('.btn-confirm');
+            confirmBtn.disabled = true;
+            confirmBtn.textContent = 'Deleting...';
+
             try {
-                console.log(`🗑️ Deleting photo: ${photoToDelete.id}`);
+                console.log(`🗑️ Starting deletion process for photo: ${photoToDelete.id}`);
+                console.log(`📍 Photo URL: ${photoToDelete.url}`);
 
-                // Extract storage path from URL
-                const urlParts = photoToDelete.url.split('/o/')[1].split('?')[0];
-                const storagePath = decodeURIComponent(urlParts);
-                
-                // Delete from Storage
-                const storageRef = ref(storage, storagePath);
-                await deleteObject(storageRef);
-                console.log('✅ Deleted from Storage');
-
-                // Delete from Firestore
+                console.log(`📝 Deleting from Firestore...`);
                 await deleteDoc(doc(db, `albums/${albumId}/photos`, photoToDelete.id));
                 console.log('✅ Deleted from Firestore');
 
-                // Reload photos
+                try {
+                    console.log(`☁️ Deleting from Storage...`);
+                    
+                    const urlParts = photoToDelete.url.split('/o/')[1];
+                    if (!urlParts) {
+                        throw new Error('Invalid storage URL format');
+                    }
+                    
+                    const storagePath = decodeURIComponent(urlParts.split('?')[0]);
+                    console.log(`📂 Storage path: ${storagePath}`);
+                    
+                    const storageRef = ref(storage, storagePath);
+                    await deleteObject(storageRef);
+                    console.log('✅ Deleted from Storage');
+                    
+                } catch (storageError) {
+                    console.warn('⚠️ Storage deletion failed (file may not exist):', storageError);
+                }
+
+                console.log('🔄 Reloading photos...');
                 cancelDelete();
-                loadPhotos();
+                
+                await loadPhotos();
 
                 alert('✅ Photo deleted successfully!');
 
             } catch (error) {
                 console.error('❌ Error deleting photo:', error);
                 alert(`Failed to delete photo: ${error.message}`);
+                
+                confirmBtn.disabled = false;
+                confirmBtn.textContent = 'Yes, Delete';
             }
         };
 
         window.cancelDelete = function() {
             photoToDelete = null;
-            document.getElementById('deleteModal').classList.remove('active');
+            const modal = document.getElementById('deleteModal');
+            modal.classList.remove('active');
+            
+            const confirmBtn = modal.querySelector('.btn-confirm');
+            confirmBtn.disabled = false;
+            confirmBtn.textContent = 'Yes, Delete';
         };
 
-        // Load photos
         async function loadPhotos() {
             const photoGrid = document.getElementById('photoGrid');
             const loadingState = document.getElementById('loadingState');
             const emptyState = document.getElementById('emptyState');
             const photoCount = document.getElementById('photoCount');
 
-            // Clear grid
             photoGrid.innerHTML = '';
             loadingState.style.display = 'block';
             emptyState.style.display = 'none';
@@ -615,7 +634,6 @@
                 querySnapshot.forEach((doc) => {
                     const photo = doc.data();
                     
-                    // ✅ VALIDATE URL - Skip photos with missing or undefined URLs
                     if (!photo.url || photo.url === 'undefined' || photo.url === '') {
                         console.warn(`⚠️ Skipping invalid photo from database: ${photo.name || 'Unknown'}`);
                         return;
@@ -655,16 +673,15 @@
                           })
                         : 'Unknown date';
 
-                    // Show delete button only if current user matches uploader
                     const canDelete = currentUser && photo.uploader && 
                                      currentUser.toLowerCase().trim() === photo.uploader.toLowerCase().trim();
                     
                     const deleteButton = canDelete 
-                        ? `<button class="delete-btn" onclick="deletePhoto('${photo.id}', '${photo.url}', '${photo.uploader}')" title="Delete this photo">🗑️</button>`
+                        ? `<button class="delete-btn" onclick="deletePhoto('${photo.id}', '${photo.url}', '${photo.uploader}', event)" title="Delete this photo">🗑️</button>`
                         : '';
 
                     photoItem.innerHTML = `
-                        <div class="photo-media-wrapper" onclick="openLightbox(${JSON.stringify(photo).replace(/"/g, '&quot;')})">
+                        <div class="photo-media-wrapper" onclick='openLightbox(${JSON.stringify(photo).replace(/'/g, "\\'")})'>
                             ${deleteButton}
                             ${mediaElement}
                         </div>
@@ -686,7 +703,6 @@
             }
         }
 
-        // Lightbox functions
         window.openLightbox = function(photo) {
             const lightbox = document.getElementById('lightbox');
             const lightboxContent = document.getElementById('lightboxContent');
@@ -722,7 +738,6 @@
             lightbox.classList.remove('active');
             document.body.style.overflow = 'auto';
             
-            // Stop any playing videos
             const videos = lightbox.querySelectorAll('video');
             videos.forEach(video => {
                 video.pause();
@@ -730,14 +745,12 @@
             });
         };
 
-        // Close lightbox on background click
         document.getElementById('lightbox').addEventListener('click', function(e) {
             if (e.target === this) {
                 closeLightbox();
             }
         });
 
-        // Close lightbox on ESC key
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 if (document.getElementById('deleteModal').classList.contains('active')) {
@@ -748,7 +761,6 @@
             }
         });
 
-        // Load photos on page load
         loadPhotos();
     </script>
 </body>
