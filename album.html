@@ -876,36 +876,52 @@ function handleLogout() {
         document.getElementById('uploadBtn').href = `front.html?album=${albumId}`;
         document.getElementById('uploadBtnEmpty').href = `front.html?album=${albumId}`;
 
-        let currentUser = localStorage.getItem('currentUser') || '';
-        let photoToDelete = null;
+        // Get user data and extract nickname
+let currentUserData = null;
+let currentUser = '';
 
-        window.setCurrentUser = function() {
-            const input = document.getElementById('currentUserInput');
-            const name = input.value.trim();
-            
-            if (name) {
-                currentUser = name;
-                localStorage.setItem('currentUser', name);
-                document.getElementById('displayUserName').textContent = name;
-                document.getElementById('userInputSection').style.display = 'none';
-                document.getElementById('userDisplaySection').style.display = 'flex';
-                loadPhotos();
-            } else {
-                alert('Please enter your name');
-            }
-        };
+try {
+    const storedUser = localStorage.getItem('currentUser');
+    if (storedUser) {
+        currentUserData = JSON.parse(storedUser);
+        currentUser = currentUserData.nickname; // Use nickname for everything
+    }
+} catch (e) {
+    console.error('Error parsing user data:', e);
+    currentUser = '';
+}
 
-        window.changeUser = function() {
-            document.getElementById('userInputSection').style.display = 'flex';
-            document.getElementById('userDisplaySection').style.display = 'none';
-            document.getElementById('currentUserInput').value = currentUser;
-        };
+let photoToDelete = null;
 
-        if (currentUser) {
-            document.getElementById('displayUserName').textContent = currentUser;
-            document.getElementById('userInputSection').style.display = 'none';
-            document.getElementById('userDisplaySection').style.display = 'flex';
-        }
+window.setCurrentUser = function() {
+    const input = document.getElementById('currentUserInput');
+    const name = input.value.trim();
+    
+    if (name) {
+        currentUser = name;
+        // For compatibility, update localStorage with just the nickname
+        document.getElementById('displayUserName').textContent = name;
+        document.getElementById('userInputSection').style.display = 'none';
+        document.getElementById('userDisplaySection').style.display = 'flex';
+        loadPhotos();
+    } else {
+        alert('Please enter your name');
+    }
+};
+
+window.changeUser = function() {
+    document.getElementById('userInputSection').style.display = 'flex';
+    document.getElementById('userDisplaySection').style.display = 'none';
+    document.getElementById('currentUserInput').value = currentUser;
+};
+
+// Display nickname on page load
+if (currentUser) {
+    document.getElementById('displayUserName').textContent = currentUser;
+    document.getElementById('userInputSection').style.display = 'none';
+    document.getElementById('userDisplaySection').style.display = 'flex';
+}
+
 
         document.getElementById('currentUserInput').addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
