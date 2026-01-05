@@ -6,250 +6,255 @@
     <title>Login - Davreignne's Debut</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: 
-                linear-gradient(135deg, rgba(0, 26, 77, 0.85) 0%, rgba(13, 59, 102, 0.85) 50%, rgba(26, 26, 46, 0.9) 100%),
-                url('debut-bg.jpg') center/cover no-repeat fixed;
+            background-image: 
+                linear-gradient(135deg, rgba(0, 26, 77, 0.7) 0%, rgba(13, 59, 102, 0.8) 100%),
+                url('https://raw.githubusercontent.com/haruhiiiiiiiiiiiiiii/Davreignne-s-Debut-Album/main/MOT04452.JPG');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
+            padding: 20px;
             position: relative;
             overflow: hidden;
         }
 
-        /* Animated Background Sparkles */
+        /* Animated Sparkles */
         .sparkle {
-            position: absolute;
-            width: 3px;
-            height: 3px;
-            background: #c0c0c0;
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            background: radial-gradient(circle, #ffffff 0%, rgba(255,255,255,0.3) 70%);
             border-radius: 50%;
-            box-shadow: 0 0 10px #c0c0c0;
-            animation: sparkle 3s infinite;
+            animation: twinkle 2s ease-in-out infinite, float-random 6s ease-in-out infinite;
+            box-shadow: 0 0 15px rgba(192, 192, 192, 0.8);
+            z-index: 1;
         }
 
-        @keyframes sparkle {
-            0%, 100% { opacity: 0; transform: scale(0); }
-            50% { opacity: 1; transform: scale(1); }
+        .sparkle:nth-child(1) { top: 15%; left: 5%; animation-delay: 0s; }
+        .sparkle:nth-child(2) { top: 30%; right: 8%; animation-delay: 0.5s; width: 6px; height: 6px; }
+        .sparkle:nth-child(3) { bottom: 20%; left: 10%; animation-delay: 1s; width: 7px; height: 7px; }
+        .sparkle:nth-child(4) { top: 60%; right: 5%; animation-delay: 0.8s; width: 5px; height: 5px; }
+        .sparkle:nth-child(5) { top: 40%; left: 15%; animation-delay: 1.5s; }
+        .sparkle:nth-child(6) { bottom: 30%; right: 20%; animation-delay: 0.3s; width: 6px; height: 6px; }
+
+        @keyframes twinkle { 
+            0%, 100% { opacity: 0.3; } 
+            50% { opacity: 1; } 
         }
 
-        .sparkle:nth-child(1) { top: 20%; left: 10%; animation-delay: 0s; }
-        .sparkle:nth-child(2) { top: 40%; left: 80%; animation-delay: 1s; }
-        .sparkle:nth-child(3) { top: 70%; left: 20%; animation-delay: 2s; }
-        .sparkle:nth-child(4) { top: 30%; left: 50%; animation-delay: 1.5s; }
-        .sparkle:nth-child(5) { top: 80%; left: 70%; animation-delay: 0.5s; }
-
-        /* Login Container */
-        .login-container {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            border: 2px solid rgba(192, 192, 192, 0.2);
-            border-radius: 20px;
-            padding: 50px 40px;
-            width: 90%;
-            max-width: 450px;
-            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5);
-            position: relative;
-            z-index: 10;
-            animation: slideIn 0.6s ease;
+        @keyframes float-random { 
+            0% { transform: translateY(0px) translateX(0px); } 
+            25% { transform: translateY(-15px) translateX(10px); } 
+            50% { transform: translateY(-30px) translateX(-10px); } 
+            75% { transform: translateY(-15px) translateX(15px); } 
+            100% { transform: translateY(0px) translateX(0px); } 
         }
 
         @keyframes slideIn {
             from {
                 opacity: 0;
-                transform: translateY(-30px);
+                transform: translateY(-50px) scale(0.9);
             }
             to {
                 opacity: 1;
-                transform: translateY(0);
+                transform: translateY(0) scale(1);
             }
+        }
+
+        .login-container {
+            background: linear-gradient(135deg, rgba(0, 26, 77, 0.95) 0%, rgba(13, 59, 102, 0.95) 100%);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.5), 0 0 50px rgba(192, 192, 192, 0.3);
+            padding: 50px 40px;
+            max-width: 500px;
+            width: 100%;
+            border: 3px solid rgba(192, 192, 192, 0.4);
+            position: relative;
+            z-index: 10;
+            animation: slideIn 0.8s ease-out;
         }
 
         .login-header {
             text-align: center;
-            margin-bottom: 35px;
+            margin-bottom: 40px;
         }
 
-        .login-header i {
-            font-size: 3.5em;
-            color: #c0c0c0;
-            text-shadow: 0 0 20px rgba(192, 192, 192, 0.6);
-            animation: pulse 2s infinite;
+        .login-icon {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 20px;
+            filter: drop-shadow(0 0 20px rgba(192, 192, 192, 0.6));
         }
 
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
-
-        .login-header h1 {
+        .login-title {
             color: #e8e8e8;
-            font-size: 1.8em;
-            margin: 15px 0 5px;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 0 0 20px rgba(192, 192, 192, 0.5);
         }
 
-        .login-header p {
+        .login-subtitle {
             color: #c0c0c0;
-            font-size: 0.95em;
-            margin-top: 8px;
+            font-size: 1.1em;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
         }
 
-        /* Form Styles */
         .form-group {
             margin-bottom: 25px;
         }
 
         .form-group label {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: #c0c0c0;
+            display: block;
+            color: #e8e8e8;
             font-weight: 600;
             margin-bottom: 10px;
-            font-size: 0.95em;
+            font-size: 1em;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
 
         .form-group label i {
+            margin-right: 8px;
             color: #c0c0c0;
-            font-size: 1.1em;
         }
 
-        .form-group input {
+        .form-input {
             width: 100%;
-            padding: 14px 18px;
-            background: rgba(255, 255, 255, 0.1);
+            padding: 15px 20px;
             border: 2px solid rgba(192, 192, 192, 0.3);
-            border-radius: 10px;
-            color: #e8e8e8;
+            border-radius: 12px;
             font-size: 1em;
+            background: rgba(255, 255, 255, 0.95);
+            color: #001a4d;
             transition: all 0.3s ease;
+            font-weight: 500;
         }
 
-        .form-group input:focus {
+        .form-input:focus {
             outline: none;
             border-color: #c0c0c0;
-            background: rgba(255, 255, 255, 0.15);
-            box-shadow: 0 0 15px rgba(192, 192, 192, 0.3);
+            box-shadow: 0 0 15px rgba(192, 192, 192, 0.4);
+            background: rgba(255, 255, 255, 1);
         }
 
-        .form-group input::placeholder {
-            color: rgba(192, 192, 192, 0.5);
+        .form-input::placeholder {
+            color: #999;
         }
 
-        .form-note {
-            font-size: 0.85em;
-            color: #a0a0a0;
-            margin-top: 6px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .form-note i {
-            font-size: 0.9em;
-        }
-
-        /* Error Message */
-        .error-message {
-            background: rgba(220, 53, 69, 0.2);
-            border: 1px solid rgba(220, 53, 69, 0.5);
-            color: #ff6b6b;
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            display: none;
-            font-size: 0.9em;
-            animation: shake 0.5s;
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
-        }
-
-        .error-message.show {
-            display: block;
-        }
-
-        /* Submit Button */
-        .submit-btn {
+        .login-button {
             width: 100%;
-            padding: 15px;
-            background: linear-gradient(135deg, #001a4d 0%, #0d3b66 100%);
-            border: 2px solid #c0c0c0;
-            border-radius: 10px;
-            color: #c0c0c0;
+            padding: 16px;
+            background: linear-gradient(135deg, #c0c0c0 0%, #e8e8e8 50%, #c0c0c0 100%);
+            color: #001a4d;
+            border: none;
+            border-radius: 12px;
             font-size: 1.1em;
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(192, 192, 192, 0.4);
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
-            text-shadow: 0 0 10px rgba(192, 192, 192, 0.5);
         }
 
-        .submit-btn:hover {
-            background: linear-gradient(135deg, #0d3b66 0%, #001a4d 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(192, 192, 192, 0.3);
+        .login-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(192, 192, 192, 0.6);
         }
 
-        .submit-btn:active {
-            transform: translateY(0);
+        .login-button:active {
+            transform: translateY(-1px);
         }
 
-        /* Responsive */
+        .login-button i {
+            font-size: 1.2em;
+        }
+
+        .error-message {
+            background: rgba(220, 53, 69, 0.2);
+            border: 2px solid rgba(220, 53, 69, 0.5);
+            color: #ff6b6b;
+            padding: 12px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .error-message.show {
+            display: block;
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .info-text {
+            text-align: center;
+            color: #c0c0c0;
+            font-size: 0.9em;
+            margin-top: 20px;
+            line-height: 1.6;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .info-text i {
+            color: #e8e8e8;
+            margin: 0 3px;
+        }
+
         @media (max-width: 768px) {
             .login-container {
                 padding: 40px 30px;
-                max-width: 400px;
             }
 
-            .login-header h1 {
-                font-size: 1.6em;
+            .login-title {
+                font-size: 2em;
+            }
+
+            .login-subtitle {
+                font-size: 1em;
             }
         }
 
         @media (max-width: 480px) {
+            body {
+                background-attachment: scroll;
+            }
+
             .login-container {
-                padding: 35px 25px;
-                max-width: 340px;
+                padding: 30px 20px;
             }
 
-            .login-header h1 {
-                font-size: 1.4em;
+            .login-title {
+                font-size: 1.8em;
             }
 
-            .login-header i {
-                font-size: 3em;
-            }
-
-            .form-group input {
-                padding: 12px 16px;
-                font-size: 0.95em;
-            }
-
-            .submit-btn {
-                padding: 13px;
-                font-size: 1em;
+            .login-icon {
+                width: 80px;
+                height: 80px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Background Sparkles -->
+    <!-- Animated Sparkles -->
+    <div class="sparkle"></div>
     <div class="sparkle"></div>
     <div class="sparkle"></div>
     <div class="sparkle"></div>
@@ -258,109 +263,101 @@
 
     <div class="login-container">
         <div class="login-header">
-            <i class="fas fa-star"></i>
-            <h1>Welcome!</h1>
-            <p>Please enter your details to continue</p>
+            <svg class="login-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                <g fill="#e8e8e8">
+                    <circle cx="32" cy="32" r="28" fill="none" stroke="#c0c0c0" stroke-width="3"/>
+                    <path d="M32 16 L36 28 L48 30 L40 38 L42 50 L32 44 L22 50 L24 38 L16 30 L28 28 Z" fill="#e8e8e8"/>
+                </g>
+            </svg>
+            <h1 class="login-title">Welcome!</h1>
+            <p class="login-subtitle">Davreignne's 18th Birthday</p>
         </div>
 
-        <div class="error-message" id="errorMessage">
-            <i class="fas fa-exclamation-circle"></i>
-            <span id="errorText"></span>
+        <div id="errorMessage" class="error-message">
+            <i class="fas fa-exclamation-circle"></i> Please fill in all fields
         </div>
 
         <form id="loginForm">
             <div class="form-group">
-                <label>
-                    <i class="fas fa-user"></i>
-                    Guest Name
+                <label for="guestName">
+                    <i class="fas fa-user"></i> Guest Name
                 </label>
                 <input 
                     type="text" 
                     id="guestName" 
-                    placeholder="Enter your full name"
+                    class="form-input" 
+                    placeholder="Enter your full name (e.g., John Smith)"
                     required
                     autocomplete="name"
                 >
-                <div class="form-note">
-                    <i class="fas fa-info-circle"></i>
-                    This will be displayed as your identity
-                </div>
             </div>
 
             <div class="form-group">
-                <label>
-                    <i class="fas fa-tag"></i>
-                    Nickname
+                <label for="nickname">
+                    <i class="fas fa-tag"></i> Nickname (For Uploads)
                 </label>
                 <input 
                     type="text" 
                     id="nickname" 
-                    placeholder="Enter one-word nickname"
+                    class="form-input" 
+                    placeholder="Enter one word (e.g., John)"
                     required
-                    pattern="^\S+$"
-                    title="Please enter only one word (no spaces)"
+                    autocomplete="off"
+                    maxlength="20"
                 >
-                <div class="form-note">
-                    <i class="fas fa-info-circle"></i>
-                    One word only - used for photo uploads
-                </div>
             </div>
 
-            <button type="submit" class="submit-btn">
-                <i class="fas fa-arrow-right"></i>
-                Continue
+            <button type="submit" class="login-button">
+                <i class="fas fa-sign-in-alt"></i>
+                Enter Gallery
             </button>
         </form>
+
+        <p class="info-text">
+            <i class="fas fa-info-circle"></i> Your nickname will be shown when you upload photos
+        </p>
     </div>
 
     <script>
+        // Check if user is already logged in
+        const currentUser = localStorage.getItem('currentUser');
+        if (currentUser) {
+            window.location.href = 'index.html';
+        }
+
         const loginForm = document.getElementById('loginForm');
+        const errorMessage = document.getElementById('errorMessage');
         const guestNameInput = document.getElementById('guestName');
         const nicknameInput = document.getElementById('nickname');
-        const errorMessage = document.getElementById('errorMessage');
-        const errorText = document.getElementById('errorText');
 
-        // Auto-capitalize first letter of each word in guest name
-        guestNameInput.addEventListener('input', function() {
-            const words = this.value.split(' ');
-            const capitalized = words.map(word => {
-                if (word.length > 0) {
-                    return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
-                }
-                return word;
-            });
-            this.value = capitalized.join(' ');
-        });
-
-        // Remove spaces from nickname automatically
-        nicknameInput.addEventListener('input', function() {
-            this.value = this.value.replace(/\s+/g, '');
-        });
-
-        // Handle form submission
         loginForm.addEventListener('submit', function(e) {
             e.preventDefault();
-
+            
             const guestName = guestNameInput.value.trim();
             const nickname = nicknameInput.value.trim();
 
             // Validation
-            if (!guestName || guestName.length < 2) {
-                showError('Please enter a valid guest name (at least 2 characters)');
+            if (!guestName || !nickname) {
+                showError('Please fill in all fields');
                 return;
             }
 
-            if (!nickname || nickname.length < 2) {
-                showError('Please enter a valid nickname (at least 2 characters)');
+            if (guestName.length < 2) {
+                showError('Guest name must be at least 2 characters');
+                return;
+            }
+
+            if (nickname.length < 2) {
+                showError('Nickname must be at least 2 characters');
                 return;
             }
 
             if (nickname.includes(' ')) {
-                showError('Nickname must be one word only (no spaces)');
+                showError('Nickname should be one word (no spaces)');
                 return;
             }
 
-            // Save to localStorage
+            // Store user data
             const userData = {
                 guestName: guestName,
                 nickname: nickname,
@@ -369,26 +366,22 @@
 
             localStorage.setItem('currentUser', JSON.stringify(userData));
 
-            // Success! Redirect to albums page
+            // Success - redirect to main page
             window.location.href = 'index.html';
         });
 
         function showError(message) {
-            errorText.textContent = message;
+            errorMessage.textContent = message;
             errorMessage.classList.add('show');
-
+            
             setTimeout(() => {
                 errorMessage.classList.remove('show');
-            }, 4000);
+            }, 3000);
         }
 
-        // Check if user is already logged in
-        window.addEventListener('load', function() {
-            const currentUser = localStorage.getItem('currentUser');
-            if (currentUser) {
-                // User already logged in, redirect
-                window.location.href = 'albums.html';
-            }
+        // Auto-focus on first input
+        window.addEventListener('DOMContentLoaded', function() {
+            guestNameInput.focus();
         });
     </script>
 </body>
