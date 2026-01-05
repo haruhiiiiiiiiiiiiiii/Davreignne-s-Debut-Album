@@ -263,11 +263,12 @@
         }
 
         h1 { 
-            color: #c0c0c0; 
-            margin-bottom: 15px; 
-            font-size: 2.5em;
-            text-shadow: 0 0 20px rgba(192, 192, 192, 0.8), 0 0 40px rgba(192, 192, 192, 0.5);
-        }
+    color: #ffffff; 
+    margin-bottom: 15px; 
+    font-size: 2.5em;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 40px rgba(255, 255, 255, 0.5);
+}
+
 
         .subtitle { 
             color: #e8e8e8; 
@@ -277,17 +278,17 @@
         }
 
         .user-section {
-    background: #c0c0c0; /* Solid silver - NO BLUR */
+    background: transparent; /* Transparent to see background */
     padding: 20px;
     border-radius: 15px;
     margin-bottom: 25px;
-    border-left: 5px solid #a0a0a0; /* Darker silver border for depth */
+    border: none; /* Remove border */
     display: flex;
     align-items: center;
     justify-content: center;
     flex-wrap: wrap;
     gap: 15px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Subtle shadow for depth */
+    box-shadow: none; /* Remove shadow */
 }
 
 
@@ -335,13 +336,14 @@
 
         
         .current-user {
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(0, 26, 77, 0.8); /* Dark blue with transparency */
     padding: 10px 20px;
     border-radius: 8px;
-    color: #001a4d;
+    color: #ffffff; /* White text */
     font-weight: bold;
     border: 2px solid #c0c0c0;
     text-align: center;
+    backdrop-filter: blur(10px); /* Add blur effect */
 }
 
 
@@ -870,7 +872,20 @@
     }
 
     const albumName = albumsList[albumId] || 'Unknown Album';
-    document.getElementById('albumTitle').textContent = `📸 ${albumName}`;
+
+// Use table icon for Table albums, other icons for special albums
+let iconHTML = '<i class="fas fa-table"></i>';
+if (albumId >= 15) {
+    // Special albums keep their specific icons
+    if (albumId == 15) iconHTML = '<i class="fas fa-rose"></i>';
+    else if (albumId == 16) iconHTML = '<i class="fas fa-candle-holder"></i>';
+    else if (albumId == 17) iconHTML = '<i class="fas fa-money-bill"></i>';
+    else if (albumId == 18) iconHTML = '<i class="fas fa-gift"></i>';
+    else if (albumId == 19) iconHTML = '<i class="fas fa-glass-cheers"></i>';
+}
+
+document.getElementById('albumTitle').innerHTML = `${iconHTML} ${albumName}`;
+
     document.getElementById('uploadBtn').href = `front.html?album=${albumId}`;
     document.getElementById('uploadBtnEmpty').href = `front.html?album=${albumId}`;
 
