@@ -854,6 +854,8 @@
             </div>
         </div>
     </div>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
 
     <script type="module">
     // ============================================
@@ -878,9 +880,9 @@ const userFirebaseConfig = {
 // ✅ ADMIN PROJECT CONFIG (debut-admin-gallery)
 const adminFirebaseConfig = {
     apiKey: "AIzaSyBGPdX4zuxdcQBlNC-w8t8HJuJGrNVAKJ0",
-    authDomain: "debut-admin-gallery.firebaseapp.com",
-    projectId: "debut-admin-gallery",
-    storageBucket: "debut-admin-gallery.firebasestorage.app",  // ✅ CHANGED!
+    authDomain: "debut-admin-gallery.firebaseapp.com",    
+    projectId: "debut-admin-gallery",    
+    storageBucket: "debut-admin-gallery.firebasestorage.app", // ✅ CHANGED!
     messagingSenderId: "730982294106",
     appId: "1:730982294106:web:0070c0cf94174924c52e63",
     measurementId: "G-2XKBQ2R8WF"
@@ -888,15 +890,18 @@ const adminFirebaseConfig = {
 
 
     // ✅ Initialize BOTH Firebase apps
-    const userApp = initializeApp(userFirebaseConfig, "userApp");
-    const adminApp = initializeApp(adminFirebaseConfig, "adminApp");
+    // ✅ Initialize BOTH Firebase apps
+const userApp = initializeApp(userFirebaseConfig, "userApp");
+const adminApp = initializeApp(adminFirebaseConfig, "adminApp");
 
-    // ✅ Get services from BOTH apps
-    const userDB = getFirestore(userApp);
-    const userStorage = getStorage(userApp);
-    
-    const adminDB = getFirestore(adminApp);
-    const adminStorage = getStorage(adminApp);
+// ✅ Get services from BOTH apps
+const userDB = getFirestore(userApp);
+const userStorage = getStorage(userApp);  // ✅ Already correct
+
+const adminDB = getFirestore(adminApp);
+const adminStorage = getStorage(adminApp);  // ✅ Already correct
+
+
 
     console.log('🔥 Dual Firebase initialized!');
     console.log('👤 User project:', userFirebaseConfig.projectId);
