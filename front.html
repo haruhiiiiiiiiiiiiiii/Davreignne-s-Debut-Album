@@ -572,10 +572,10 @@
                 </div>
             </div>
             <a href="debut-video.html">
-                <i class="fas fa-video"></i> Video
+                <i class="fas fa-video"></i> Featured Album
             </a>
             <a href="#" id="logoutBtn" style="display: none;">                
-                    <i class="fas fa-sign-out-alt"></i>                Logout            </a>   
+                    <i class="fas fa-sign-out-alt"></i> Logout </a>   
         </nav>
     </div>
 </header>
@@ -637,358 +637,350 @@
     </div>
 
     <script type="module">
+    // ✅ FIXED: Check if user is logged in and auto-fill nickname
+    window.addEventListener('DOMContentLoaded', function() {
+        const currentUser = localStorage.getItem('currentUser');
 
-        // Check if user is logged in and auto-fill nickname
-window.addEventListener('DOMContentLoaded', function() {
-    const currentUser = localStorage.getItem('currentUser');
-    
-    if (!currentUser) {
-        window.location.href = 'login.html';
-        return;
-    }
-    // Logout functionality
-function handleLogout() {
-    if (confirm('Are you sure you want to logout?')) {
-        localStorage.removeItem('currentUser');
-        window.location.href = 'login.html';
-    }
-}
-
-    
-    const userData = JSON.parse(currentUser);
-    const uploaderInput = document.getElementById('uploaderName');
-    
-    if (uploaderInput) {
-        uploaderInput.value = userData.nickname;
-        uploaderInput.readOnly = true;
-        uploaderInput.style.background = 'rgba(255,255,255,0.1)';
-        uploaderInput.style.cursor = 'not-allowed';
-    }
-    
-    console.log('Logged in as:', userData.guestName, '(' + userData.nickname + ')');
-});
-
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-        import { getFirestore, collection, addDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
-        import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js';
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyDPaMpRBwk8a10vX4CUvsolfUyn3gpec5s",
-            authDomain: "debut-photo-gallery.firebaseapp.com",
-            projectId: "debut-photo-gallery",
-            storageBucket: "debut-photo-gallery.firebasestorage.app",
-            messagingSenderId: "954052989718",
-            appId: "1:954052989718:web:8faaeeaa9aebe726f67637",
-            measurementId: "G-WQ0EW238CJ"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-        const storage = getStorage(app);
-
-        const albumsList = [
-            { id: 1, name: 'Table 1' }, { id: 2, name: 'Table 2' }, { id: 3, name: 'Table 3' },
-            { id: 4, name: 'Table 4' }, { id: 5, name: 'Table 5' }, { id: 6, name: 'Table 6' },
-            { id: 7, name: 'Table 7' }, { id: 8, name: 'Table 8' }, { id: 9, name: 'Table 9' },
-            { id: 10, name: 'Table 10' }, { id: 11, name: 'Table 11' }, { id: 12, name: 'Table 12' },
-            { id: 13, name: 'Table 13' }, { id: 14, name: 'Table 14' }, { id: 15, name: '18 Roses' },
-            { id: 16, name: '18 Candles' }, { id: 17, name: '18 Blue Bills' }, 
-            { id: 18, name: '18 Treasures' }, { id: 19, name: '18 Shots' }
-        ];
-
-        const albumSelect = document.getElementById('albumSelect');
-        const fileInput = document.getElementById('fileInput');
-        const fileList = document.getElementById('fileList');
-        const uploadForm = document.getElementById('uploadForm');
-        const uploadBtn = document.getElementById('uploadBtn');
-        const uploadResult = document.getElementById('uploadResult');
-        const viewCurrentAlbum = document.getElementById('viewCurrentAlbum');
-
-        let selectedFiles = [];
-        let selectedAlbumId = null;
-
-        // Populate album dropdown
-        albumsList.forEach(album => {
-            const option = document.createElement('option');
-            option.value = album.id;
-            option.textContent = album.name;
-            albumSelect.appendChild(option);
-        });
-
-        // Pre-select album from URL parameter
-        const urlParams = new URLSearchParams(window.location.search);
-        const preSelectedAlbum = urlParams.get('album');
-        if (preSelectedAlbum) {
-            albumSelect.value = preSelectedAlbum;
-            selectedAlbumId = parseInt(preSelectedAlbum);
-            viewCurrentAlbum.href = `album.html?album=${preSelectedAlbum}`;
-            viewCurrentAlbum.style.display = 'inline-block';
+        if (!currentUser) {
+            window.location.href = 'login.html';
+            return;
         }
 
-        albumSelect.addEventListener('change', (e) => {
-            selectedAlbumId = parseInt(e.target.value);
-            if (selectedAlbumId) {
-                viewCurrentAlbum.href = `album.html?album=${selectedAlbumId}`;
-                viewCurrentAlbum.style.display = 'inline-block';
-            } else {
-                viewCurrentAlbum.style.display = 'none';
-            }
-        });
+        const userData = JSON.parse(currentUser);
+        const uploaderInput = document.getElementById('uploaderName');
 
-        fileInput.addEventListener('change', (e) => {
-            selectedFiles = Array.from(e.target.files);
-            displayFileList();
-        });
+        if (uploaderInput) {
+            uploaderInput.value = userData.nickname;
+            uploaderInput.readOnly = true;
+            uploaderInput.style.background = 'rgba(255,255,255,0.1)';
+            uploaderInput.style.cursor = 'not-allowed';
+        }
 
-        function displayFileList() {
-            if (selectedFiles.length === 0) {
-                fileList.style.display = 'none';
-                return;
-            }
+        console.log('Logged in as:', userData.guestName, '(' + userData.nickname + ')');
 
-            fileList.style.display = 'block';
-            fileList.innerHTML = '';
-
-            selectedFiles.forEach((file, index) => {
-                const fileItem = document.createElement('div');
-                fileItem.className = 'file-item';
-                fileItem.innerHTML = `
-                    <div class="file-item-header">
-                        <span class="file-name">${file.name}</span>
-                        <span class="file-size">${Math.round(file.size / 1024)} KB</span>
-                    </div>
-                    <div class="file-status" id="status-${index}">Ready to upload</div>
-                    <div class="progress-bar-container">
-                        <div class="progress-bar" id="progress-${index}"></div>
-                        <div class="progress-text" id="progress-text-${index}">0%</div>
-                    </div>
-                `;
-                fileList.appendChild(fileItem);
+        // ✅ NEW: LOGOUT BUTTON LOGIC MOVED HERE (inside DOMContentLoaded where currentUser exists)
+        const logoutBtn = document.getElementById('logoutBtn');
+        if (logoutBtn) {
+            // Show logout button since user is logged in
+            logoutBtn.style.display = 'flex';
+            
+            // Add click handler
+            logoutBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                if (confirm('Are you sure you want to logout?')) {
+                    localStorage.removeItem('currentUser');
+                    window.location.href = 'login.html';
+                }
             });
         }
+    });
 
-        // ✅ SANITIZE FILENAME FUNCTION
-        function sanitizeFilename(filename) {
-            const lastDot = filename.lastIndexOf('.');
-            const name = lastDot > 0 ? filename.substring(0, lastDot) : filename;
-            const ext = lastDot > 0 ? filename.substring(lastDot) : '';
-            
-            // Remove emojis, special unicode, and replace spaces/special chars
-            const sanitized = name
-                .replace(/[^\w\s-]/g, '') // Remove special chars except word chars, spaces, hyphens
-                .replace(/\s+/g, '_')      // Replace spaces with underscores
-                .replace(/_+/g, '_')       // Replace multiple underscores with single
-                .substring(0, 50);         // Limit length
-            
-            return sanitized || 'photo'; // Fallback if name is empty
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+    import { getFirestore, collection, addDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+    import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js';
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyDPaMpRBwk8a10vX4CUvsolfUyn3gpec5s",
+        authDomain: "debut-photo-gallery.firebaseapp.com",
+        projectId: "debut-photo-gallery",
+        storageBucket: "debut-photo-gallery.firebasestorage.app",
+        messagingSenderId: "954052989718",
+        appId: "1:954052989718:web:8faaeeaa9aebe726f67637",
+        measurementId: "G-WQ0EW238CJ"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const storage = getStorage(app);
+
+    const albumsList = [
+        { id: 1, name: 'Table 1' }, { id: 2, name: 'Table 2' }, { id: 3, name: 'Table 3' },
+        { id: 4, name: 'Table 4' }, { id: 5, name: 'Table 5' }, { id: 6, name: 'Table 6' },
+        { id: 7, name: 'Table 7' }, { id: 8, name: 'Table 8' }, { id: 9, name: 'Table 9' },
+        { id: 10, name: 'Table 10' }, { id: 11, name: 'Table 11' }, { id: 12, name: 'Table 12' },
+        { id: 13, name: 'Table 13' }, { id: 14, name: 'Table 14' }, { id: 15, name: '18 Roses' },
+        { id: 16, name: '18 Candles' }, { id: 17, name: '18 Blue Bills' }, 
+        { id: 18, name: '18 Treasures' }, { id: 19, name: '18 Shots' }
+    ];
+
+    const albumSelect = document.getElementById('albumSelect');
+    const fileInput = document.getElementById('fileInput');
+    const fileList = document.getElementById('fileList');
+    const uploadForm = document.getElementById('uploadForm');
+    const uploadBtn = document.getElementById('uploadBtn');
+    const uploadResult = document.getElementById('uploadResult');
+    const viewCurrentAlbum = document.getElementById('viewCurrentAlbum');
+
+    let selectedFiles = [];
+    let selectedAlbumId = null;
+
+    // Populate album dropdown
+    albumsList.forEach(album => {
+        const option = document.createElement('option');
+        option.value = album.id;
+        option.textContent = album.name;
+        albumSelect.appendChild(option);
+    });
+
+    // Pre-select album from URL parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    const preSelectedAlbum = urlParams.get('album');
+    if (preSelectedAlbum) {
+        albumSelect.value = preSelectedAlbum;
+        selectedAlbumId = parseInt(preSelectedAlbum);
+        viewCurrentAlbum.href = `album.html?album=${preSelectedAlbum}`;
+        viewCurrentAlbum.style.display = 'inline-block';
+    }
+
+    albumSelect.addEventListener('change', (e) => {
+        selectedAlbumId = parseInt(e.target.value);
+        if (selectedAlbumId) {
+            viewCurrentAlbum.href = `album.html?album=${selectedAlbumId}`;
+            viewCurrentAlbum.style.display = 'inline-block';
+        } else {
+            viewCurrentAlbum.style.display = 'none';
         }
+    });
 
-        async function uploadFile(file, index) {
-            const statusDiv = document.getElementById(`status-${index}`);
-            const progressBar = document.getElementById(`progress-${index}`);
-            const progressText = document.getElementById(`progress-text-${index}`);
+    fileInput.addEventListener('change', (e) => {
+        selectedFiles = Array.from(e.target.files);
+        displayFileList();
+    });
 
-            try {
-                statusDiv.textContent = 'Preparing...';
-                console.log(`📦 Processing file ${index + 1}: ${file.name}`);
-
-                // ✅ Generate safe filename with sanitization
-                const timestamp = Date.now();
-                const randomStr = Math.random().toString(36).substring(2, 15);
-                const sanitizedName = sanitizeFilename(file.name.replace(/\.[^/.]+$/, '')); // Remove extension
-                const extension = file.name.split('.').pop(); // Get original extension
-                const fileName = `${timestamp}_${randomStr}_${sanitizedName}.${extension}`;
-
-                console.log(`📝 Sanitized filename: ${file.name} → ${fileName}`);
-
-                let fileToUpload = file;
-                const isVideo = file.type.startsWith('video');
-
-                // Compress images (skip videos)
-                if (!isVideo && file.type.startsWith('image')) {
-                    statusDiv.textContent = 'Compressing...';
-                    console.log(`🗜️ Compressing ${file.name}...`);
-
-                    fileToUpload = await new Promise((resolve) => {
-                        const reader = new FileReader();
-                        reader.onload = (e) => {
-                            const img = new Image();
-                            img.onload = () => {
-                                const canvas = document.createElement('canvas');
-                                let width = img.width;
-                                let height = img.height;
-
-                                const maxDimension = 1920;
-                                if (width > maxDimension || height > maxDimension) {
-                                    if (width > height) {
-                                        height = (height / width) * maxDimension;
-                                        width = maxDimension;
-                                    } else {
-                                        width = (width / height) * maxDimension;
-                                        height = maxDimension;
-                                    }
-                                }
-
-                                canvas.width = width;
-                                canvas.height = height;
-                                const ctx = canvas.getContext('2d');
-                                ctx.drawImage(img, 0, 0, width, height);
-
-                                canvas.toBlob((blob) => {
-                                    console.log(`✅ Compressed: ${Math.round(file.size/1024)}KB → ${Math.round(blob.size/1024)}KB`);
-                                    resolve(new File([blob], fileName, { type: 'image/jpeg' }));
-                                }, 'image/jpeg', 0.85);
-                            };
-                            img.src = e.target.result;
-                        };
-                        reader.readAsDataURL(file);
-                    });
-                } else {
-                    // For videos, just rename with sanitized name
-                    fileToUpload = new File([file], fileName, { type: file.type });
-                }
-
-                // Upload to Firebase Storage
-                statusDiv.textContent = 'Uploading...';
-                console.log(`☁️ Uploading ${fileName} to Storage...`);
-
-                const storageRef = ref(storage, `albums/${selectedAlbumId}/${fileName}`);
-                const uploadTask = uploadBytesResumable(storageRef, fileToUpload);
-
-                await new Promise((resolve, reject) => {
-                    uploadTask.on('state_changed',
-                        (snapshot) => {
-                            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                            progressBar.style.width = progress + '%';
-                            progressText.textContent = Math.round(progress) + '%';
-                        },
-                        (error) => {
-                            console.error(`❌ Upload failed for ${fileName}:`, error);
-                            reject(error);
-                        },
-                        () => resolve()
-                    );
-                });
-
-                // Get download URL
-                const downloadURL = await getDownloadURL(storageRef);
-                console.log(`✅ Upload complete! URL: ${downloadURL}`);
-
-                // Save metadata to Firestore
-                statusDiv.textContent = 'Saving...';
-                console.log(`💾 Saving metadata to Firestore...`);
-
-                const photoData = {
-                    name: file.name, // Keep original name for display
-                    url: downloadURL, // ✅ This should now always have a value
-                    uploader: document.getElementById('uploaderName').value,
-                    timestamp: Date.now(),
-                    size: fileToUpload.size,
-                    type: file.type
-                };
-
-                await addDoc(collection(db, `albums/${selectedAlbumId}/photos`), photoData);
-                
-                console.log(`✅ File ${index + 1} complete: ${file.name}`);
-                statusDiv.textContent = 'Done!';
-                statusDiv.style.color = '#28a745';
-                progressBar.style.background = 'linear-gradient(90deg, #28a745 0%, #20c997 100%)';
-
-            } catch (error) {
-                console.error(`❌ Error uploading file ${index + 1}:`, error);
-                statusDiv.textContent = `Failed: ${error.message}`;
-                statusDiv.style.color = '#dc3545';
-                progressBar.style.background = '#dc3545';
-                throw error;
-            }
-        }
-
-        uploadForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            const uploaderName = document.getElementById('uploaderName').value.trim();
-            
-            if (!uploaderName) {
-                alert('Please enter your name');
-                return;
-            }
-
-            if (!selectedAlbumId) {
-                alert('Please select an album');
-                return;
-            }
-
-            if (selectedFiles.length === 0) {
-                alert('Please select at least one file');
-                return;
-            }
-
-            uploadBtn.disabled = true;
-            uploadBtn.textContent = '⏳ Uploading...';
-            uploadResult.style.display = 'none';
-
-            let successCount = 0;
-            let failCount = 0;
-
-            // Upload files sequentially with delay
-            for (let i = 0; i < selectedFiles.length; i++) {
-                try {
-                    await uploadFile(selectedFiles[i], i);
-                    successCount++;
-                    
-                    // Add delay between uploads
-                    if (i < selectedFiles.length - 1) {
-                        await new Promise(resolve => setTimeout(resolve, 500));
-                    }
-                } catch (error) {
-                    failCount++;
-                }
-            }
-
-            // Show final result
-            uploadBtn.disabled = false;
-            uploadBtn.textContent = '🚀 Upload Files';
-
-            uploadResult.style.display = 'block';
-            if (failCount === 0) {
-                uploadResult.className = 'success';
-                uploadResult.innerHTML = `
-                    ✅ All ${successCount} files uploaded successfully!<br>
-                    <a href="album.html?album=${selectedAlbumId}" style="color: #155724; text-decoration: underline; font-weight: bold;">View Album →</a>
-                `;
-            } else if (successCount > 0) {
-                uploadResult.className = 'success';
-                uploadResult.innerHTML = `
-                    ⚠️ ${successCount} files uploaded, ${failCount} failed.<br>
-                    <a href="album.html?album=${selectedAlbumId}" style="color: #155724; text-decoration: underline; font-weight: bold;">View Album →</a>
-                `;
-            } else {
-                uploadResult.className = 'error';
-                uploadResult.textContent = `❌ All uploads failed. Please check console and try again.`;
-            }
-
-            // Reset form
-            selectedFiles = [];
-            fileInput.value = '';
+    function displayFileList() {
+        if (selectedFiles.length === 0) {
             fileList.style.display = 'none';
+            return;
+        }
+
+        fileList.style.display = 'block';
+        fileList.innerHTML = '';
+
+        selectedFiles.forEach((file, index) => {
+            const fileItem = document.createElement('div');
+            fileItem.className = 'file-item';
+            fileItem.innerHTML = `
+                <div class="file-item-header">
+                    <span class="file-name">${file.name}</span>
+                    <span class="file-size">${Math.round(file.size / 1024)} KB</span>
+                </div>
+                <div class="file-status" id="status-${index}">Ready to upload</div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="progress-${index}"></div>
+                    <div class="progress-text" id="progress-text-${index}">0%</div>
+                </div>
+            `;
+            fileList.appendChild(fileItem);
         });
-        // Logout functionality
-    const logoutBtn = document.getElementById('logoutBtn');
-    if (logoutBtn) {
-        logoutBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            if (confirm('Are you sure you want to logout?')) {
-                localStorage.removeItem('currentUser');
-                window.location.href = 'login.html';
+    }
+
+    // ✅ SANITIZE FILENAME FUNCTION
+    function sanitizeFilename(filename) {
+        const lastDot = filename.lastIndexOf('.');
+        const name = lastDot > 0 ? filename.substring(0, lastDot) : filename;
+        const ext = lastDot > 0 ? filename.substring(lastDot) : '';
+
+        // Remove emojis, special unicode, and replace spaces/special chars
+        const sanitized = name
+            .replace(/[^\w\s-]/g, '') // Remove special chars except word chars, spaces, hyphens
+            .replace(/\s+/g, '_')      // Replace spaces with underscores
+            .replace(/_+/g, '_')       // Replace multiple underscores with single
+            .substring(0, 50);         // Limit length
+
+        return sanitized || 'photo'; // Fallback if name is empty
+    }
+
+    async function uploadFile(file, index) {
+        const statusDiv = document.getElementById(`status-${index}`);
+        const progressBar = document.getElementById(`progress-${index}`);
+        const progressText = document.getElementById(`progress-text-${index}`);
+
+        try {
+            statusDiv.textContent = 'Preparing...';
+            console.log(`📦 Processing file ${index + 1}: ${file.name}`);
+
+            // ✅ Generate safe filename with sanitization
+            const timestamp = Date.now();
+            const randomStr = Math.random().toString(36).substring(2, 15);
+            const sanitizedName = sanitizeFilename(file.name.replace(/\.[^/.]+$/, '')); // Remove extension
+            const extension = file.name.split('.').pop(); // Get original extension
+            const fileName = `${timestamp}_${randomStr}_${sanitizedName}.${extension}`;
+
+            console.log(`📝 Sanitized filename: ${file.name} → ${fileName}`);
+
+            let fileToUpload = file;
+            const isVideo = file.type.startsWith('video');
+
+            // Compress images (skip videos)
+            if (!isVideo && file.type.startsWith('image')) {
+                statusDiv.textContent = 'Compressing...';
+                console.log(`🗜️ Compressing ${file.name}...`);
+
+                fileToUpload = await new Promise((resolve) => {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        const img = new Image();
+                        img.onload = () => {
+                            const canvas = document.createElement('canvas');
+                            let width = img.width;
+                            let height = img.height;
+
+                            const maxDimension = 1920;
+                            if (width > maxDimension || height > maxDimension) {
+                                if (width > height) {
+                                    height = (height / width) * maxDimension;
+                                    width = maxDimension;
+                                } else {
+                                    width = (width / height) * maxDimension;
+                                    height = maxDimension;
+                                }
+                            }
+
+                            canvas.width = width;
+                            canvas.height = height;
+                            const ctx = canvas.getContext('2d');
+                            ctx.drawImage(img, 0, 0, width, height);
+
+                            canvas.toBlob((blob) => {
+                                console.log(`✅ Compressed: ${Math.round(file.size/1024)}KB → ${Math.round(blob.size/1024)}KB`);
+                                resolve(new File([blob], fileName, { type: 'image/jpeg' }));
+                            }, 'image/jpeg', 0.85);
+                        };
+                        img.src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                });
+            } else {
+                // For videos, just rename with sanitized name
+                fileToUpload = new File([file], fileName, { type: file.type });
             }
-        });
-        
-        if (currentUser) {
-            logoutBtn.style.display = 'flex';
+
+            // Upload to Firebase Storage
+            statusDiv.textContent = 'Uploading...';
+            console.log(`☁️ Uploading ${fileName} to Storage...`);
+
+            const storageRef = ref(storage, `albums/${selectedAlbumId}/${fileName}`);
+            const uploadTask = uploadBytesResumable(storageRef, fileToUpload);
+
+            await new Promise((resolve, reject) => {
+                uploadTask.on('state_changed',
+                    (snapshot) => {
+                        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                        progressBar.style.width = progress + '%';
+                        progressText.textContent = Math.round(progress) + '%';
+                    },
+                    (error) => {
+                        console.error(`❌ Upload failed for ${fileName}:`, error);
+                        reject(error);
+                    },
+                    () => resolve()
+                );
+            });
+
+            // Get download URL
+            const downloadURL = await getDownloadURL(storageRef);
+            console.log(`✅ Upload complete! URL: ${downloadURL}`);
+
+            // Save metadata to Firestore
+            statusDiv.textContent = 'Saving...';
+            console.log(`💾 Saving metadata to Firestore...`);
+
+            const photoData = {
+                name: file.name, // Keep original name for display
+                url: downloadURL, // ✅ This should now always have a value
+                uploader: document.getElementById('uploaderName').value,
+                timestamp: Date.now(),
+                size: fileToUpload.size,
+                type: file.type
+            };
+
+            await addDoc(collection(db, `albums/${selectedAlbumId}/photos`), photoData);
+
+            console.log(`✅ File ${index + 1} complete: ${file.name}`);
+            statusDiv.textContent = 'Done!';
+            statusDiv.style.color = '#28a745';
+            progressBar.style.background = 'linear-gradient(90deg, #28a745 0%, #20c997 100%)';
+
+        } catch (error) {
+            console.error(`❌ Error uploading file ${index + 1}:`, error);
+            statusDiv.textContent = `Failed: ${error.message}`;
+            statusDiv.style.color = '#dc3545';
+            progressBar.style.background = '#dc3545';
+            throw error;
         }
     }
 
-    </script>
+    uploadForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const uploaderName = document.getElementById('uploaderName').value.trim();
+
+        if (!uploaderName) {
+            alert('Please enter your name');
+            return;
+        }
+
+        if (!selectedAlbumId) {
+            alert('Please select an album');
+            return;
+        }
+
+        if (selectedFiles.length === 0) {
+            alert('Please select at least one file');
+            return;
+        }
+
+        uploadBtn.disabled = true;
+        uploadBtn.textContent = '⏳ Uploading...';
+        uploadResult.style.display = 'none';
+
+        let successCount = 0;
+        let failCount = 0;
+
+        // Upload files sequentially with delay
+        for (let i = 0; i < selectedFiles.length; i++) {
+            try {
+                await uploadFile(selectedFiles[i], i);
+                successCount++;
+
+                // Add delay between uploads
+                if (i < selectedFiles.length - 1) {
+                    await new Promise(resolve => setTimeout(resolve, 500));
+                }
+            } catch (error) {
+                failCount++;
+            }
+        }
+
+        // Show final result
+        uploadBtn.disabled = false;
+        uploadBtn.textContent = '🚀 Upload Files';
+
+        uploadResult.style.display = 'block';
+        if (failCount === 0) {
+            uploadResult.className = 'success';
+            uploadResult.innerHTML = `
+                ✅ All ${successCount} files uploaded successfully!<br>
+                <a href="album.html?album=${selectedAlbumId}" style="color: #155724; text-decoration: underline; font-weight: bold;">View Album →</a>
+            `;
+        } else if (successCount > 0) {
+            uploadResult.className = 'success';
+            uploadResult.innerHTML = `
+                ⚠️ ${successCount} files uploaded, ${failCount} failed.<br>
+                <a href="album.html?album=${selectedAlbumId}" style="color: #155724; text-decoration: underline; font-weight: bold;">View Album →</a>
+            `;
+        } else {
+            uploadResult.className = 'error';
+            uploadResult.textContent = `❌ All uploads failed. Please check console and try again.`;
+        }
+
+        // Reset form
+        selectedFiles = [];
+        fileInput.value = '';
+        fileList.style.display = 'none';
+    });
+
+</script>
         <!-- Footer -->
     <footer class="creator-footer">    
         <div class="footer-container">        
