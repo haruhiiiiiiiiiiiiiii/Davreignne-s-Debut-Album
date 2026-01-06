@@ -637,49 +637,51 @@
     </div>
 
     <script type="module">
-    // ✅ FIXED: Check if user is logged in and auto-fill nickname
-    window.addEventListener('DOMContentLoaded', function() {
-        const currentUser = localStorage.getItem('currentUser');
-
-        if (!currentUser) {
-            window.location.href = 'login.html';
-            return;
-        }
-
-        const userData = JSON.parse(currentUser);
-        const uploaderInput = document.getElementById('uploaderName');
-
-        if (uploaderInput) {
-            uploaderInput.value = userData.nickname;
-            uploaderInput.readOnly = true;
-            uploaderInput.style.background = 'rgba(255,255,255,0.1)';
-            uploaderInput.style.cursor = 'not-allowed';
-        }
-
-        console.log('Logged in as:', userData.guestName, '(' + userData.nickname + ')');
-
-        // ✅ NEW: LOGOUT BUTTON LOGIC MOVED HERE (inside DOMContentLoaded where currentUser exists)
-        const logoutBtn = document.getElementById('logoutBtn');
-        if (logoutBtn) {
-            // Show logout button since user is logged in
-            logoutBtn.style.display = 'flex';
-            
-            // Add click handler
-            logoutBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                if (confirm('Are you sure you want to logout?')) {
-                    localStorage.removeItem('currentUser');
-                    window.location.href = 'login.html';
-                }
-            });
-        }
-    });
-
-       import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
     import { getFirestore, collection, addDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
     import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js';
 
-    // ✅ USER PROJECT CONFIG (for guest uploads)
+    // ============================================
+    // 🔐 LOGIN CHECK (Run immediately, NO DOMContentLoaded)
+    // ============================================
+    
+    const currentUser = localStorage.getItem('currentUser');
+
+    if (!currentUser) {
+        window.location.href = 'login.html';
+        throw new Error('Not logged in'); // Stop script execution
+    }
+
+    const userData = JSON.parse(currentUser);
+    console.log('✅ Logged in as:', userData.guestName, '(' + userData.nickname + ')');
+
+    // Auto-fill nickname
+    const uploaderInput = document.getElementById('uploaderName');
+    if (uploaderInput) {
+        uploaderInput.value = userData.nickname;
+        uploaderInput.readOnly = true;
+        uploaderInput.style.background = 'rgba(255,255,255,0.1)';
+        uploaderInput.style.cursor = 'not-allowed';
+    }
+
+    // Show and setup logout button
+    const logoutBtn = document.getElementById('logoutBtn');
+    if (logoutBtn) {
+        logoutBtn.style.display = 'flex'; // ✅ Show logout button
+        
+        logoutBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('currentUser');
+                window.location.href = 'login.html';
+            }
+        });
+    }
+
+    // ============================================
+    // 🔥 FIREBASE INITIALIZATION (ONLY ONCE!)
+    // ============================================
+    
     const firebaseConfig = {
         apiKey: "AIzaSyDPaMpRBwk8a10vX4CUvsolfUyn3gpec5s",
         authDomain: "debut-photo-gallery.firebaseapp.com",
@@ -690,16 +692,16 @@
         measurementId: "G-WQ0EW238CJ"
     };
 
-    console.log('🔥 Initializing Firebase for front.html...');
+    console.log('🔥 Initializing Firebase...');
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const storage = getStorage(app);
-    console.log('✅ Firebase initialized successfully!');
+    console.log('✅ Firebase initialized!');
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    const storage = getStorage(app);
-
+    // ============================================
+    // 📋 ALBUM LIST
+    // ============================================
+    
     const albumsList = [
         { id: 1, name: 'Table 1' }, { id: 2, name: 'Table 2' }, { id: 3, name: 'Table 3' },
         { id: 4, name: 'Table 4' }, { id: 5, name: 'Table 5' }, { id: 6, name: 'Table 6' },
@@ -781,20 +783,18 @@
         });
     }
 
-    // ✅ SANITIZE FILENAME FUNCTION
     function sanitizeFilename(filename) {
         const lastDot = filename.lastIndexOf('.');
         const name = lastDot > 0 ? filename.substring(0, lastDot) : filename;
         const ext = lastDot > 0 ? filename.substring(lastDot) : '';
 
-        // Remove emojis, special unicode, and replace spaces/special chars
         const sanitized = name
-            .replace(/[^\w\s-]/g, '') // Remove special chars except word chars, spaces, hyphens
-            .replace(/\s+/g, '_')      // Replace spaces with underscores
-            .replace(/_+/g, '_')       // Replace multiple underscores with single
-            .substring(0, 50);         // Limit length
+            .replace(/[^\w\s-]/g, '')
+            .replace(/\s+/g, '_')
+            .replace(/_+/g, '_')
+            .substring(0, 50);
 
-        return sanitized || 'photo'; // Fallback if name is empty
+        return sanitized || 'photo';
     }
 
     async function uploadFile(file, index) {
@@ -806,11 +806,10 @@
             statusDiv.textContent = 'Preparing...';
             console.log(`📦 Processing file ${index + 1}: ${file.name}`);
 
-            // ✅ Generate safe filename with sanitization
             const timestamp = Date.now();
             const randomStr = Math.random().toString(36).substring(2, 15);
-            const sanitizedName = sanitizeFilename(file.name.replace(/\.[^/.]+$/, '')); // Remove extension
-            const extension = file.name.split('.').pop(); // Get original extension
+            const sanitizedName = sanitizeFilename(file.name.replace(/\.[^/.]+$/, ''));
+            const extension = file.name.split('.').pop();
             const fileName = `${timestamp}_${randomStr}_${sanitizedName}.${extension}`;
 
             console.log(`📝 Sanitized filename: ${file.name} → ${fileName}`);
@@ -818,7 +817,6 @@
             let fileToUpload = file;
             const isVideo = file.type.startsWith('video');
 
-            // Compress images (skip videos)
             if (!isVideo && file.type.startsWith('image')) {
                 statusDiv.textContent = 'Compressing...';
                 console.log(`🗜️ Compressing ${file.name}...`);
@@ -858,11 +856,9 @@
                     reader.readAsDataURL(file);
                 });
             } else {
-                // For videos, just rename with sanitized name
                 fileToUpload = new File([file], fileName, { type: file.type });
             }
 
-            // Upload to Firebase Storage
             statusDiv.textContent = 'Uploading...';
             console.log(`☁️ Uploading ${fileName} to Storage...`);
 
@@ -884,18 +880,16 @@
                 );
             });
 
-            // Get download URL
             const downloadURL = await getDownloadURL(storageRef);
             console.log(`✅ Upload complete! URL: ${downloadURL}`);
 
-            // Save metadata to Firestore
             statusDiv.textContent = 'Saving...';
             console.log(`💾 Saving metadata to Firestore...`);
 
             const photoData = {
-                name: file.name, // Keep original name for display
-                url: downloadURL, // ✅ This should now always have a value
-                uploader: document.getElementById('uploaderName').value,
+                name: file.name,
+                url: downloadURL,
+                uploader: userData.nickname,
                 timestamp: Date.now(),
                 size: fileToUpload.size,
                 type: file.type
@@ -920,13 +914,6 @@
     uploadForm.addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        const uploaderName = document.getElementById('uploaderName').value.trim();
-
-        if (!uploaderName) {
-            alert('Please enter your name');
-            return;
-        }
-
         if (!selectedAlbumId) {
             alert('Please select an album');
             return;
@@ -944,13 +931,11 @@
         let successCount = 0;
         let failCount = 0;
 
-        // Upload files sequentially with delay
         for (let i = 0; i < selectedFiles.length; i++) {
             try {
                 await uploadFile(selectedFiles[i], i);
                 successCount++;
 
-                // Add delay between uploads
                 if (i < selectedFiles.length - 1) {
                     await new Promise(resolve => setTimeout(resolve, 500));
                 }
@@ -959,7 +944,6 @@
             }
         }
 
-        // Show final result
         uploadBtn.disabled = false;
         uploadBtn.textContent = '🚀 Upload Files';
 
@@ -981,13 +965,12 @@
             uploadResult.textContent = `❌ All uploads failed. Please check console and try again.`;
         }
 
-        // Reset form
         selectedFiles = [];
         fileInput.value = '';
         fileList.style.display = 'none';
     });
-
 </script>
+
         <!-- Footer -->
     <footer class="creator-footer">    
         <div class="footer-container">        
