@@ -148,6 +148,12 @@
             color: #666;
             font-size: 0.9em;
         }
+
+        .no-users {
+            text-align: center;
+            color: #999;
+            padding: 20px;
+        }
     </style>
 </head>
 <body>
@@ -264,7 +270,7 @@
                 const querySnapshot = await getDocs(q);
 
                 if (querySnapshot.empty) {
-                    listContainer.innerHTML = '<p style="text-align: center; color: #999;">No guests registered yet</p>';
+                    listContainer.innerHTML = '<p class="no-users">No guests registered yet</p>';
                     return;
                 }
 
