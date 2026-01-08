@@ -499,6 +499,114 @@
         height: 30px;
     }
 }
+@media (max-width: 768px) {
+    .face-loading {
+        width: 70px;
+        height: 70px;
+        border-width: 4px;
+    }
+    
+    .face-loading-small {
+        width: 30px;
+        height: 30px;
+    }
+}
+
+/* ⬇️⬇️⬇️ ADD ALL THE NEW CSS HERE ⬇️⬇️⬇️ */
+
+.loading-screen-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(0, 26, 77, 0.98) 0%, rgba(13, 59, 102, 0.98) 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+}
+
+.cute-loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    padding: 40px;
+    background: linear-gradient(135deg, rgba(0, 26, 77, 0.6), rgba(13, 59, 102, 0.6));
+    border-radius: 30px;
+    border: 3px solid rgba(192, 192, 192, 0.3);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    min-width: 400px;
+}
+
+.loading-face-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: url('https://raw.githubusercontent.com/haruhiiiiiiiiiiiiiii/Davreignne-s-Debut-Album/main/Subject.png') center/cover;
+    border: 5px solid #C0C0C0;
+    box-shadow: 0 8px 30px rgba(192, 192, 192, 0.5);
+    animation: bounce-face 1.5s ease-in-out infinite;
+}
+
+@keyframes bounce-face {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-15px) scale(1.05); }
+}
+
+.progress-bar-container {
+    width: 100%;
+    height: 30px;
+    background: rgba(0, 26, 77, 0.8);
+    border-radius: 20px;
+    border: 3px solid rgba(192, 192, 192, 0.4);
+    position: relative;
+    overflow: hidden;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #C0C0C0 0%, #E8E8E8 50%, #C0C0C0 100%);
+    width: 0%;
+    border-radius: 20px;
+    transition: width 0.3s ease;
+}
+
+.progress-character {
+    position: absolute;
+    top: 50%;
+    left: 0%;
+    transform: translate(-50%, -50%);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: url('https://raw.githubusercontent.com/haruhiiiiiiiiiiiiiii/Davreignne-s-Debut-Album/main/Subject.png') center/cover;
+    border: 4px solid #FFD700;
+    box-shadow: 0 5px 20px rgba(255, 215, 0, 0.6);
+    transition: left 0.3s ease;
+    animation: wiggle-bar 0.6s ease-in-out infinite;
+}
+
+@keyframes wiggle-bar {
+    0%, 100% { transform: translate(-50%, -50%) rotate(0deg); }
+    50% { transform: translate(-50%, -50%) rotate(-5deg); }
+}
+
+.loading-text {
+    font-size: 1.8em;
+    font-weight: bold;
+    color: #E8E8E8;
+    text-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
+}
+
+.loading-percentage {
+    font-size: 2.5em;
+    font-weight: 900;
+    background: linear-gradient(135deg, #C0C0C0 0%, #ffffff 50%, #C0C0C0 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
 
     </style>
 </head>
@@ -622,29 +730,42 @@
     }
 
     function showFullLoading(message = 'Loading...') {
-        const loadingOverlay = document.createElement('div');
-        loadingOverlay.id = 'full-screen-loader';
-        loadingOverlay.innerHTML = `
-            <div style="
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0, 26, 77, 0.95);
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                z-index: 10000;
-            ">
-                <div class="face-loading-container">
-                    <div class="face-loading" style="width: 120px; height: 120px;"></div>
-                    <div class="face-loading-text" style="font-size: 1.5em;">${message}</div>
-                </div>
+    const loadingOverlay = document.createElement('div');
+    loadingOverlay.className = 'loading-screen-overlay';
+    loadingOverlay.id = 'full-screen-loader';
+    
+    loadingOverlay.innerHTML = `
+        <div class="cute-loading-container">
+            <div class="loading-face-avatar"></div>
+            <div class="loading-text">${message}</div>
+            <div class="progress-bar-container">
+                <div class="progress-bar-fill" id="progressFill"></div>
+                <div class="progress-character" id="progressChar"></div>
             </div>
-        `;
-        document.body.appendChild(loadingOverlay);
-    }
+            <div class="loading-percentage" id="loadingPercent">0%</div>
+        </div>
+    `;
+    
+    document.body.appendChild(loadingOverlay);
+    
+    // Animate progress
+    let progress = 0;
+    const progressFill = document.getElementById('progressFill');
+    const progressChar = document.getElementById('progressChar');
+    const loadingPercent = document.getElementById('loadingPercent');
+    
+    const interval = setInterval(() => {
+        progress += Math.random() * 15 + 5;
+        if (progress >= 100) {
+            progress = 100;
+            clearInterval(interval);
+        }
+        progressFill.style.width = progress + '%';
+        progressChar.style.left = progress + '%';
+        loadingPercent.textContent = Math.floor(progress) + '%';
+    }, 150);
+}
+
 
     // ✅ LOGIN FORM HANDLER
     loginForm.addEventListener('submit', async function(e) {
