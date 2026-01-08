@@ -591,10 +591,11 @@
     transform: translateY(-10px);
     transition: all 0.3s ease;
     z-index: 1000;
-    max-height: 400px;
+    max-height: 600px;  /* ✅ INCREASED HEIGHT */
     overflow-y: auto;
     margin-top: 8px;
 }
+
 
 .dropdown:hover .dropdown-menu {
     opacity: 1;
@@ -619,10 +620,11 @@
 }
 
 .dropdown-menu a:hover {
-    background: rgba(192, 192, 192, 0.15);
-    color: #fff;
+    background: linear-gradient(135deg, #c0c0c0 0%, #e8e8e8 50%, #c0c0c0 100%);
+    color: #001a4d !important;
     padding-left: 25px;
 }
+
 
 /* Shortened Footer */
 .site-footer {
@@ -725,15 +727,23 @@
     }
     
     .dropdown.active .dropdown-menu {
-        opacity: 1;
-        visibility: visible;
-        max-height: 500px;
-    }
+    opacity: 1;
+    visibility: visible;
+    max-height: 800px;  /* ✅ FITS ALL ALBUMS */
+}
+
     
     .dropdown-menu a {
         padding: 12px 30px;
     }
-    
+
+/* ✨ ADD THIS NEW RULE */
+.dropdown-menu a:hover {
+    background: linear-gradient(135deg, #c0c0c0 0%, #e8e8e8 50%, #c0c0c0 100%);
+    color: #001a4d !important;
+    padding-left: 35px;
+}
+
     /* Overlay for mobile menu */
     .site-header nav.active::before {
         content: '';
