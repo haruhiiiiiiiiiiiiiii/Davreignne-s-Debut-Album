@@ -514,6 +514,8 @@
 
 /* ⬇️⬇️⬇️ ADD ALL THE NEW CSS HERE ⬇️⬇️⬇️ */
 
+/* ==================== LOADING WITH PROGRESS BAR (NO AVATAR) ==================== */
+
 .loading-screen-overlay {
     position: fixed;
     top: 0;
@@ -531,81 +533,167 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 30px;
-    padding: 40px;
+    gap: 35px;
+    padding: 50px 40px;
     background: linear-gradient(135deg, rgba(0, 26, 77, 0.6), rgba(13, 59, 102, 0.6));
     border-radius: 30px;
     border: 3px solid rgba(192, 192, 192, 0.3);
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-    min-width: 400px;
+    box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.5),
+        0 0 40px rgba(192, 192, 192, 0.2);
+    backdrop-filter: blur(10px);
+    min-width: 450px;
 }
 
-.loading-face-avatar {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    background: url('https://raw.githubusercontent.com/haruhiiiiiiiiiiiiiii/Davreignne-s-Debut-Album/main/Subject.png') center/cover;
-    border: 5px solid #C0C0C0;
-    box-shadow: 0 8px 30px rgba(192, 192, 192, 0.5);
-    animation: bounce-face 1.5s ease-in-out infinite;
+/* 📝 Loading Text */
+.loading-text {
+    font-size: 2em;
+    font-weight: bold;
+    color: #E8E8E8;
+    text-shadow: 
+        0 3px 10px rgba(0, 0, 0, 0.5),
+        0 0 20px rgba(192, 192, 192, 0.4);
+    animation: pulse-glow 2s ease-in-out infinite;
+    letter-spacing: 2px;
+    text-align: center;
 }
 
-@keyframes bounce-face {
-    0%, 100% { transform: translateY(0) scale(1); }
-    50% { transform: translateY(-15px) scale(1.05); }
+@keyframes pulse-glow {
+    0%, 100% { 
+        opacity: 0.8;
+        transform: scale(1);
+    }
+    50% { 
+        opacity: 1;
+        transform: scale(1.05);
+    }
+}
+
+/* 📊 Progress Bar Container */
+.progress-bar-wrapper {
+    width: 100%;
+    position: relative;
 }
 
 .progress-bar-container {
     width: 100%;
-    height: 30px;
+    height: 35px;
     background: rgba(0, 26, 77, 0.8);
     border-radius: 20px;
     border: 3px solid rgba(192, 192, 192, 0.4);
-    position: relative;
     overflow: hidden;
+    position: relative;
+    box-shadow: 
+        inset 0 4px 10px rgba(0, 0, 0, 0.5),
+        0 0 20px rgba(192, 192, 192, 0.2);
 }
 
+/* 🌊 Animated Progress Fill */
 .progress-bar-fill {
     height: 100%;
-    background: linear-gradient(90deg, #C0C0C0 0%, #E8E8E8 50%, #C0C0C0 100%);
-    width: 0%;
+    background: linear-gradient(
+        90deg,
+        #C0C0C0 0%,
+        #E8E8E8 25%,
+        #ffffff 50%,
+        #E8E8E8 75%,
+        #C0C0C0 100%
+    );
+    background-size: 200% 100%;
     border-radius: 20px;
+    width: 0%;
     transition: width 0.3s ease;
+    animation: shimmer-progress 2s linear infinite;
+    box-shadow: 
+        0 0 20px rgba(192, 192, 192, 0.6),
+        inset 0 2px 10px rgba(255, 255, 255, 0.3);
+    position: relative;
 }
 
+@keyframes shimmer-progress {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* 🎨 Moving Character on Progress Bar */
 .progress-character {
     position: absolute;
     top: 50%;
     left: 0%;
     transform: translate(-50%, -50%);
-    width: 50px;
-    height: 50px;
+    width: 55px;
+    height: 55px;
     border-radius: 50%;
     background: url('https://raw.githubusercontent.com/haruhiiiiiiiiiiiiiii/Davreignne-s-Debut-Album/main/Subject.png') center/cover;
     border: 4px solid #FFD700;
-    box-shadow: 0 5px 20px rgba(255, 215, 0, 0.6);
+    box-shadow: 
+        0 5px 20px rgba(255, 215, 0, 0.6),
+        0 0 30px rgba(255, 215, 0, 0.4),
+        inset 0 0 15px rgba(255, 255, 255, 0.2);
     transition: left 0.3s ease;
-    animation: wiggle-bar 0.6s ease-in-out infinite;
+    animation: wiggle-on-bar 0.6s ease-in-out infinite;
+    z-index: 10;
 }
 
-@keyframes wiggle-bar {
+@keyframes wiggle-on-bar {
     0%, 100% { transform: translate(-50%, -50%) rotate(0deg); }
-    50% { transform: translate(-50%, -50%) rotate(-5deg); }
+    25% { transform: translate(-50%, -50%) rotate(-5deg) scale(1.05); }
+    75% { transform: translate(-50%, -50%) rotate(5deg) scale(1.05); }
 }
 
-.loading-text {
-    font-size: 1.8em;
-    font-weight: bold;
-    color: #E8E8E8;
-    text-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
-}
-
+/* 🔢 Percentage Text */
 .loading-percentage {
-    font-size: 2.5em;
+    font-size: 2.8em;
     font-weight: 900;
     background: linear-gradient(135deg, #C0C0C0 0%, #ffffff 50%, #C0C0C0 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 4px 10px rgba(192, 192, 192, 0.5));
+    animation: count-pulse 1s ease-in-out infinite;
+}
+
+@keyframes count-pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+/* 📱 Mobile Responsive */
+@media (max-width: 768px) {
+    .cute-loading-container {
+        min-width: 90%;
+        padding: 40px 25px;
+        gap: 25px;
+    }
+    
+    .progress-character {
+        width: 45px;
+        height: 45px;
+        border-width: 3px;
+    }
+    
+    .loading-text {
+        font-size: 1.5em;
+    }
+    
+    .loading-percentage {
+        font-size: 2.2em;
+    }
+}
+
+@media (max-width: 480px) {
+    .cute-loading-container {
+        gap: 20px;
+        padding: 30px 20px;
+    }
+    
+    .progress-bar-container {
+        height: 30px;
+    }
+    
+    .progress-character {
+        width: 40px;
+        height: 40px;
+    }
 }
 
     </style>
@@ -736,35 +824,46 @@
     
     loadingOverlay.innerHTML = `
         <div class="cute-loading-container">
-            <div class="loading-face-avatar"></div>
             <div class="loading-text">${message}</div>
-            <div class="progress-bar-container">
-                <div class="progress-bar-fill" id="progressFill"></div>
-                <div class="progress-character" id="progressChar"></div>
+            
+            <div class="progress-bar-wrapper">
+                <div class="progress-bar-container">
+                    <div class="progress-bar-fill" id="progressFill"></div>
+                    <div class="progress-character" id="progressChar"></div>
+                </div>
             </div>
+            
             <div class="loading-percentage" id="loadingPercent">0%</div>
         </div>
     `;
     
     document.body.appendChild(loadingOverlay);
     
-    // Animate progress
+    // 🎬 Animate Progress - EXACTLY 5 SECONDS
     let progress = 0;
     const progressFill = document.getElementById('progressFill');
     const progressChar = document.getElementById('progressChar');
     const loadingPercent = document.getElementById('loadingPercent');
     
+    const totalTime = 5000; // 5 seconds
+    const updateInterval = 50; // Update every 50ms
+    const totalSteps = totalTime / updateInterval; // 100 steps
+    const incrementPerStep = 100 / totalSteps; // 1% per step
+    
     const interval = setInterval(() => {
-        progress += Math.random() * 15 + 5;
+        progress += incrementPerStep;
+        
         if (progress >= 100) {
             progress = 100;
             clearInterval(interval);
         }
+        
         progressFill.style.width = progress + '%';
         progressChar.style.left = progress + '%';
         loadingPercent.textContent = Math.floor(progress) + '%';
-    }, 150);
+    }, updateInterval);
 }
+
 
 
     // ✅ LOGIN FORM HANDLER
