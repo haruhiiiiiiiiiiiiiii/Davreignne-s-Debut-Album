@@ -1176,6 +1176,157 @@
     }
 }
 
+    /* ==================== LUXURIOUS GOLD SPARKLE MESSAGE MODALS ==================== */
+
+.message-modal.gold-luxury {
+    background: radial-gradient(circle at center, rgba(218, 165, 32, 0.15) 0%, rgba(0, 0, 0, 0.9) 100%);
+}
+
+/* ✨ GOLD SPARKLE PARTICLES */
+.gold-sparkle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: linear-gradient(135deg, #FFD700, #FFA500);
+    border-radius: 50%;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.8),
+                0 0 30px rgba(255, 215, 0, 0.5);
+    animation: float-sparkle 3s infinite ease-in-out;
+    pointer-events: none;
+}
+
+.gold-sparkle::before,
+.gold-sparkle::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: inherit;
+    border-radius: 50%;
+    animation: pulse-gold 2s infinite;
+}
+
+.gold-sparkle::before { animation-delay: 0.5s; }
+.gold-sparkle::after { animation-delay: 1s; }
+
+.sp1 { top: 10%; left: 15%; animation-duration: 4s; }
+.sp2 { top: 20%; right: 20%; animation-duration: 3.5s; animation-delay: 0.5s; }
+.sp3 { bottom: 25%; left: 10%; animation-duration: 4.5s; animation-delay: 1s; }
+.sp4 { bottom: 15%; right: 15%; animation-duration: 3.8s; animation-delay: 1.5s; }
+.sp5 { top: 50%; left: 5%; animation-duration: 4.2s; animation-delay: 0.8s; }
+.sp6 { top: 45%; right: 8%; animation-duration: 3.9s; animation-delay: 1.2s; }
+.sp7 { top: 70%; left: 20%; animation-duration: 4.3s; animation-delay: 0.3s; }
+.sp8 { top: 30%; left: 25%; animation-duration: 3.7s; animation-delay: 1.8s; }
+.sp9 { bottom: 40%; right: 25%; animation-duration: 4.1s; animation-delay: 0.6s; }
+.sp10 { top: 60%; right: 30%; animation-duration: 3.6s; animation-delay: 1.4s; }
+
+@keyframes float-sparkle {
+    0%, 100% { transform: translateY(0) scale(1); opacity: 0.6; }
+    50% { transform: translateY(-30px) scale(1.5); opacity: 1; }
+}
+
+@keyframes pulse-gold {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(2); opacity: 0; }
+}
+
+/* 🏆 LUXURY MODAL CONTENT */
+.luxury-modal-content {
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 250, 240, 0.98) 50%, rgba(255, 255, 255, 0.95) 100%);
+    border: 3px solid;
+    border-image: linear-gradient(135deg, #FFD700, #FFA500, #FFD700) 1;
+    border-radius: 30px;
+    padding: 50px 40px;
+    max-width: 550px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 0 60px rgba(255, 215, 0, 0.4), 0 20px 80px rgba(0, 0, 0, 0.3);
+    animation: modalAppear 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.luxury-modal-content::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent 30%, rgba(255, 215, 0, 0.1) 50%, transparent 70%);
+    animation: shimmer 3s infinite;
+    pointer-events: none;
+}
+
+@keyframes modalAppear {
+    0% { opacity: 0; transform: scale(0.8) translateY(30px); }
+    100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.luxury-icon {
+    font-size: 4em;
+    margin-bottom: 20px;
+    animation: float 3s infinite ease-in-out;
+    filter: drop-shadow(0 5px 15px rgba(255, 215, 0, 0.5));
+}
+
+.luxury-icon.warning { animation: shake 0.5s infinite; }
+
+.luxury-title {
+    font-size: 2em;
+    font-weight: 800;
+    background: linear-gradient(135deg, #B8860B, #FFD700, #DAA520);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 10px;
+}
+
+.luxury-subtitle {
+    font-size: 1em;
+    color: #666;
+    margin-bottom: 30px;
+    font-weight: 500;
+}
+
+.luxury-warning {
+    font-size: 1.05em;
+    color: #dc3545;
+    font-weight: 600;
+    margin-bottom: 30px;
+}
+
+.luxury-textarea {
+    width: 100%;
+    min-height: 140px;
+    padding: 20px;
+    border: 2px solid #DAA520;
+    border-radius: 20px;
+    font-size: 1em;
+    font-family: 'Poppins', sans-serif;
+    resize: none;
+    background: rgba(255, 255, 255, 0.9);
+    color: #333;
+    transition: all 0.3s ease;
+}
+
+.luxury-textarea:focus {
+    outline: none;
+    border-color: #FFD700;
+    background: white;
+    box-shadow: 0 0 0 4px rgba(255, 215, 0, 0.2);
+}
+
+.luxury-counter {
+    text-align: right;
+    color: #888;
+    font-size: 0.85em;
+    margin: 10px 0 25px;
+    font-weight: 600;
+}
+
+.luxury-btn {
+
 </style>
 
 
@@ -1562,12 +1713,13 @@ checkMessageStatus();
             document.getElementById('uploaderCount').textContent = '0';
         }
     }
-    // ==================== MESSAGE SYSTEM WITH ADMIN (PRIVATE) ====================
+    // ==================== MESSAGE SYSTEM WITH EDIT/DELETE ====================
 
 const ADMIN_PASSWORD = '01082008';
 let isAdmin = false;
 let userMessage = '';
 let messageSubmitted = false;
+let currentMessageId = null; // ✅ TRACK FIREBASE DOC ID
 
 // Check admin status
 function checkAdminForMessages() {
@@ -1595,23 +1747,37 @@ async function loadMessageCount() {
 async function checkMessageStatus() {
     if (!userData) return;
     
-    const messageKey = `message_submitted_${userData.nickname}`;
-    const existingMessage = localStorage.getItem(messageKey);
-    
-    if (existingMessage) {
-        messageSubmitted = true;
-        userMessage = existingMessage;
-        document.getElementById('envelopeIcon').style.display = 'inline-block';
-    } else {
-        setTimeout(() => {
-            document.getElementById('messageModal').classList.add('active');
-        }, 1000);
+    try {
+        const messagesRef = collection(db, 'guestMessages');
+        const q = query(messagesRef, where('nickname', '==', userData.nickname));
+        const querySnapshot = await getDocs(q);
+        
+        if (!querySnapshot.empty) {
+            const docData = querySnapshot.docs[0];
+            messageSubmitted = true;
+            userMessage = docData.data().message;
+            currentMessageId = docData.id; // ✅ SAVE DOC ID
+            
+            const messageKey = `message_submitted_${userData.nickname}`;
+            localStorage.setItem(messageKey, userMessage);
+            localStorage.setItem(`message_id_${userData.nickname}`, currentMessageId);
+            
+            document.getElementById('envelopeIcon').style.display = 'inline-block';
+        } else {
+            setTimeout(() => {
+                document.getElementById('messageModal').classList.add('active');
+            }, 1000);
+        }
+    } catch (error) {
+        console.error('Error checking message:', error);
     }
 }
 
-// Character counter
+// Character counters
 const guestMessageInput = document.getElementById('guestMessage');
 const charCount = document.getElementById('charCount');
+const editGuestMessageInput = document.getElementById('editGuestMessage');
+const editCharCount = document.getElementById('editCharCount');
 
 if (guestMessageInput) {
     guestMessageInput.addEventListener('input', function() {
@@ -1619,7 +1785,13 @@ if (guestMessageInput) {
     });
 }
 
-// Submit message
+if (editGuestMessageInput) {
+    editGuestMessageInput.addEventListener('input', function() {
+        editCharCount.textContent = this.value.length;
+    });
+}
+
+// Submit new message
 const messageForm = document.getElementById('messageForm');
 if (messageForm) {
     messageForm.addEventListener('submit', async function(e) {
@@ -1631,32 +1803,30 @@ if (messageForm) {
             return;
         }
         
-        const submitBtn = this.querySelector('.btn-submit-message');
+        const submitBtn = this.querySelector('.luxury-btn');
         submitBtn.disabled = true;
         submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
         
         try {
-            // ✅ Save with BOTH guestName and nickname
-            await addDoc(collection(db, 'guestMessages'), {
-                guestName: userData.guestName,  // Full name
-                nickname: userData.nickname,     // Nickname
+            const docRef = await addDoc(collection(db, 'guestMessages'), {
+                guestName: userData.guestName,
+                nickname: userData.nickname,
                 message: message,
                 timestamp: Date.now()
             });
             
+            currentMessageId = docRef.id; // ✅ SAVE DOC ID
+            
             const messageKey = `message_submitted_${userData.nickname}`;
             localStorage.setItem(messageKey, message);
+            localStorage.setItem(`message_id_${userData.nickname}`, currentMessageId);
             
             userMessage = message;
             messageSubmitted = true;
             
-            const modalContent = document.querySelector('.message-modal-content');
-            modalContent.style.animation = 'shrinkToIcon 0.8s ease forwards';
-            
             setTimeout(() => {
                 document.getElementById('messageModal').classList.remove('active');
                 document.getElementById('envelopeIcon').style.display = 'inline-block';
-                modalContent.style.animation = '';
                 
                 if (isAdmin) loadMessageCount();
             }, 800);
@@ -1665,17 +1835,122 @@ if (messageForm) {
             console.error('Error:', error);
             alert('Failed to send message. Please try again.');
             submitBtn.disabled = false;
-            submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Message';
+            submitBtn.innerHTML = '<span class="btn-sparkle">✨</span> Send Message <span class="btn-sparkle">✨</span>';
         }
     });
 }
 
-// View own message
+// ✅ VIEW/EDIT MESSAGE (CLICKING ENVELOPE)
 window.viewMessage = function() {
     if (userMessage) {
-        alert(`📬 Your Message:\n\n"${userMessage}"\n\n✨ Thank you!\n🔒 This message is private and only visible to the admin.`);
+        document.getElementById('editGuestMessage').value = userMessage;
+        document.getElementById('editCharCount').textContent = userMessage.length;
+        document.getElementById('editMessageModal').classList.add('active');
     }
 };
+
+// ✅ CLOSE EDIT MODAL
+window.closeEditModal = function() {
+    document.getElementById('editMessageModal').classList.remove('active');
+};
+
+// ✅ EDIT MESSAGE FORM
+const editMessageForm = document.getElementById('editMessageForm');
+if (editMessageForm) {
+    editMessageForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const newMessage = editGuestMessageInput.value.trim();
+        if (!newMessage) {
+            alert('Message cannot be empty!');
+            return;
+        }
+        
+        const submitBtn = this.querySelector('.luxury-btn.save');
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+        
+        try {
+            const messageRef = doc(db, 'guestMessages', currentMessageId);
+            await updateDoc(messageRef, {
+                message: newMessage,
+                timestamp: Date.now()
+            });
+            
+            userMessage = newMessage;
+            const messageKey = `message_submitted_${userData.nickname}`;
+            localStorage.setItem(messageKey, newMessage);
+            
+            submitBtn.innerHTML = '<i class="fas fa-check"></i> Saved!';
+            
+            setTimeout(() => {
+                closeEditModal();
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-check"></i> Save';
+            }, 1000);
+            
+        } catch (error) {
+            console.error('Error updating:', error);
+            alert('Failed to update message. Please try again.');
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i class="fas fa-check"></i> Save';
+        }
+    });
+}
+
+// ✅ CONFIRM DELETE
+window.confirmDeleteMessage = function() {
+    document.getElementById('deleteConfirmModal').classList.add('active');
+};
+
+// ✅ CLOSE DELETE CONFIRMATION
+window.closeDeleteConfirm = function() {
+    document.getElementById('deleteConfirmModal').classList.remove('active');
+};
+
+// ✅ DELETE MESSAGE
+window.deleteMessage = async function() {
+    const deleteBtn = document.querySelector('.luxury-btn.delete-confirm');
+    deleteBtn.disabled = true;
+    deleteBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Deleting...';
+    
+    try {
+        const messageRef = doc(db, 'guestMessages', currentMessageId);
+        await deleteDoc(messageRef);
+        
+        const messageKey = `message_submitted_${userData.nickname}`;
+        localStorage.removeItem(messageKey);
+        localStorage.removeItem(`message_id_${userData.nickname}`);
+        
+        userMessage = '';
+        messageSubmitted = false;
+        currentMessageId = null;
+        
+        document.getElementById('envelopeIcon').style.display = 'none';
+        
+        closeDeleteConfirm();
+        closeEditModal();
+        
+        alert('✅ Your message has been deleted successfully!');
+        
+        if (isAdmin) loadMessageCount();
+        
+    } catch (error) {
+        console.error('Error deleting:', error);
+        alert('Failed to delete message. Please try again.');
+        deleteBtn.disabled = false;
+        deleteBtn.innerHTML = '<i class="fas fa-trash-alt"></i> Yes, Delete';
+    }
+};
+
+// Close modals on background click
+document.getElementById('editMessageModal')?.addEventListener('click', function(e) {
+    if (e.target === this) closeEditModal();
+});
+
+document.getElementById('deleteConfirmModal')?.addEventListener('click', function(e) {
+    if (e.target === this) closeDeleteConfirm();
+});
 
 // ADMIN: Show all messages
 window.showAllMessages = async function() {
