@@ -477,22 +477,23 @@
     }
 
     .dropdown-menu {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        background: linear-gradient(135deg, #001a4d 0%, #0d3b66 100%);
-        min-width: 220px;
-        border-radius: 8px;
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-        opacity: 0;
-        visibility: hidden;
-        transform: translateY(-10px);
-        transition: all 0.3s ease;
-        z-index: 1000;
-        max-height: 400px;
-        overflow-y: auto;
-        margin-top: 8px;
-    }
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: linear-gradient(135deg, #001a4d 0%, #0d3b66 100%);
+    min-width: 220px;
+    border-radius: 8px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+    z-index: 1000;
+    max-height: 600px;  /* ✅ INCREASED HEIGHT */
+    overflow-y: auto;
+    margin-top: 8px;
+}
+
 
     .dropdown:hover .dropdown-menu {
         opacity: 1;
