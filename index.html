@@ -517,10 +517,10 @@
     }
 
     .dropdown-menu a:hover {
-        background: rgba(192, 192, 192, 0.15);
-        color: #fff;
-        padding-left: 25px;
-    }
+    background: linear-gradient(135deg, #c0c0c0 0%, #e8e8e8 50%, #c0c0c0 100%);
+    color: #001a4d !important;
+    padding-left: 25px;
+}
 
     /* Shortened Footer */
     .site-footer {
@@ -629,14 +629,22 @@
     }
     
     .dropdown.active .dropdown-menu {
-        opacity: 1;
-        visibility: visible;
-        max-height: 500px;
-    }
-    
-    .dropdown-menu a {
-        padding: 12px 30px;
-    }
+    opacity: 1;
+    visibility: visible;
+    max-height: 800px;  /* ✅ INCREASED HEIGHT */
+}
+
+.dropdown-menu a {
+    padding: 12px 30px;
+}
+
+/* ✨ SILVER HOVER EFFECT FOR MOBILE */
+.dropdown-menu a:hover {
+    background: linear-gradient(135deg, #c0c0c0 0%, #e8e8e8 50%, #c0c0c0 100%);
+    color: #001a4d !important;
+    padding-left: 35px;
+}
+
     
     /* Overlay for mobile menu */
     .site-header nav.active::before {
