@@ -1326,6 +1326,105 @@
 }
 
 .luxury-btn {
+    width: 100%;
+    padding: 15px 25px;
+    border: none;
+    border-radius: 50px;
+    font-size: 1.05em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, #B8860B, #FFD700, #DAA520);
+    color: white;
+    box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
+}
+
+.luxury-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 35px rgba(255, 215, 0, 0.6);
+}
+
+.luxury-btn::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.3) 50%, transparent 70%);
+    transform: rotate(45deg);
+    animation: shimmer 2s infinite;
+}
+
+.btn-sparkle {
+    font-size: 1.2em;
+    animation: sparkle 1.5s infinite;
+}
+
+/* Button Variants */
+.luxury-btn.save {
+    background: linear-gradient(135deg, #28a745, #20c997);
+}
+
+.luxury-btn.delete {
+    background: linear-gradient(135deg, #dc3545, #c82333);
+}
+
+.luxury-btn.cancel {
+    background: linear-gradient(135deg, #6c757d, #5a6268);
+}
+
+.luxury-btn.delete-confirm {
+    background: linear-gradient(135deg, #dc3545, #c82333);
+}
+
+.luxury-btn.cancel-confirm {
+    background: linear-gradient(135deg, #6c757d, #5a6268);
+}
+
+/* Action Buttons Container */
+.luxury-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.luxury-actions .luxury-btn {
+    flex: 1;
+}
+
+.luxury-confirm-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.luxury-confirm-actions .luxury-btn {
+    flex: 1;
+}
+
+/* Confirm Modal Variant */
+.luxury-modal-content.confirm {
+    max-width: 450px;
+}
+
+/* Second Admin Button Styling */
+#adminUsersBtn {
+    background: linear-gradient(135deg, #6c63ff, #5a52d5);
+    bottom: 120px;
+}
+
+#adminUsersBtn:hover {
+    background: linear-gradient(135deg, #5a52d5, #4942b3);
+}
+
+</style>
 
 </style>
 
@@ -1662,7 +1761,7 @@
         // Initialize message system
 checkAdminForMessages();
 checkMessageStatus();
-
+checkAdminForUsers();
     });
 
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
@@ -1722,6 +1821,7 @@ let messageSubmitted = false;
 let currentMessageId = null; // ✅ TRACK FIREBASE DOC ID
 
 // Check admin status
+// Check admin status
 function checkAdminForMessages() {
     const adminKey = sessionStorage.getItem('debut_admin_logged_in');
     isAdmin = adminKey === 'true';
@@ -1731,6 +1831,101 @@ function checkAdminForMessages() {
         loadMessageCount();
     }
 }
+
+// ✅ ADD ALL THESE NEW FUNCTIONS
+// Check admin status for users button
+function checkAdminForUsers() {
+    const adminKey = sessionStorage.getItem('debut_admin_logged_in');
+    if (adminKey === 'true') {
+        const usersBtn = document.getElementById('adminUsersBtn');
+        if (usersBtn) {
+            usersBtn.style.display = 'flex';
+            loadUsersCount();
+        }
+    }
+}
+
+// Load users count
+async function loadUsersCount() {
+    try {
+        const usersRef = collection(db, 'registeredUsers');
+        const querySnapshot = await getDocs(usersRef);
+        const badge = document.getElementById('usersCountBadge');
+        if (badge) badge.textContent = querySnapshot.size;
+    } catch (error) {
+        console.error('Error loading users count:', error);
+    }
+}
+
+// Show all registered users (ADMIN ONLY)
+window.showRegisteredUsers = async function() {
+    if (!isAdmin) {
+        alert('❌ Admin access required!');
+        return;
+    }
+    
+    const modal = document.getElementById('registeredUsersModal');
+    const container = document.getElementById('usersContainer');
+    
+    if (!modal || !container) return;
+    
+    modal.classList.add('active');
+    container.innerHTML = '<div class="loading-messages"><i class="fas fa-spinner fa-spin"></i> Loading...</div>';
+    
+    try {
+        const usersRef = collection(db, 'registeredUsers');
+        const q = query(usersRef, orderBy('registeredAt', 'desc'));
+        const querySnapshot = await getDocs(q);
+        
+        if (querySnapshot.empty) {
+            container.innerHTML = '<div class="no-messages"><i class="fas fa-user-slash"></i><p>No users registered yet</p></div>';
+            return;
+        }
+        
+        container.innerHTML = '';
+        
+        querySnapshot.forEach((doc) => {
+            const user = doc.data();
+            const date = new Date(user.registeredAt).toLocaleDateString('en-US', {
+                month: 'short',
+                day: 'numeric',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            
+            const card = document.createElement('div');
+            card.className = 'message-card';
+            card.innerHTML = `
+                <div class="message-header">
+                    <div>
+                        <span class="message-user">👤 ${user.guestName}</span>
+                        <span class="message-nickname">→ "${user.nickname}"</span>
+                    </div>
+                    <span class="message-date">📅 ${date}</span>
+                </div>
+            `;
+            
+            container.appendChild(card);
+        });
+        
+    } catch (error) {
+        console.error('Error loading users:', error);
+        container.innerHTML = `<div class="no-messages"><i class="fas fa-exclamation-circle"></i><p>Error: ${error.message}</p></div>`;
+    }
+};
+
+// Close users modal
+window.closeRegisteredUsers = function() {
+    const modal = document.getElementById('registeredUsersModal');
+    if (modal) modal.classList.remove('active');
+};
+
+// Close on background click
+document.getElementById('registeredUsersModal')?.addEventListener('click', function(e) {
+    if (e.target === this) closeRegisteredUsers();
+});
+
 
 // Load message count
 async function loadMessageCount() {
