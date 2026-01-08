@@ -389,9 +389,10 @@
 
             <!-- ✅ NEW: Registration Note -->
             <div id="registrationNote" class="registration-note">
-                <strong>📝 First Time?</strong><br>
-                Your name and nickname will be saved. Next time, use the same nickname!
-            </div>
+    <strong>🎫 Invitation Only</strong><br>
+    Your name must be on the guest list. Use your registered nickname to enter.
+</div>
+
 
             <div id="errorMessage" class="error-message">
                 <i class="fas fa-exclamation-circle"></i> Please fill in all fields
@@ -447,152 +448,149 @@
 
     <!-- ✅ UPDATED: Firebase Integration & Name-Nickname Matching -->
     <script type="module">
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-        import { getFirestore, collection, query, where, getDocs, addDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+    import { getFirestore, collection, query, where, getDocs, addDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
-        // Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyDPaMpRBwk8a10vX4CUvsolfUyn3gpec5s",
-            authDomain: "debut-photo-gallery.firebaseapp.com",
-            projectId: "debut-photo-gallery",
-            storageBucket: "debut-photo-gallery.firebasestorage.app",
-            messagingSenderId: "954052989718",
-            appId: "1:954052989718:web:8faaeeaa9aebe726f67637",
-            measurementId: "G-WQ0EW238CJ"
-        };
+    // Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyDPaMpRBwk8a10vX4CUvsolfUyn3gpec5s",
+        authDomain: "debut-photo-gallery.firebaseapp.com",
+        projectId: "debut-photo-gallery",
+        storageBucket: "debut-photo-gallery.firebasestorage.app",
+        messagingSenderId: "954052989718",
+        appId: "1:954052989718:web:8faaeeaa9aebe726f67637",
+        measurementId: "G-WQ0EW238CJ"
+    };
 
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
 
-        // Check if user is already logged in
-        const currentUser = localStorage.getItem('currentUser');
-        if (currentUser) {
-            window.location.href = 'index.html';
+    // Check if user is already logged in
+    const currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+        window.location.href = 'index.html';
+    }
+
+    const loginForm = document.getElementById('loginForm');
+    const errorMessage = document.getElementById('errorMessage');
+    const guestNameInput = document.getElementById('guestName');
+    const nicknameInput = document.getElementById('nickname');
+    const submitBtn = document.getElementById('submitBtn');
+
+    // ✅ LOGIN FORM HANDLER - GUEST VERIFICATION SYSTEM
+    loginForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const guestName = guestNameInput.value.trim();
+        const nickname = nicknameInput.value.trim();
+
+        // Basic validation
+        if (!guestName || !nickname) {
+            showError('❌ Please fill in all fields');
+            return;
         }
 
-        const loginForm = document.getElementById('loginForm');
-        const errorMessage = document.getElementById('errorMessage');
-        const guestNameInput = document.getElementById('guestName');
-        const nicknameInput = document.getElementById('nickname');
-        const submitBtn = document.getElementById('submitBtn');
+        if (guestName.length < 2) {
+            showError('❌ Guest name must be at least 2 characters');
+            return;
+        }
 
-        // ✅ LOGIN FORM HANDLER WITH NAME-NICKNAME VALIDATION
-        loginForm.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const guestName = guestNameInput.value.trim();
-            const nickname = nicknameInput.value.trim();
+        if (nickname.length < 2) {
+            showError('❌ Nickname must be at least 2 characters');
+            return;
+        }
 
-            // Basic validation
-            if (!guestName || !nickname) {
-                showError('❌ Please fill in all fields');
-                return;
-            }
+        if (nickname.includes(' ')) {
+            showError('❌ Nickname should be one word (no spaces)');
+            return;
+        }
 
-            if (guestName.length < 2) {
-                showError('❌ Guest name must be at least 2 characters');
-                return;
-            }
+        // Disable button and show loading
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verifying...';
 
-            if (nickname.length < 2) {
-                showError('❌ Nickname must be at least 2 characters');
-                return;
-            }
+        try {
+            // ✅ CHECK IF GUEST NAME EXISTS IN DATABASE
+            const usersRef = collection(db, 'registeredUsers');
+            const q = query(usersRef, where('guestName', '==', guestName));
+            const querySnapshot = await getDocs(q);
 
-            if (nickname.includes(' ')) {
-                showError('❌ Nickname should be one word (no spaces)');
-                return;
-            }
-
-            // Disable button and show loading
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Checking...';
-
-            try {
-                // ✅ CHECK IF THIS NAME IS ALREADY REGISTERED
-                const usersRef = collection(db, 'registeredUsers');
-                const q = query(usersRef, where('guestName', '==', guestName));
-                const querySnapshot = await getDocs(q);
-
-                if (!querySnapshot.empty) {
-                    // ✅ NAME EXISTS - CHECK IF NICKNAME MATCHES
-                    const existingUser = querySnapshot.docs[0].data();
-                    
-                    if (existingUser.nickname !== nickname) {
-                        showError(`❌ ACCESS DENIED!\n\nThe name "${guestName}" is already registered with nickname "${existingUser.nickname}".\n\nPlease use the correct nickname or choose a different name.`);
-                        submitBtn.disabled = false;
-                        submitBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Enter Gallery';
-                        return;
-                    }
-
-                    // ✅ NICKNAME MATCHES - ALLOW LOGIN
-                    console.log('✅ Valid user - nickname matches!');
-
-                } else {
-                    // ✅ NEW USER - REGISTER THEM
-                    await addDoc(usersRef, {
-                        guestName: guestName,
-                        nickname: nickname,
-                        registeredAt: Date.now(),
-                        firstLogin: new Date().toISOString()
-                    });
-
-                    console.log('✅ New user registered!');
-                }
-
-                // ✅ SAVE TO LOCALSTORAGE AND REDIRECT
-                const userData = {
-                    guestName: guestName,
-                    nickname: nickname,
-                    loginTime: Date.now()
-                };
-
-                localStorage.setItem('currentUser', JSON.stringify(userData));
-                
-                submitBtn.innerHTML = '<i class="fas fa-check"></i> Success!';
-                
-                setTimeout(() => {
-                    window.location.href = 'index.html';
-                }, 500);
-
-            } catch (error) {
-                console.error('Error:', error);
-                showError('❌ Login failed. Please try again.\n\nError: ' + error.message);
+            if (querySnapshot.empty) {
+                // ❌ GUEST NAME NOT FOUND IN DATABASE
+                showError(`❌ GUEST NOT FOUND!\n\nThe name "${guestName}" is not on the guest list.\n\n🔹 Please check your spelling\n🔹 Use your full name as registered\n🔹 Contact the host if you believe this is an error`);
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Enter Gallery';
+                return;
             }
-        });
 
-        function showError(message) {
-            errorMessage.innerHTML = '<i class="fas fa-exclamation-circle"></i> ' + message.replace(/\n/g, '<br>');
-            errorMessage.classList.add('show');
+            // ✅ GUEST EXISTS - NOW CHECK IF NICKNAME MATCHES
+            const registeredGuest = querySnapshot.docs[0].data();
+            
+            if (registeredGuest.nickname !== nickname) {
+                // ❌ NICKNAME DOESN'T MATCH
+                showError(`❌ INCORRECT NICKNAME!\n\nYour registered nickname is: "${registeredGuest.nickname}"\nYou entered: "${nickname}"\n\nPlease use the correct nickname.`);
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Enter Gallery';
+                return;
+            }
+
+            // ✅✅ BOTH NAME AND NICKNAME MATCH - LOGIN SUCCESSFUL
+            console.log('✅ Valid guest - access granted!');
+
+            // Save to localStorage
+            const userData = {
+                guestName: guestName,
+                nickname: nickname,
+                loginTime: Date.now()
+            };
+
+            localStorage.setItem('currentUser', JSON.stringify(userData));
+            
+            submitBtn.innerHTML = '<i class="fas fa-check"></i> Welcome!';
             
             setTimeout(() => {
-                errorMessage.classList.remove('show');
-            }, 5000);
+                window.location.href = 'index.html';
+            }, 500);
+
+        } catch (error) {
+            console.error('Error:', error);
+            showError('❌ Connection error. Please try again.\n\nError: ' + error.message);
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Enter Gallery';
         }
+    });
 
-        // Show registration note after 1 second
+    function showError(message) {
+        errorMessage.innerHTML = '<i class="fas fa-exclamation-circle"></i> ' + message.replace(/\n/g, '<br>');
+        errorMessage.classList.add('show');
+        
         setTimeout(() => {
-            const note = document.getElementById('registrationNote');
-            if (note) note.classList.add('show');
-        }, 1000);
+            errorMessage.classList.remove('show');
+        }, 6000); // Show for 6 seconds for longer messages
+    }
 
-        // Auto-focus on first input
-        window.addEventListener('DOMContentLoaded', function() {
-            guestNameInput.focus();
-        });
+    // Show registration note after 1 second
+    setTimeout(() => {
+        const note = document.getElementById('registrationNote');
+        if (note) note.classList.add('show');
+    }, 1000);
 
-        // ✅ ADMIN LOGIN SHORTCUT (Ctrl+Shift+A)
-        document.addEventListener('keydown', function(e) {
-            if (e.ctrlKey && e.shiftKey && e.key === 'A') {
-                const password = prompt('🔐 Enter Admin Password:');
-                if (password === '01082008') {
-                    sessionStorage.setItem('debut_admin_logged_in', 'true');
-                    alert('✅ Admin mode activated!');
-                }
+    // Auto-focus on first input
+    window.addEventListener('DOMContentLoaded', function() {
+        guestNameInput.focus();
+    });
+
+    // ✅ ADMIN LOGIN SHORTCUT (Ctrl+Shift+A)
+    document.addEventListener('keydown', function(e) {
+        if (e.ctrlKey && e.shiftKey && e.key === 'A') {
+            const password = prompt('🔐 Enter Admin Password:');
+            if (password === '01082008') {
+                sessionStorage.setItem('debut_admin_logged_in', 'true');
+                alert('✅ Admin mode activated!');
             }
-        });
-    </script>
+        }
+    });
+</script>
+
 </body>
 </html>
