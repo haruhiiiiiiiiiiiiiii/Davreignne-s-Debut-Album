@@ -366,6 +366,140 @@
             font-size: 2.8em;
         }
     }
+        /* ==================== CUTE FACE LOADING (LEFT-RIGHT WIGGLE) ==================== */
+
+.face-loading-container {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    padding: 20px;
+}
+
+.face-loading {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: url('https://raw.githubusercontent.com/haruhiiiiiiiiiiiiiii/Davreignne-s-Debut-Album/main/Subject.png') center/cover;
+    border: 5px solid #FFD700;
+    box-shadow: 
+        0 8px 25px rgba(255, 215, 0, 0.4),
+        0 0 40px rgba(255, 215, 0, 0.3),
+        inset 0 0 20px rgba(255, 255, 255, 0.2);
+    animation: wiggle-face 0.8s ease-in-out infinite;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Small Version for Buttons */
+.face-loading-small {
+    width: 35px;
+    height: 35px;
+    border-width: 3px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/* ✨ Shimmer Effect */
+.face-loading::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        45deg,
+        transparent 30%,
+        rgba(255, 255, 255, 0.3) 50%,
+        transparent 70%
+    );
+    animation: shimmer 2s infinite;
+}
+
+/* ✨ Sparkle */
+.face-loading::after {
+    content: '✨';
+    position: absolute;
+    font-size: 1.2em;
+    top: -12px;
+    right: -12px;
+    animation: sparkle-pulse 1.5s ease-in-out infinite;
+    filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.8));
+}
+
+.face-loading-small::after {
+    display: none;
+}
+
+/* 🎭 LEFT-RIGHT WIGGLE ANIMATION */
+@keyframes wiggle-face {
+    0%, 100% { 
+        transform: translateX(0) rotate(0deg) scale(1);
+    }
+    25% { 
+        transform: translateX(-18px) rotate(-6deg) scale(0.98);
+    }
+    75% { 
+        transform: translateX(18px) rotate(6deg) scale(0.98);
+    }
+}
+
+/* ✨ Shimmer Animation */
+@keyframes shimmer {
+    0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+    100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+}
+
+/* ✨ Sparkle Pulse */
+@keyframes sparkle-pulse {
+    0%, 100% { 
+        opacity: 0.4;
+        transform: scale(1) rotate(0deg);
+    }
+    50% { 
+        opacity: 1;
+        transform: scale(1.4) rotate(180deg);
+    }
+}
+
+/* Loading Text */
+.face-loading-text {
+    font-size: 1.1em;
+    color: #FFD700;
+    font-weight: bold;
+    text-shadow: 
+        0 2px 5px rgba(0, 0, 0, 0.3),
+        0 0 10px rgba(255, 215, 0, 0.5);
+    animation: pulse-text 1.5s ease-in-out infinite;
+    letter-spacing: 1px;
+}
+
+@keyframes pulse-text {
+    0%, 100% { 
+        opacity: 0.7;
+        transform: scale(1);
+    }
+    50% { 
+        opacity: 1;
+        transform: scale(1.05);
+    }
+}
+
+/* 📱 Mobile Responsive */
+@media (max-width: 768px) {
+    .face-loading {
+        width: 70px;
+        height: 70px;
+        border-width: 4px;
+    }
+    
+    .face-loading-small {
+        width: 30px;
+        height: 30px;
+    }
+}
+
     </style>
 </head>
 <body>
@@ -415,7 +549,7 @@
 
                 <div class="form-group">
                     <label for="nickname">
-                        <i class="fas fa-tag"></i> Nickname (For Uploads)
+                        <i class="fas fa-tag"></i> Nickname
                     </label>
                     <input 
                         type="text" 
@@ -507,7 +641,13 @@
 
         // Disable button and show loading
         submitBtn.disabled = true;
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verifying...';
+        submitBtn.innerHTML = `
+    <div style="display: inline-flex; align-items: center; gap: 10px;">
+        <div class="face-loading face-loading-small"></div>
+        <span>Verifying...</span>
+    </div>
+`;
+
 
         try {
             // ✅ STEP 1: CHECK IF GUEST NAME EXISTS IN DATABASE
@@ -559,7 +699,13 @@
                     // ❌ WRONG NICKNAME
                     showError(`❌ INCORRECT NICKNAME!\n\nYour registered nickname is: "${guestData.nickname}"\nYou entered: "${nickname}"\n\nPlease use your correct nickname.`);
                     submitBtn.disabled = false;
-                    submitBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Enter Gallery';
+                    submitBtn.innerHTML = `
+    <div style="display: inline-flex; align-items: center; gap: 10px;">
+        <div class="face-loading face-loading-small"></div>
+        <span>Nickname Set!</span>
+    </div>
+`;
+
                     return;
                 }
 
@@ -575,7 +721,13 @@
 
             localStorage.setItem('currentUser', JSON.stringify(userData));
             
-            submitBtn.innerHTML = '<i class="fas fa-check"></i> Welcome!';
+            submitBtn.innerHTML = `
+    <div style="display: inline-flex; align-items: center; gap: 10px;">
+        <i class="fas fa-check" style="color: #4CAF50;"></i>
+        <span>Welcome!</span>
+    </div>
+`;
+
             
             setTimeout(() => {
                 window.location.href = 'index.html';
@@ -592,11 +744,53 @@
     function showError(message) {
         errorMessage.innerHTML = '<i class="fas fa-exclamation-circle"></i> ' + message.replace(/\n/g, '<br>');
         errorMessage.classList.add('show');
-        
-        setTimeout(() => {
-            errorMessage.classList.remove('show');
-        }, 6000);
+    function showFullLoading(message = 'Loading...') {
+    const loadingOverlay = document.createElement('div');
+    loadingOverlay.innerHTML = `
+        <div style="
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 26, 77, 0.95);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+        ">
+            <div class="face-loading-container">
+                <div class="face-loading" style="width: 120px; height: 120px;">
+                    <div style="position: absolute; top: -20px; left: -20px; font-size: 1.5em; animation: float-sparkle 2s ease-in-out infinite;">✨</div>
+                    <div style="position: absolute; top: -20px; right: -20px; font-size: 1.5em; animation: float-sparkle 2s ease-in-out infinite; animation-delay: 0.5s;">✨</div>
+                    <div style="position: absolute; bottom: -20px; left: -20px; font-size: 1.5em; animation: float-sparkle 2s ease-in-out infinite; animation-delay: 1s;">✨</div>
+                    <div style="position: absolute; bottom: -20px; right: -20px; font-size: 1.5em; animation: float-sparkle 2s ease-in-out infinite; animation-delay: 1.5s;">✨</div>
+                </div>
+                <div class="face-loading-text" style="font-size: 1.5em;">${message}</div>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(loadingOverlay);
+}
+
+@keyframes float-sparkle {
+    0%, 100% { 
+        transform: translateY(0) scale(1);
+        opacity: 0.5;
     }
+    50% { 
+        transform: translateY(-15px) scale(1.3);
+        opacity: 1;
+    }
+}
+
+        setTimeout(() => {
+    showFullLoading('Entering gallery...');
+    setTimeout(() => {
+        window.location.href = 'index.html';
+    }, 1000);
+}, 500);
+
 
     // Update registration note text
     if (registrationNote) {
