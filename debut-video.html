@@ -644,34 +644,138 @@
     font-size: 0.95em;
 }
 
-@media (max-width: 768px) {
+@@media (max-width: 768px) {
+    .header-logo {
+        width: 42px;
+        height: 42px;
+    }
+    
+    .logo-text {
+        font-size: 0.9em;
+    }
+    
     .site-header {
         padding: 10px 20px;
     }
     
     .site-header .header-content {
-        flex-direction: column;
-        gap: 10px;
+        flex-direction: row;
+        justify-content: space-between;
     }
     
+    /* Show burger menu */
+    .burger-menu {
+        display: flex;
+    }
+    
+    /* Hide nav by default on mobile */
     .site-header nav {
-        flex-wrap: wrap;
-        justify-content: center;
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 280px;
+        height: 100vh;
+        background: linear-gradient(180deg, #001a4d 0%, #0d3b66 100%);
+        flex-direction: column;
+        padding: 80px 20px 20px;
+        gap: 0;
+        box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
+        transition: right 0.3s ease;
+        overflow-y: auto;
+        z-index: 1000;
+    }
+    
+    /* Show nav when active */
+    .site-header nav.active {
+        right: 0;
+    }
+    
+    /* Mobile nav links */
+    .site-header nav a {
+        width: 100%;
+        padding: 15px 20px;
+        border-radius: 8px;
+        margin-bottom: 5px;
+        font-size: 1em;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    /* Mobile dropdown */
+    .dropdown {
         width: 100%;
     }
     
-    .dropdown-menu {
-        position: fixed;
-        left: 50%;
-        transform: translateX(-50%) translateY(-10px);
-        width: 90%;
-        max-width: 300px;
+    .dropdown-toggle {
+        width: 100%;
+        justify-content: space-between;
+        padding: 15px 20px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
     
-    .dropdown:hover .dropdown-menu {
-        transform: translateX(-50%) translateY(0);
+    .dropdown-menu {
+        position: static;
+        opacity: 0;
+        visibility: hidden;
+        max-height: 0;
+        transform: none;
+        margin: 0;
+        background: rgba(0, 0, 0, 0.2);
+        overflow: hidden;
+        transition: max-height 0.3s ease, opacity 0.3s ease;
+    }
+    
+    .dropdown.active .dropdown-menu {
+        opacity: 1;
+        visibility: visible;
+        max-height: 500px;
+    }
+    
+    .dropdown-menu a {
+        padding: 12px 30px;
+    }
+    
+    /* Overlay for mobile menu */
+    .site-header nav.active::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: -1;
+    }
+
+    body { background-attachment: scroll; }
+    .container { padding: 30px 20px; }
+    h1 { font-size: 2.2em; }
+    .photo-card:nth-child(odd) .photo-thumbnail-wrapper,
+    .photo-card:nth-child(even) .photo-thumbnail-wrapper {
+        border-width: 5px;
+    }
+    .section-divider h2 { font-size: 1.4em; padding: 8px 20px; }
+    .photos-section { padding: 25px 15px; }
+    .photos-grid { 
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
     }
 }
+
+@media (max-width: 480px) {
+    .logo-text {
+        display: none;
+    }
+    
+    .site-header nav {
+        width: 90%;
+    }
+    
+    .photos-grid { 
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+}
+
 .header-logo {
     width: 45px;
     height: 45px;
@@ -684,13 +788,44 @@
     transform: rotate(360deg) scale(1.1);
 }
 
-/* Mobile responsive */
-@media (max-width: 768px) {
-    .header-logo {
-        width: 38px;
-        height: 38px;
-    }
+/* Logo Text */
+.logo-text {
+    display: inline;
 }
+
+/* 🍔 BURGER MENU */
+.burger-menu {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    z-index: 1001;
+    transition: transform 0.3s ease;
+}
+
+.burger-menu span {
+    width: 28px;
+    height: 3px;
+    background: #fff;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+}
+
+.burger-menu.active span:nth-child(1) {
+    transform: rotate(45deg) translate(8px, 8px);
+}
+
+.burger-menu.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.burger-menu.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -7px);
+}
+
 /* Footer Container */
 .creator-footer {
     width: 100%;
@@ -720,12 +855,22 @@
 </head>
 <body>
     <!-- Header -->
-    <header class="site-header">    
+<header class="site-header">    
     <div class="header-content">        
         <a href="index.html" class="logo">            
-            <img src="https://raw.githubusercontent.com/haruhiiiiiiiiiiiiiii/Davreignne-s-Debut-Album/main/klogoo.png" alt="Logo" class="header-logo">            Davreignne's Debut        
+            <img src="https://raw.githubusercontent.com/haruhiiiiiiiiiiiiiii/Davreignne-s-Debut-Album/main/klogoo.png" alt="Logo" class="header-logo">            
+            <span class="logo-text">Davreignne's Debut</span>
         </a>
-        <nav>
+        
+        <!-- 🍔 BURGER ICON -->
+        <button class="burger-menu" id="burgerMenu" aria-label="Toggle Menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <nav id="mainNav">
+
             <a href="index.html">
                 <i class="fas fa-tachometer-alt"></i> Dashboard
             </a>
@@ -1408,8 +1553,58 @@ const adminStorage = getStorage(adminApp);  // ✅ Already correct
     };
 </script>
 
+<script>
+// 🍔 BURGER MENU FUNCTIONALITY
+document.addEventListener('DOMContentLoaded', function() {
+    const burgerMenu = document.getElementById('burgerMenu');
+    const mainNav = document.getElementById('mainNav');
+    const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
+
+    if (burgerMenu) {
+        burgerMenu.addEventListener('click', function() {
+            this.classList.toggle('active');
+            mainNav.classList.toggle('active');
+            document.body.style.overflow = mainNav.classList.contains('active') ? 'hidden' : '';
+        });
+    }
+
+    dropdownToggles.forEach(toggle => {
+        toggle.addEventListener('click', function(e) {
+            if (window.innerWidth <= 768) {
+                e.preventDefault();
+                const dropdown = this.parentElement;
+                document.querySelectorAll('.dropdown').forEach(d => {
+                    if (d !== dropdown) d.classList.remove('active');
+                });
+                dropdown.classList.toggle('active');
+            }
+        });
+    });
+
+    document.addEventListener('click', function(e) {
+        if (window.innerWidth <= 768 && !e.target.closest('.site-header')) {
+            burgerMenu?.classList.remove('active');
+            mainNav?.classList.remove('active');
+            document.body.style.overflow = '';
+            document.querySelectorAll('.dropdown').forEach(d => d.classList.remove('active'));
+        }
+    });
+
+    mainNav?.querySelectorAll('a:not(.dropdown-toggle)').forEach(link => {
+        link.addEventListener('click', function() {
+            if (window.innerWidth <= 768) {
+                burgerMenu?.classList.remove('active');
+                mainNav?.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+    });
+});
+</script>
+
         <!-- Footer -->
-    <footer class="creator-footer">    
+    <footer class="creator-footer">
+
         <div class="footer-container">        
             <p> &copy; 2026 Davreignne's Debut. Designed & Developed by <span class="creator-name">Ma. Dannielle Louiesse Valdez</span>        
             </p>    
