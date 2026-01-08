@@ -778,6 +778,403 @@
     letter-spacing: 1px;
 }
 
+/* ==================== MESSAGE MODAL & ENVELOPE STYLES ==================== */
+.message-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 0.3s ease;
+}
+
+.message-modal.active {
+    display: flex;
+}
+
+.message-modal-content {
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    padding: 40px;
+    border-radius: 25px;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    animation: slideDown 0.5s ease;
+    position: relative;
+    overflow: visible;
+}
+
+/* ✨ SPARKLE DECORATIONS */
+.modal-sparkle {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background: radial-gradient(circle, #ffffff 0%, rgba(255, 255, 255, 0.3) 70%);
+    border-radius: 50%;
+    box-shadow: 0 0 20px rgba(192, 192, 192, 1), 0 0 40px rgba(192, 192, 192, 0.8);
+    pointer-events: none;
+    z-index: 10;
+}
+
+.sparkle-tl { top: 10%; left: 8%; animation: sparkleGlow 1.5s ease-in-out infinite, floatAround1 4s ease-in-out infinite; }
+.sparkle-tr { top: 15%; right: 10%; animation: sparkleGlow 1.8s ease-in-out infinite 0.3s, floatAround2 5s ease-in-out infinite; }
+.sparkle-bl { bottom: 20%; left: 12%; animation: sparkleGlow 2s ease-in-out infinite 0.6s, floatAround3 4.5s ease-in-out infinite; }
+.sparkle-br { bottom: 15%; right: 8%; animation: sparkleGlow 1.7s ease-in-out infinite 0.9s, floatAround4 5.5s ease-in-out infinite; }
+
+.sparkle-float-1 { top: 30%; left: 5%; width: 8px; height: 8px; animation: sparkleGlow 2.2s ease-in-out infinite, floatAround1 6s ease-in-out infinite; }
+.sparkle-float-2 { top: 40%; right: 6%; width: 10px; height: 10px; animation: sparkleGlow 1.9s ease-in-out infinite 0.4s, floatAround2 7s ease-in-out infinite; }
+.sparkle-float-3 { bottom: 35%; left: 7%; width: 9px; height: 9px; animation: sparkleGlow 2.1s ease-in-out infinite 0.7s, floatAround3 5.5s ease-in-out infinite; }
+.sparkle-float-4 { bottom: 40%; right: 9%; width: 11px; height: 11px; animation: sparkleGlow 1.6s ease-in-out infinite 1s, floatAround4 6.5s ease-in-out infinite; }
+
+@keyframes sparkleGlow {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.3); }
+}
+
+@keyframes floatAround1 {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    25% { transform: translate(-15px, -20px) rotate(90deg); }
+    50% { transform: translate(-10px, -40px) rotate(180deg); }
+    75% { transform: translate(-20px, -25px) rotate(270deg); }
+}
+
+@keyframes floatAround2 {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    25% { transform: translate(15px, -15px) rotate(-90deg); }
+    50% { transform: translate(20px, -35px) rotate(-180deg); }
+    75% { transform: translate(10px, -20px) rotate(-270deg); }
+}
+
+@keyframes floatAround3 {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    33% { transform: translate(-12px, 15px) rotate(120deg); }
+    66% { transform: translate(-25px, -10px) rotate(240deg); }
+}
+
+@keyframes floatAround4 {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    33% { transform: translate(18px, 12px) rotate(-120deg); }
+    66% { transform: translate(10px, -15px) rotate(-240deg); }
+}
+
+.message-icon {
+    font-size: 4em;
+    margin-bottom: 20px;
+    animation: bounce 1s infinite;
+}
+
+.message-modal-content h2 {
+    color: #001a4d;
+    margin-bottom: 10px;
+    font-size: 1.8em;
+}
+
+.message-subtitle {
+    color: #666;
+    margin-bottom: 15px;
+    font-size: 1em;
+}
+
+.privacy-note {
+    background: linear-gradient(135deg, rgba(0, 26, 77, 0.1) 0%, rgba(192, 192, 192, 0.1) 100%);
+    padding: 10px 15px;
+    border-radius: 10px;
+    color: #001a4d;
+    font-size: 0.9em;
+    margin-bottom: 20px;
+    border: 2px solid rgba(192, 192, 192, 0.3);
+}
+
+#guestMessage {
+    width: 100%;
+    min-height: 150px;
+    padding: 15px;
+    border: 2px solid #c0c0c0;
+    border-radius: 12px;
+    font-size: 1em;
+    font-family: inherit;
+    resize: vertical;
+    margin-bottom: 10px;
+    transition: border-color 0.3s ease;
+}
+
+#guestMessage:focus {
+    outline: none;
+    border-color: #001a4d;
+    box-shadow: 0 0 15px rgba(0, 26, 77, 0.2);
+}
+
+.char-counter {
+    text-align: right;
+    color: #666;
+    font-size: 0.85em;
+    margin-bottom: 20px;
+}
+
+.btn-submit-message {
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(135deg, #001a4d 0%, #0d3b66 100%);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 26, 77, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.btn-submit-message:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 26, 77, 0.6);
+}
+
+.message-note {
+    margin-top: 20px;
+    font-size: 0.9em;
+    color: #666;
+    font-style: italic;
+}
+
+/* ENVELOPE ICON */
+.envelope-icon {
+    margin: 25px auto;
+    cursor: pointer;
+    display: inline-block;
+    animation: shake 2s infinite;
+}
+
+.envelope-body {
+    position: relative;
+    width: 80px;
+    height: 55px;
+    background: linear-gradient(135deg, #e8e8e8 0%, #c0c0c0 100%);
+    border-radius: 8px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
+}
+
+.envelope-icon:hover .envelope-body {
+    transform: translateY(-5px) scale(1.05);
+}
+
+.envelope-flap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    border-left: 40px solid transparent;
+    border-right: 40px solid transparent;
+    border-top: 30px solid #001a4d;
+    border-radius: 3px;
+}
+
+.envelope-letter {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2em;
+    z-index: 1;
+    animation: float 2s ease-in-out infinite;
+}
+
+.envelope-label {
+    margin-top: 10px;
+    color: #c0c0c0;
+    font-size: 0.9em;
+    font-weight: bold;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+@keyframes shake {
+    0%, 100% { transform: rotate(0deg); }
+    10%, 30%, 50%, 70%, 90% { transform: rotate(-3deg); }
+    20%, 40%, 60%, 80% { transform: rotate(3deg); }
+}
+
+@keyframes shrinkToIcon {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(0.5) rotate(180deg); opacity: 0.5; }
+    100% { transform: scale(0) rotate(360deg); opacity: 0; }
+}
+
+/* ADMIN BUTTON */
+.admin-messages-btn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 70px;
+    height: 70px;
+    background: linear-gradient(135deg, #001a4d 0%, #0d3b66 100%);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8em;
+    cursor: pointer;
+    box-shadow: 0 10px 30px rgba(0, 26, 77, 0.5);
+    z-index: 1000;
+    transition: all 0.3s ease;
+    animation: pulseGlow 2s ease-in-out infinite;
+}
+
+.admin-messages-btn:hover {
+    transform: scale(1.1);
+}
+
+.message-count-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: #dc3545;
+    color: white;
+    font-size: 0.4em;
+    font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 20px;
+    min-width: 25px;
+}
+
+@keyframes pulseGlow {
+    0%, 100% { box-shadow: 0 10px 30px rgba(0, 26, 77, 0.5); }
+    50% { box-shadow: 0 15px 40px rgba(0, 26, 77, 0.7), 0 0 30px rgba(192, 192, 192, 0.5); }
+}
+
+/* ADMIN MODAL */
+.all-messages-content {
+    max-width: 700px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.close-modal-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: #dc3545;
+    color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.close-modal-btn:hover {
+    transform: rotate(90deg) scale(1.1);
+}
+
+.admin-icon {
+    font-size: 3em;
+    margin-bottom: 15px;
+}
+
+.admin-subtitle {
+    color: #666;
+    font-size: 0.95em;
+}
+
+.messages-container {
+    max-height: 500px;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+.message-card {
+    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+    border: 2px solid #c0c0c0;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
+    text-align: left;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.message-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.message-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+.message-user {
+    font-weight: bold;
+    color: #001a4d;
+    font-size: 1.1em;
+}
+
+.message-nickname {
+    color: #666;
+    font-size: 0.9em;
+    font-style: italic;
+    margin-left: 5px;
+}
+
+.message-date {
+    color: #999;
+    font-size: 0.85em;
+}
+
+.message-text {
+    color: #333;
+    line-height: 1.6;
+    font-size: 1em;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+.no-messages {
+    text-align: center;
+    padding: 60px 20px;
+    color: #999;
+}
+
+@media (max-width: 768px) {
+    .message-modal-content {
+        padding: 30px 20px;
+    }
+    
+    .admin-messages-btn {
+        width: 60px;
+        height: 60px;
+        font-size: 1.5em;
+    }
+    
+    .envelope-body {
+        width: 60px;
+        height: 42px;
+    }
+    
+    .envelope-flap {
+        border-left: 30px solid transparent;
+        border-right: 30px solid transparent;
+        border-top: 22px solid #001a4d;
+    }
+}
 
 </style>
 
@@ -854,7 +1251,18 @@
         
         <div class="container">
             <h1>✨ Davreignne's Debut Gallery ✨</h1>
-            <p class="subtitle" id="welcomeMessage">Loading...</p>
+
+<!-- 📬 ENVELOPE ICON (Hidden by default) -->
+<div id="envelopeIcon" class="envelope-icon" style="display: none;" onclick="viewMessage()">
+    <div class="envelope-body">
+        <div class="envelope-flap"></div>
+        <div class="envelope-letter">💌</div>
+    </div>
+    <div class="envelope-label">Your Message</div>
+</div>
+
+<p class="subtitle" id="welcomeMessage">Loading...</p>
+
             <div class="video-section">
                 <div class="video-container">
                     <video controls autoplay playsinline>
@@ -928,6 +1336,127 @@
         </div>
     </div>
 
+<!-- 📬 MESSAGE POPUP MODAL -->
+<div id="messageModal" class="message-modal">
+    <!-- ✨ SPARKLE DECORATIONS -->
+    <div class="modal-sparkle sparkle-tl"></div>
+    <div class="modal-sparkle sparkle-tr"></div>
+    <div class="modal-sparkle sparkle-bl"></div>
+    <div class="modal-sparkle sparkle-br"></div>
+    <div class="modal-sparkle sparkle-float-1"></div>
+    <div class="modal-sparkle sparkle-float-2"></div>
+    <div class="modal-sparkle sparkle-float-3"></div>
+    <div class="modal-sparkle sparkle-float-4"></div>
+    
+    <div class="message-modal-content">
+        <div class="message-icon">💌</div>
+        <h2>Leave a Message for Davreignne!</h2>
+        <p class="message-subtitle">Share your wishes, greetings, or memories from this special day</p>
+        <p class="privacy-note">🔒 <strong>Private:</strong> Only the admin can view your message</p>
+        
+        <form id="messageForm">
+            <div class="textarea-wrapper">
+                <textarea 
+                    id="guestMessage" 
+                    placeholder="Write your heartfelt message here..."
+                    maxlength="500"
+                    required
+                ></textarea>
+            </div>
+            <div class="char-counter">
+                <span id="charCount">0</span> / 500 characters
+            </div>
+            
+            <button type="submit" class="btn-submit-message">
+                <i class="fas fa-paper-plane"></i> Send Message
+            </button>
+        </form>
+        
+                <p class="message-note">✨ Your anonymous message will be saved and displayed as a cute envelope!</p>
+    </div>
+</div>
+
+<!-- ✏️ EDIT/DELETE MESSAGE MODAL -->
+<div id="editMessageModal" class="message-modal">
+    <div class="message-modal-content">
+        <div class="message-icon">💌</div>
+        <h2>Your Anonymous Message</h2>
+        <p class="message-subtitle">You can edit or delete your message anytime</p>
+        
+        <form id="editMessageForm">
+            <div class="textarea-wrapper">
+                <textarea 
+                    id="editGuestMessage" 
+                    placeholder="Edit your message..."
+                    maxlength="500"
+                    required
+                ></textarea>
+            </div>
+            <div class="char-counter">
+                <span id="editCharCount">0</span> / 500 characters
+            </div>
+            
+            <div class="edit-actions">
+                <button type="submit" class="btn-save-message">
+                    <i class="fas fa-check"></i> Save Changes
+                </button>
+                
+                <button type="button" class="btn-delete-message" onclick="confirmDeleteMessage()">
+                    <i class="fas fa-trash"></i> Delete Message
+                </button>
+                
+                <button type="button" class="btn-cancel-edit" onclick="closeEditModal()">
+                    <i class="fas fa-times"></i> Cancel
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- 🗑️ DELETE CONFIRMATION MODAL -->
+<div id="deleteConfirmModal" class="message-modal">
+    <div class="message-modal-content confirm-content">
+        <div class="warning-icon">⚠️</div>
+        <h2>Delete Your Message?</h2>
+        <p class="delete-warning">Are you sure you want to delete your anonymous message? This action cannot be undone.</p>
+        
+        <div class="confirm-actions">
+            <button class="btn-confirm-delete" onclick="deleteMessage()">
+                <i class="fas fa-trash-alt"></i> Yes, Delete It
+            </button>
+            <button class="btn-cancel-delete" onclick="closeDeleteConfirm()">
+                <i class="fas fa-ban"></i> Cancel
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- 👑 ADMIN: VIEW ALL MESSAGES BUTTON (Hidden for regular guests) -->
+<div id="adminMessagesBtn" class="admin-messages-btn" style="display: none;" onclick="showAllMessages()">
+    <i class="fas fa-envelope-open-text"></i>
+    <span class="message-count-badge" id="messageCountBadge">0</span>
+</div>
+
+<!-- 👑 ADMIN: ALL MESSAGES MODAL -->
+<div id="allMessagesModal" class="message-modal">
+    <div class="message-modal-content all-messages-content">
+        <button class="close-modal-btn" onclick="closeAllMessages()">
+            <i class="fas fa-times"></i>
+        </button>
+        
+        <div class="admin-header">
+            <div class="admin-icon">👑</div>
+            <h2>Guest Messages</h2>
+            <p class="admin-subtitle">All heartfelt messages from your guests</p>
+        </div>
+        
+        <div id="messagesContainer" class="messages-container">
+            <div class="loading-messages">
+                <i class="fas fa-spinner fa-spin"></i> Loading messages...
+            </div>
+        </div>
+    </div>
+</div>
 
     <script type="module">
     // Get current user FIRST (outside DOMContentLoaded for global access)
@@ -955,10 +1484,15 @@
         if (logoutBtn && userData) {
             logoutBtn.style.display = 'flex';
         }
+        // Initialize message system
+checkAdminForMessages();
+checkMessageStatus();
+
     });
 
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-    import { getFirestore, collection, getDocs } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+    import { getFirestore, collection, getDocs, addDoc, query, orderBy, doc, updateDoc, deleteDoc, where } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
 
     const firebaseConfig = {
         apiKey: "AIzaSyDPaMpRBwk8a10vX4CUvsolfUyn3gpec5s",
@@ -1004,7 +1538,187 @@
             document.getElementById('uploaderCount').textContent = '0';
         }
     }
+    // ==================== MESSAGE SYSTEM WITH ADMIN (PRIVATE) ====================
+
+const ADMIN_PASSWORD = '01082008';
+let isAdmin = false;
+let userMessage = '';
+let messageSubmitted = false;
+
+// Check admin status
+function checkAdminForMessages() {
+    const adminKey = sessionStorage.getItem('debut_admin_logged_in');
+    isAdmin = adminKey === 'true';
     
+    if (isAdmin) {
+        document.getElementById('adminMessagesBtn').style.display = 'flex';
+        loadMessageCount();
+    }
+}
+
+// Load message count
+async function loadMessageCount() {
+    try {
+        const messagesRef = collection(db, 'guestMessages');
+        const querySnapshot = await getDocs(messagesRef);
+        document.getElementById('messageCountBadge').textContent = querySnapshot.size;
+    } catch (error) {
+        console.error('Error loading count:', error);
+    }
+}
+
+// Check if user already submitted
+async function checkMessageStatus() {
+    if (!userData) return;
+    
+    const messageKey = `message_submitted_${userData.nickname}`;
+    const existingMessage = localStorage.getItem(messageKey);
+    
+    if (existingMessage) {
+        messageSubmitted = true;
+        userMessage = existingMessage;
+        document.getElementById('envelopeIcon').style.display = 'inline-block';
+    } else {
+        setTimeout(() => {
+            document.getElementById('messageModal').classList.add('active');
+        }, 1000);
+    }
+}
+
+// Character counter
+const guestMessageInput = document.getElementById('guestMessage');
+const charCount = document.getElementById('charCount');
+
+if (guestMessageInput) {
+    guestMessageInput.addEventListener('input', function() {
+        charCount.textContent = this.value.length;
+    });
+}
+
+// Submit message
+const messageForm = document.getElementById('messageForm');
+if (messageForm) {
+    messageForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const message = guestMessageInput.value.trim();
+        if (!message) {
+            alert('Please write a message!');
+            return;
+        }
+        
+        const submitBtn = this.querySelector('.btn-submit-message');
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+        
+        try {
+            // ✅ Save with BOTH guestName and nickname
+            await addDoc(collection(db, 'guestMessages'), {
+                guestName: userData.guestName,  // Full name
+                nickname: userData.nickname,     // Nickname
+                message: message,
+                timestamp: Date.now()
+            });
+            
+            const messageKey = `message_submitted_${userData.nickname}`;
+            localStorage.setItem(messageKey, message);
+            
+            userMessage = message;
+            messageSubmitted = true;
+            
+            const modalContent = document.querySelector('.message-modal-content');
+            modalContent.style.animation = 'shrinkToIcon 0.8s ease forwards';
+            
+            setTimeout(() => {
+                document.getElementById('messageModal').classList.remove('active');
+                document.getElementById('envelopeIcon').style.display = 'inline-block';
+                modalContent.style.animation = '';
+                
+                if (isAdmin) loadMessageCount();
+            }, 800);
+            
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Failed to send message. Please try again.');
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Message';
+        }
+    });
+}
+
+// View own message
+window.viewMessage = function() {
+    if (userMessage) {
+        alert(`📬 Your Message:\n\n"${userMessage}"\n\n✨ Thank you!\n🔒 This message is private and only visible to the admin.`);
+    }
+};
+
+// ADMIN: Show all messages
+window.showAllMessages = async function() {
+    if (!isAdmin) {
+        alert('❌ Admin access required!');
+        return;
+    }
+    
+    const modal = document.getElementById('allMessagesModal');
+    const container = document.getElementById('messagesContainer');
+    
+    modal.classList.add('active');
+    container.innerHTML = '<div class="loading-messages"><i class="fas fa-spinner fa-spin"></i> Loading...</div>';
+    
+    try {
+        const messagesRef = collection(db, 'guestMessages');
+        const q = query(messagesRef, orderBy('timestamp', 'desc'));
+        const querySnapshot = await getDocs(q);
+        
+        if (querySnapshot.empty) {
+            container.innerHTML = '<div class="no-messages"><i class="fas fa-inbox"></i><p>No messages yet</p></div>';
+            return;
+        }
+        
+        container.innerHTML = '';
+        
+        querySnapshot.forEach((doc) => {
+            const msg = doc.data();
+            const date = new Date(msg.timestamp).toLocaleDateString('en-US', {
+                month: 'short',
+                day: 'numeric',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            
+            const card = document.createElement('div');
+            card.className = 'message-card';
+            card.innerHTML = `
+                <div class="message-header">
+                    <div>
+                        <span class="message-user">👤 ${msg.guestName}</span>
+                        <span class="message-nickname">(${msg.nickname})</span>
+                    </div>
+                    <span class="message-date">📅 ${date}</span>
+                </div>
+                <div class="message-text">${msg.message}</div>
+            `;
+            
+            container.appendChild(card);
+        });
+        
+    } catch (error) {
+        console.error('Error:', error);
+        container.innerHTML = `<div class="no-messages"><i class="fas fa-exclamation-circle"></i><p>Error: ${error.message}</p></div>`;
+    }
+};
+
+// Close admin modal
+window.closeAllMessages = function() {
+    document.getElementById('allMessagesModal').classList.remove('active');
+};
+
+document.getElementById('allMessagesModal')?.addEventListener('click', function(e) {
+    if (e.target === this) closeAllMessages();
+});
+
     updateStats();
     setInterval(updateStats, 10000);
 
