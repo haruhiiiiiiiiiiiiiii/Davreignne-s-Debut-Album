@@ -730,13 +730,15 @@
     .dropdown.active .dropdown-menu {
     opacity: 1;
     visibility: visible;
-    max-height: 800px;  /* ✅ FITS ALL ALBUMS */
+    max-height: 400px;  /* ✅ FIXED SCROLLABLE HEIGHT */
+    overflow-y: auto;   /* ✅ ENABLE SCROLL */
+    overflow-x: hidden;
 }
 
-    
-    .dropdown-menu a {
-        padding: 12px 30px;
-    }
+.dropdown-menu a {
+    padding: 12px 30px;
+}
+
 
 /* ✨ ADD THIS NEW RULE */
 .dropdown-menu a:hover {
