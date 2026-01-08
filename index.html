@@ -1337,75 +1337,89 @@
     </div>
 
 <!-- 📬 MESSAGE POPUP MODAL -->
-<div id="messageModal" class="message-modal">
-    <!-- ✨ SPARKLE DECORATIONS -->
-    <div class="modal-sparkle sparkle-tl"></div>
-    <div class="modal-sparkle sparkle-tr"></div>
-    <div class="modal-sparkle sparkle-bl"></div>
-    <div class="modal-sparkle sparkle-br"></div>
-    <div class="modal-sparkle sparkle-float-1"></div>
-    <div class="modal-sparkle sparkle-float-2"></div>
-    <div class="modal-sparkle sparkle-float-3"></div>
-    <div class="modal-sparkle sparkle-float-4"></div>
+<!-- 💌 SUBMIT MESSAGE MODAL - GOLD LUXURY -->
+<div id="messageModal" class="message-modal gold-luxury">
+    <!-- ✨ GOLD SPARKLE PARTICLES -->
+    <div class="gold-sparkle sp1"></div>
+    <div class="gold-sparkle sp2"></div>
+    <div class="gold-sparkle sp3"></div>
+    <div class="gold-sparkle sp4"></div>
+    <div class="gold-sparkle sp5"></div>
+    <div class="gold-sparkle sp6"></div>
+    <div class="gold-sparkle sp7"></div>
+    <div class="gold-sparkle sp8"></div>
+    <div class="gold-sparkle sp9"></div>
+    <div class="gold-sparkle sp10"></div>
     
-    <div class="message-modal-content">
-        <div class="message-icon">💌</div>
-        <h2>Leave a Message for Davreignne!</h2>
-        <p class="message-subtitle">Share your wishes, greetings, or memories from this special day</p>
-        <p class="privacy-note">🔒 <strong>Private:</strong> Only the admin can view your message</p>
+    <div class="luxury-modal-content">
+        <div class="luxury-icon">✨</div>
+        <h2 class="luxury-title">Leave a Message</h2>
+        <p class="luxury-subtitle">Your thoughts will remain anonymous</p>
         
         <form id="messageForm">
-            <div class="textarea-wrapper">
-                <textarea 
-                    id="guestMessage" 
-                    placeholder="Write your heartfelt message here..."
-                    maxlength="500"
-                    required
-                ></textarea>
-            </div>
-            <div class="char-counter">
-                <span id="charCount">0</span> / 500 characters
+            <textarea 
+                id="guestMessage" 
+                class="luxury-textarea"
+                placeholder="Share your heartfelt message..."
+                maxlength="500"
+                required
+            ></textarea>
+            
+            <div class="luxury-counter">
+                <span id="charCount">0</span> / 500
             </div>
             
-            <button type="submit" class="btn-submit-message">
-                <i class="fas fa-paper-plane"></i> Send Message
+            <button type="submit" class="luxury-btn">
+                <span class="btn-sparkle">✨</span>
+                Send Message
+                <span class="btn-sparkle">✨</span>
             </button>
         </form>
-        
-                <p class="message-note">✨ Your anonymous message will be saved and displayed as a cute envelope!</p>
     </div>
 </div>
 
-<!-- ✏️ EDIT/DELETE MESSAGE MODAL -->
-<div id="editMessageModal" class="message-modal">
-    <div class="message-modal-content">
-        <div class="message-icon">💌</div>
-        <h2>Your Anonymous Message</h2>
-        <p class="message-subtitle">You can edit or delete your message anytime</p>
+<!-- ✏️ EDIT MESSAGE MODAL - GOLD LUXURY -->
+<div id="editMessageModal" class="message-modal gold-luxury">
+    <!-- ✨ GOLD SPARKLE PARTICLES -->
+    <div class="gold-sparkle sp1"></div>
+    <div class="gold-sparkle sp2"></div>
+    <div class="gold-sparkle sp3"></div>
+    <div class="gold-sparkle sp4"></div>
+    <div class="gold-sparkle sp5"></div>
+    <div class="gold-sparkle sp6"></div>
+    <div class="gold-sparkle sp7"></div>
+    <div class="gold-sparkle sp8"></div>
+    <div class="gold-sparkle sp9"></div>
+    <div class="gold-sparkle sp10"></div>
+    
+    <div class="luxury-modal-content">
+        <div class="luxury-icon">💌</div>
+        <h2 class="luxury-title">Your Message</h2>
+        <p class="luxury-subtitle">Edit or delete anytime</p>
         
         <form id="editMessageForm">
-            <div class="textarea-wrapper">
-                <textarea 
-                    id="editGuestMessage" 
-                    placeholder="Edit your message..."
-                    maxlength="500"
-                    required
-                ></textarea>
-            </div>
-            <div class="char-counter">
-                <span id="editCharCount">0</span> / 500 characters
+            <textarea 
+                id="editGuestMessage" 
+                class="luxury-textarea"
+                placeholder="Edit your message..."
+                maxlength="500"
+                required
+            ></textarea>
+            
+            <div class="luxury-counter">
+                <span id="editCharCount">0</span> / 500
             </div>
             
-            <div class="edit-actions">
-                <button type="submit" class="btn-save-message">
-                    <i class="fas fa-check"></i> Save Changes
+            <div class="luxury-actions">
+                <button type="submit" class="luxury-btn save">
+                    <i class="fas fa-check"></i> Save
                 </button>
                 
-                <button type="button" class="btn-delete-message" onclick="confirmDeleteMessage()">
-                    <i class="fas fa-trash"></i> Delete Message
+                <button type="button" class="luxury-btn delete" onclick="confirmDeleteMessage()">
+                    <i class="fas fa-trash"></i> Delete
                 </button>
                 
-                <button type="button" class="btn-cancel-edit" onclick="closeEditModal()">
+                <button type="button" class="luxury-btn cancel" onclick="closeEditModal()">
                     <i class="fas fa-times"></i> Cancel
                 </button>
             </div>
@@ -1413,23 +1427,32 @@
     </div>
 </div>
 
-<!-- 🗑️ DELETE CONFIRMATION MODAL -->
-<div id="deleteConfirmModal" class="message-modal">
-    <div class="message-modal-content confirm-content">
-        <div class="warning-icon">⚠️</div>
-        <h2>Delete Your Message?</h2>
-        <p class="delete-warning">Are you sure you want to delete your anonymous message? This action cannot be undone.</p>
+<!-- 🗑️ DELETE CONFIRMATION MODAL - GOLD LUXURY -->
+<div id="deleteConfirmModal" class="message-modal gold-luxury">
+    <!-- ✨ GOLD SPARKLE PARTICLES -->
+    <div class="gold-sparkle sp1"></div>
+    <div class="gold-sparkle sp2"></div>
+    <div class="gold-sparkle sp3"></div>
+    <div class="gold-sparkle sp4"></div>
+    <div class="gold-sparkle sp5"></div>
+    
+    <div class="luxury-modal-content confirm">
+        <div class="luxury-icon warning">⚠️</div>
+        <h2 class="luxury-title">Delete Message?</h2>
+        <p class="luxury-warning">This action cannot be undone</p>
         
-        <div class="confirm-actions">
-            <button class="btn-confirm-delete" onclick="deleteMessage()">
-                <i class="fas fa-trash-alt"></i> Yes, Delete It
+        <div class="luxury-confirm-actions">
+            <button class="luxury-btn delete-confirm" onclick="deleteMessage()">
+                <i class="fas fa-trash-alt"></i> Yes, Delete
             </button>
-            <button class="btn-cancel-delete" onclick="closeDeleteConfirm()">
+            <button class="luxury-btn cancel-confirm" onclick="closeDeleteConfirm()">
                 <i class="fas fa-ban"></i> Cancel
             </button>
         </div>
     </div>
 </div>
+
+<!-- 👑 ADMIN: VIEW ALL MESSAGES BUTTON (Hidden for regular guests) -->
 
 <!-- 👑 ADMIN: VIEW ALL MESSAGES BUTTON (Hidden for regular guests) -->
 <div id="adminMessagesBtn" class="admin-messages-btn" style="display: none;" onclick="showAllMessages()">
