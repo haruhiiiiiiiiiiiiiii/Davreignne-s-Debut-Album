@@ -807,71 +807,64 @@
     const submitBtn = document.getElementById('submitBtn');
     const registrationNote = document.getElementById('registrationNote');
 
-    // ✅ HELPER FUNCTIONS (DEFINED FIRST)
+    // ✅ HELPER FUNCTIONS
     function showError(message) {
         errorMessage.innerHTML = '<i class="fas fa-exclamation-circle"></i> ' + message.replace(/\n/g, '<br>');
         errorMessage.classList.add('show');
         
-        // ✅ SHOW LOADING AND REDIRECT
-setTimeout(() => {
-    showFullLoading('Entering gallery...');
-    setTimeout(() => {
-        window.location.href = 'index.html';
-    }, 5500);  // ✅ NOW 5.5 SECONDS (5s animation + 0.5s buffer)
-}, 500);
-
+        setTimeout(() => {
+            errorMessage.classList.remove('show');
+        }, 6000);
+    }
 
     function showFullLoading(message = 'Loading...') {
-    const loadingOverlay = document.createElement('div');
-    loadingOverlay.className = 'loading-screen-overlay';
-    loadingOverlay.id = 'full-screen-loader';
-    
-    loadingOverlay.innerHTML = `
-    <div class="cute-loading-container">
-        <div class="loading-text">${message}</div>
+        const loadingOverlay = document.createElement('div');
+        loadingOverlay.className = 'loading-screen-overlay';
+        loadingOverlay.id = 'full-screen-loader';
+        
+        loadingOverlay.innerHTML = `
+            <div class="cute-loading-container">
+                <div class="loading-text">${message}</div>
 
-        <div class="progress-bar-wrapper">
-            <div class="progress-bar-container">
-                <div class="progress-bar-fill" id="progressFill"></div>
-                <div class="progress-character" id="progressChar">
-                    <img src="https://raw.githubusercontent.com/haruhiiiiiiiiiiiiiii/Davreignne-s-Debut-Album/main/Subject.png" alt="Loading">
+                <div class="progress-bar-wrapper">
+                    <div class="progress-bar-container">
+                        <div class="progress-bar-fill" id="progressFill"></div>
+                        <div class="progress-character" id="progressChar">
+                            <img src="https://raw.githubusercontent.com/haruhiiiiiiiiiiiiiii/Davreignne-s-Debut-Album/main/Subject.png" alt="Loading">
+                        </div>
+                    </div>
                 </div>
+
+                <div class="loading-percentage" id="loadingPercent">0%</div>
             </div>
-        </div>
-
-        <div class="loading-percentage" id="loadingPercent">0%</div>
-    </div>
-`;
-
-    
-    document.body.appendChild(loadingOverlay);
-    
-    // 🎬 Animate Progress - EXACTLY 5 SECONDS
-    let progress = 0;
-    const progressFill = document.getElementById('progressFill');
-    const progressChar = document.getElementById('progressChar');
-    const loadingPercent = document.getElementById('loadingPercent');
-    
-    const totalTime = 5000; // 5 seconds
-    const updateInterval = 50; // Update every 50ms
-    const totalSteps = totalTime / updateInterval; // 100 steps
-    const incrementPerStep = 100 / totalSteps; // 1% per step
-    
-    const interval = setInterval(() => {
-        progress += incrementPerStep;
+        `;
         
-        if (progress >= 100) {
-            progress = 100;
-            clearInterval(interval);
-        }
+        document.body.appendChild(loadingOverlay);
         
-        progressFill.style.width = progress + '%';
-        progressChar.style.left = progress + '%';
-        loadingPercent.textContent = Math.floor(progress) + '%';
-    }, updateInterval);
-}
-
-
+        // 🎬 Animate Progress - EXACTLY 5 SECONDS
+        let progress = 0;
+        const progressFill = document.getElementById('progressFill');
+        const progressChar = document.getElementById('progressChar');
+        const loadingPercent = document.getElementById('loadingPercent');
+        
+        const totalTime = 5000; // 5 seconds
+        const updateInterval = 50; // Update every 50ms
+        const totalSteps = totalTime / updateInterval; // 100 steps
+        const incrementPerStep = 100 / totalSteps; // 1% per step
+        
+        const interval = setInterval(() => {
+            progress += incrementPerStep;
+            
+            if (progress >= 100) {
+                progress = 100;
+                clearInterval(interval);
+            }
+            
+            progressFill.style.width = progress + '%';
+            progressChar.style.left = progress + '%';
+            loadingPercent.textContent = Math.floor(progress) + '%';
+        }, updateInterval);
+    }
 
     // ✅ LOGIN FORM HANDLER
     loginForm.addEventListener('submit', async function(e) {
@@ -987,12 +980,12 @@ setTimeout(() => {
                 </div>
             `;
             
-            // ✅ SHOW LOADING AND REDIRECT
+            // ✅ SHOW LOADING AND REDIRECT (5.5 SECONDS TOTAL)
             setTimeout(() => {
                 showFullLoading('Entering gallery...');
                 setTimeout(() => {
                     window.location.href = 'index.html';
-                }, 1000);
+                }, 5500);  // ✅ 5.5 seconds for full animation
             }, 500);
 
         } catch (error) {
