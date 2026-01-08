@@ -633,12 +633,15 @@
     .dropdown.active .dropdown-menu {
     opacity: 1;
     visibility: visible;
-    max-height: 800px;  /* ✅ INCREASED HEIGHT */
+    max-height: 400px;  /* ✅ FIXED SCROLLABLE HEIGHT */
+    overflow-y: auto;   /* ✅ ENABLE SCROLL */
+    overflow-x: hidden;
 }
 
 .dropdown-menu a {
     padding: 12px 30px;
 }
+
 
 /* ✨ SILVER HOVER EFFECT FOR MOBILE */
 .dropdown-menu a:hover {
