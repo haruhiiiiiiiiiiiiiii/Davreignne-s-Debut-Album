@@ -22,7 +22,7 @@
             background: rgba(255, 255, 255, 0.95);
             border-radius: 20px;
             padding: 40px;
-            max-width: 600px;
+            max-width: 650px;
             width: 100%;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
         }
@@ -117,6 +117,36 @@
             background: #5a6268;
         }
 
+        .btn-edit, .btn-logs {
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.85em;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-left: 5px;
+        }
+
+        .btn-edit {
+            background: #007bff;
+            color: white;
+        }
+
+        .btn-edit:hover {
+            background: #0056b3;
+            transform: scale(1.05);
+        }
+
+        .btn-logs {
+            background: #17a2b8;
+            color: white;
+        }
+
+        .btn-logs:hover {
+            background: #138496;
+            transform: scale(1.05);
+        }
+
         .success-message {
             background: #d4edda;
             border: 2px solid #c3e6cb;
@@ -140,7 +170,7 @@
 
         .guest-list {
             margin-top: 30px;
-            max-height: 300px;
+            max-height: 400px;
             overflow-y: auto;
             border: 2px solid #ddd;
             border-radius: 10px;
@@ -149,26 +179,52 @@
 
         .guest-item {
             background: #f8f9fa;
-            padding: 10px 15px;
-            margin-bottom: 10px;
+            padding: 12px 15px;
+            margin-bottom: 12px;
             border-radius: 8px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
         .guest-info {
             flex: 1;
+            min-width: 200px;
         }
 
         .guest-name {
             font-weight: 600;
             color: #001a4d;
+            margin-bottom: 4px;
         }
 
         .guest-nickname {
             color: #666;
             font-size: 0.9em;
+            margin-bottom: 2px;
+        }
+
+        .guest-stats {
+            color: #888;
+            font-size: 0.85em;
+            display: flex;
+            gap: 15px;
+            margin-top: 4px;
+        }
+
+        .guest-stats span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .guest-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
         }
 
         .badge {
@@ -176,6 +232,7 @@
             border-radius: 20px;
             font-size: 0.8em;
             font-weight: bold;
+            white-space: nowrap;
         }
 
         .badge-pending {
@@ -193,6 +250,129 @@
             color: #999;
             padding: 20px;
         }
+
+        /* LOGIN HISTORY MODAL */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .modal-header h2 {
+            color: #001a4d;
+            margin: 0;
+            font-size: 1.5em;
+        }
+
+        .close-modal {
+            background: #dc3545;
+            color: white;
+            border: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2em;
+            transition: all 0.3s;
+        }
+
+        .close-modal:hover {
+            background: #c82333;
+            transform: rotate(90deg);
+        }
+
+        .login-log-item {
+            background: #f8f9fa;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            border-left: 4px solid #17a2b8;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .log-number {
+            font-weight: bold;
+            color: #001a4d;
+            margin-right: 10px;
+        }
+
+        .log-time {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .log-date {
+            color: #17a2b8;
+            font-weight: 600;
+        }
+
+        .no-logs {
+            text-align: center;
+            color: #999;
+            padding: 30px;
+            font-style: italic;
+        }
+
+        @media (max-width: 600px) {
+            .guest-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .guest-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .modal-content {
+                padding: 20px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -206,7 +386,7 @@
         </div>
 
         <div id="successMessage" class="success-message">
-            <i class="fas fa-check-circle"></i> Guest added successfully!
+            <i class="fas fa-check-circle"></i> <span id="successText">Guest added successfully!</span>
         </div>
 
         <form id="addGuestForm">
@@ -229,9 +409,21 @@
         </div>
     </div>
 
+    <!-- LOGIN HISTORY MODAL -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-history"></i> Login History</h2>
+                <button class="close-modal" onclick="closeLoginModal()">×</button>
+            </div>
+            <div id="modalGuestName" style="color: #666; margin-bottom: 15px; font-size: 1.1em;"></div>
+            <div id="loginHistoryList"></div>
+        </div>
+    </div>
+
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-        import { getFirestore, collection, addDoc, getDocs, query, orderBy, where } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+        import { getFirestore, collection, addDoc, getDocs, query, orderBy, where, doc, updateDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
         const firebaseConfig = {
             apiKey: "AIzaSyDPaMpRBwk8a10vX4CUvsolfUyn3gpec5s",
@@ -255,9 +447,10 @@
 
         const form = document.getElementById('addGuestForm');
         const successMsg = document.getElementById('successMessage');
+        const successText = document.getElementById('successText');
         const addBtn = document.getElementById('addBtn');
 
-        // Add guest to database (name only)
+        // Add guest to database
         form.addEventListener('submit', async function(e) {
             e.preventDefault();
 
@@ -277,7 +470,6 @@
             addBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Adding...';
 
             try {
-                // Check if name already exists
                 const q = query(collection(db, 'registeredUsers'), where('guestName', '==', guestName));
                 const existingUser = await getDocs(q);
                 
@@ -288,15 +480,16 @@
                     return;
                 }
 
-                // Add to database (no nickname yet)
                 await addDoc(collection(db, 'registeredUsers'), {
                     guestName: guestName,
-                    nickname: null, // ✅ Guest will set this on first login
+                    nickname: null,
                     registeredAt: Date.now(),
                     addedBy: 'admin',
-                    nicknameSet: false
+                    nicknameSet: false,
+                    loginHistory: []
                 });
 
+                successText.textContent = 'Guest added successfully!';
                 successMsg.classList.add('show');
                 setTimeout(() => successMsg.classList.remove('show'), 3000);
 
@@ -311,7 +504,109 @@
             }
         });
 
-        // Load and display guest list
+        // Edit nickname function
+        async function editGuestNickname(docId, currentNickname, guestName) {
+            const newNickname = prompt(`✏️ Edit nickname for ${guestName}\n\nCurrent: "${currentNickname}"\n\nEnter new nickname (no spaces, min 2 chars):`);
+
+            if (!newNickname) return;
+
+            const trimmedNickname = newNickname.trim().toLowerCase();
+
+            if (trimmedNickname.length < 2) {
+                alert('❌ Nickname must be at least 2 characters!');
+                return;
+            }
+
+            if (trimmedNickname.includes(' ')) {
+                alert('❌ Nickname cannot contain spaces!');
+                return;
+            }
+
+            try {
+                const q = query(collection(db, 'registeredUsers'), where('nickname', '==', trimmedNickname));
+                const existingNickname = await getDocs(q);
+                
+                let isTaken = false;
+                existingNickname.forEach((doc) => {
+                    if (doc.id !== docId) {
+                        isTaken = true;
+                    }
+                });
+
+                if (isTaken) {
+                    alert('❌ This nickname is already taken!');
+                    return;
+                }
+
+                const userRef = doc(db, 'registeredUsers', docId);
+                await updateDoc(userRef, {
+                    nickname: trimmedNickname,
+                    nicknameSet: true
+                });
+
+                successText.textContent = `✅ Nickname updated to "${trimmedNickname}"`;
+                successMsg.classList.add('show');
+                setTimeout(() => successMsg.classList.remove('show'), 3000);
+
+                loadGuestList();
+
+            } catch (error) {
+                alert('❌ Error: ' + error.message);
+            }
+        }
+
+        // Show login history modal
+        function showLoginHistory(guestName, loginHistory) {
+            const modal = document.getElementById('loginModal');
+            const modalGuestName = document.getElementById('modalGuestName');
+            const historyList = document.getElementById('loginHistoryList');
+
+            modalGuestName.innerHTML = `<strong>👤 ${guestName}</strong> - Total Logins: ${loginHistory.length}`;
+
+            if (!loginHistory || loginHistory.length === 0) {
+                historyList.innerHTML = '<div class="no-logs"><i class="fas fa-info-circle"></i> No login history yet</div>';
+            } else {
+                historyList.innerHTML = '';
+                
+                const sortedHistory = [...loginHistory].sort((a, b) => b - a);
+                
+                sortedHistory.forEach((timestamp, index) => {
+                    const date = new Date(timestamp);
+                    const item = document.createElement('div');
+                    item.className = 'login-log-item';
+                    item.innerHTML = `
+                        <div>
+                            <span class="log-number">#${sortedHistory.length - index}</span>
+                            <span class="log-date">${date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                        </div>
+                        <div class="log-time">
+                            <i class="fas fa-clock"></i> ${date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+                        </div>
+                    `;
+                    historyList.appendChild(item);
+                });
+            }
+
+            modal.classList.add('show');
+        }
+
+        // Close modal
+        function closeLoginModal() {
+            document.getElementById('loginModal').classList.remove('show');
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('loginModal');
+            if (event.target === modal) {
+                closeLoginModal();
+            }
+        }
+
+        window.editGuestNickname = editGuestNickname;
+        window.showLoginHistory = showLoginHistory;
+        window.closeLoginModal = closeLoginModal;
+
+        // Load guest list
         async function loadGuestList() {
             const listContainer = document.getElementById('guestList');
             listContainer.innerHTML = '<p style="text-align: center; color: #999;">Loading...</p>';
@@ -327,9 +622,12 @@
 
                 listContainer.innerHTML = '<h3 style="margin-bottom: 15px; color: #001a4d;">Registered Guests (' + querySnapshot.size + ')</h3>';
 
-                querySnapshot.forEach((doc) => {
-                    const guest = doc.data();
+                querySnapshot.forEach((docSnapshot) => {
+                    const guest = docSnapshot.data();
+                    const docId = docSnapshot.id;
                     const hasNickname = guest.nickname && guest.nickname !== null;
+                    const loginHistory = guest.loginHistory || [];
+                    const loginCount = loginHistory.length;
                     
                     const item = document.createElement('div');
                     item.className = 'guest-item';
@@ -339,10 +637,22 @@
                             <div class="guest-nickname">
                                 ${hasNickname ? `Nickname: "${guest.nickname}"` : '⏳ Nickname not set yet'}
                             </div>
+                            <div class="guest-stats">
+                                <span><i class="fas fa-sign-in-alt"></i> Logins: ${loginCount}</span>
+                                <span><i class="fas fa-calendar"></i> Added: ${new Date(guest.registeredAt).toLocaleDateString()}</span>
+                            </div>
                         </div>
-                        <span class="badge ${hasNickname ? 'badge-set' : 'badge-pending'}">
-                            ${hasNickname ? '✓ Set' : 'Pending'}
-                        </span>
+                        <div class="guest-actions">
+                            <span class="badge ${hasNickname ? 'badge-set' : 'badge-pending'}">
+                                ${hasNickname ? '✓ Set' : 'Pending'}
+                            </span>
+                            ${hasNickname ? `<button class="btn-edit" onclick="editGuestNickname('${docId}', '${guest.nickname}', '${guest.guestName}')">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>` : ''}
+                            ${loginCount > 0 ? `<button class="btn-logs" onclick='showLoginHistory(\`${guest.guestName}\`, ${JSON.stringify(loginHistory)})'>
+                                <i class="fas fa-history"></i> Logs
+                            </button>` : ''}
+                        </div>
                     `;
                     listContainer.appendChild(item);
                 });
@@ -353,7 +663,6 @@
             }
         }
 
-        // Load guest list on page load
         loadGuestList();
     </script>
 </body>
