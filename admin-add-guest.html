@@ -117,7 +117,7 @@
             background: #5a6268;
         }
 
-        .btn-edit, .btn-logs {
+        .btn-edit, .btn-logs, .btn-delete, .btn-edit-name {
             padding: 6px 12px;
             border-radius: 6px;
             font-size: 0.85em;
@@ -137,6 +137,16 @@
             transform: scale(1.05);
         }
 
+        .btn-edit-name {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-edit-name:hover {
+            background: #218838;
+            transform: scale(1.05);
+        }
+
         .btn-logs {
             background: #17a2b8;
             color: white;
@@ -144,6 +154,16 @@
 
         .btn-logs:hover {
             background: #138496;
+            transform: scale(1.05);
+        }
+
+        .btn-delete {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background: #c82333;
             transform: scale(1.05);
         }
 
@@ -423,7 +443,7 @@
 
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-        import { getFirestore, collection, addDoc, getDocs, query, orderBy, where, doc, updateDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+        import { getFirestore, collection, addDoc, getDocs, query, orderBy, where, doc, updateDoc, deleteDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
         const firebaseConfig = {
             apiKey: "AIzaSyDPaMpRBwk8a10vX4CUvsolfUyn3gpec5s",
@@ -504,6 +524,52 @@
             }
         });
 
+        // ✅ NEW: Edit guest full name
+        async function editGuestName(docId, currentName) {
+            const newName = prompt(`✏️ Edit Full Name\n\nCurrent: "${currentName}"\n\nEnter new full name (min 2 chars):`);
+
+            if (!newName) return;
+
+            const trimmedName = newName.trim();
+
+            if (trimmedName.length < 2) {
+                alert('❌ Name must be at least 2 characters!');
+                return;
+            }
+
+            try {
+                // Check if new name already exists
+                const q = query(collection(db, 'registeredUsers'), where('guestName', '==', trimmedName));
+                const existingName = await getDocs(q);
+                
+                let isTaken = false;
+                existingName.forEach((doc) => {
+                    if (doc.id !== docId) {
+                        isTaken = true;
+                    }
+                });
+
+                if (isTaken) {
+                    alert('❌ This name is already registered!');
+                    return;
+                }
+
+                const userRef = doc(db, 'registeredUsers', docId);
+                await updateDoc(userRef, {
+                    guestName: trimmedName
+                });
+
+                successText.textContent = `✅ Name updated to "${trimmedName}"`;
+                successMsg.classList.add('show');
+                setTimeout(() => successMsg.classList.remove('show'), 3000);
+
+                loadGuestList();
+
+            } catch (error) {
+                alert('❌ Error: ' + error.message);
+            }
+        }
+
         // Edit nickname function
         async function editGuestNickname(docId, currentNickname, guestName) {
             const newNickname = prompt(`✏️ Edit nickname for ${guestName}\n\nCurrent: "${currentNickname}"\n\nEnter new nickname (no spaces, min 2 chars):`);
@@ -555,6 +621,34 @@
             }
         }
 
+        // ✅ NEW: Delete guest
+        async function deleteGuest(docId, guestName) {
+            const confirmation = confirm(`⚠️ DELETE USER?\n\nName: ${guestName}\n\nThis will permanently delete this guest and all their data.\n\nAre you sure?`);
+
+            if (!confirmation) return;
+
+            const doubleCheck = prompt(`Type "DELETE" to confirm deletion of ${guestName}:`);
+
+            if (doubleCheck !== 'DELETE') {
+                alert('❌ Deletion cancelled');
+                return;
+            }
+
+            try {
+                const userRef = doc(db, 'registeredUsers', docId);
+                await deleteDoc(userRef);
+
+                successText.textContent = `🗑️ "${guestName}" deleted successfully`;
+                successMsg.classList.add('show');
+                setTimeout(() => successMsg.classList.remove('show'), 3000);
+
+                loadGuestList();
+
+            } catch (error) {
+                alert('❌ Error deleting user: ' + error.message);
+            }
+        }
+
         // Show login history modal
         function showLoginHistory(guestName, loginHistory) {
             const modal = document.getElementById('loginModal');
@@ -602,7 +696,9 @@
             }
         }
 
+        window.editGuestName = editGuestName;
         window.editGuestNickname = editGuestNickname;
+        window.deleteGuest = deleteGuest;
         window.showLoginHistory = showLoginHistory;
         window.closeLoginModal = closeLoginModal;
 
@@ -646,12 +742,18 @@
                             <span class="badge ${hasNickname ? 'badge-set' : 'badge-pending'}">
                                 ${hasNickname ? '✓ Set' : 'Pending'}
                             </span>
+                            <button class="btn-edit-name" onclick="editGuestName('${docId}', '${guest.guestName}')">
+                                <i class="fas fa-user-edit"></i> Name
+                            </button>
                             ${hasNickname ? `<button class="btn-edit" onclick="editGuestNickname('${docId}', '${guest.nickname}', '${guest.guestName}')">
-                                <i class="fas fa-edit"></i> Edit
+                                <i class="fas fa-edit"></i> Nickname
                             </button>` : ''}
                             ${loginCount > 0 ? `<button class="btn-logs" onclick='showLoginHistory(\`${guest.guestName}\`, ${JSON.stringify(loginHistory)})'>
                                 <i class="fas fa-history"></i> Logs
                             </button>` : ''}
+                            <button class="btn-delete" onclick="deleteGuest('${docId}', '${guest.guestName}')">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>
                         </div>
                     `;
                     listContainer.appendChild(item);
