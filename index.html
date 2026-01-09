@@ -1852,6 +1852,15 @@
     <span class="message-count-badge" id="messageCountBadge">0</span>
 </div>
 
+<!-- ✅✅✅ ADD THIS NEW BUTTON HERE ✅✅✅ -->
+<!-- 👥 ADMIN: VIEW REGISTERED USERS BUTTON (Hidden for regular guests) -->
+<div id="adminUsersBtn" class="admin-messages-btn" style="display: none; bottom: 120px;" onclick="showRegisteredUsers()">
+    <i class="fas fa-users"></i>
+    <span class="message-count-badge" id="usersCountBadge">0</span>
+</div>
+<!-- ✅✅✅ END OF NEW BUTTON ✅✅✅ -->
+
+
 <!-- 👑 ADMIN: ALL MESSAGES MODAL -->
 <div id="allMessagesModal" class="message-modal">
     <div class="message-modal-content all-messages-content">
@@ -1870,8 +1879,31 @@
                 <i class="fas fa-spinner fa-spin"></i> Loading messages...
             </div>
         </div>
+        </div>
+</div> <!-- ← End of allMessagesModal -->
+
+<!-- ✅✅✅ ADD THIS NEW MODAL HERE ✅✅✅ -->
+<!-- 👥 ADMIN: REGISTERED USERS MODAL -->
+<div id="registeredUsersModal" class="message-modal">
+    <div class="message-modal-content all-messages-content">
+        <button class="close-modal-btn" onclick="closeRegisteredUsers()">
+            <i class="fas fa-times"></i>
+        </button>
+        
+        <div class="admin-header">
+            <div class="admin-icon">👥</div>
+            <h2>Registered Users</h2>
+            <p class="admin-subtitle">All guests registered in the system</p>
+        </div>
+        
+        <div id="usersContainer" class="messages-container">
+            <div class="loading-messages">
+                <i class="fas fa-spinner fa-spin"></i> Loading users...
+            </div>
+        </div>
     </div>
 </div>
+<!-- ✅✅✅ END OF NEW MODAL ✅✅✅ -->
 
     <script type="module">
     // Get current user FIRST (outside DOMContentLoaded for global access)
