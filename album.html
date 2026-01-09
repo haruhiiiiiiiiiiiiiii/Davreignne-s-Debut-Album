@@ -404,6 +404,71 @@
     font-size: 2.5em;
     text-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 40px rgba(255, 255, 255, 0.5);
 }
+/* ==================== VIP GOLD & SILVER GLOW ==================== */
+.vip-gold-title {
+    background: linear-gradient(135deg, #FFD700, #FFA500, #DAA520);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 0 30px rgba(255, 215, 0, 1)) drop-shadow(0 0 60px rgba(255, 215, 0, 0.8));
+    animation: goldTitlePulse 2s ease-in-out infinite;
+}
+
+.vip-silver-title {
+    background: linear-gradient(135deg, #E8E8E8, #FFFFFF, #C0C0C0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 0 30px rgba(192, 192, 192, 1)) drop-shadow(0 0 60px rgba(192, 192, 192, 0.8));
+    animation: silverTitlePulse 2s ease-in-out infinite;
+}
+
+@keyframes goldTitlePulse {
+    0%, 100% { filter: drop-shadow(0 0 30px rgba(255, 215, 0, 1)) drop-shadow(0 0 60px rgba(255, 215, 0, 0.8)); }
+    50% { filter: drop-shadow(0 0 40px rgba(255, 215, 0, 1)) drop-shadow(0 0 80px rgba(255, 215, 0, 1)); }
+}
+
+@keyframes silverTitlePulse {
+    0%, 100% { filter: drop-shadow(0 0 30px rgba(192, 192, 192, 1)) drop-shadow(0 0 60px rgba(192, 192, 192, 0.8)); }
+    50% { filter: drop-shadow(0 0 40px rgba(192, 192, 192, 1)) drop-shadow(0 0 80px rgba(192, 192, 192, 1)); }
+}
+
+/* VIP Photo Item Borders */
+.vip-gold-border .photo-media-wrapper {
+    border: 8px solid #FFD700 !important;
+    box-shadow: 
+        0 10px 30px rgba(255, 215, 0, 0.6),
+        0 0 40px rgba(255, 215, 0, 0.9),
+        inset 0 0 20px rgba(255, 215, 0, 0.2) !important;
+    animation: goldBorderPulse 2s ease-in-out infinite;
+}
+
+.vip-silver-border .photo-media-wrapper {
+    border: 8px solid #C0C0C0 !important;
+    box-shadow: 
+        0 10px 30px rgba(192, 192, 192, 0.6),
+        0 0 40px rgba(192, 192, 192, 0.9),
+        inset 0 0 20px rgba(192, 192, 192, 0.2) !important;
+    animation: silverBorderPulse 2s ease-in-out infinite;
+}
+
+@keyframes goldBorderPulse {
+    0%, 100% {
+        box-shadow: 0 10px 30px rgba(255, 215, 0, 0.6), 0 0 40px rgba(255, 215, 0, 0.9), inset 0 0 20px rgba(255, 215, 0, 0.2);
+    }
+    50% {
+        box-shadow: 0 15px 40px rgba(255, 215, 0, 0.8), 0 0 60px rgba(255, 215, 0, 1), inset 0 0 30px rgba(255, 215, 0, 0.3);
+    }
+}
+
+@keyframes silverBorderPulse {
+    0%, 100% {
+        box-shadow: 0 10px 30px rgba(192, 192, 192, 0.6), 0 0 40px rgba(192, 192, 192, 0.9), inset 0 0 20px rgba(192, 192, 192, 0.2);
+    }
+    50% {
+        box-shadow: 0 15px 40px rgba(192, 192, 192, 0.8), 0 0 60px rgba(192, 192, 192, 1), inset 0 0 30px rgba(192, 192, 192, 0.3);
+    }
+}
 
 
         .subtitle { 
@@ -942,24 +1007,25 @@
                     <i class="fas fa-images"></i> Albums <i class="fas fa-chevron-down" style="font-size: 0.7em;"></i>
                 </button>
                 <div class="dropdown-menu">
-                    <a href="album.html?album=1"><i class="fas fa-users"></i> VIP 1</a>
-                    <a href="album.html?album=2"><i class="fas fa-users"></i> VIP 2</a>
-                    <a href="album.html?album=3"><i class="fas fa-users"></i> Table 1</a>
-                    <a href="album.html?album=4"><i class="fas fa-users"></i> Table 2</a>
-                    <a href="album.html?album=5"><i class="fas fa-users"></i> Table 3</a>
-                    <a href="album.html?album=6"><i class="fas fa-users"></i> Table 4</a>
-                    <a href="album.html?album=7"><i class="fas fa-users"></i> Table 5</a>
-                    <a href="album.html?album=8"><i class="fas fa-users"></i> Table 6</a>
-                    <a href="album.html?album=9"><i class="fas fa-users"></i> Table 7</a>
-                    <a href="album.html?album=10"><i class="fas fa-users"></i> Table 8</a>
-                    <a href="album.html?album=11"><i class="fas fa-users"></i> Table 9</a>
-                    <a href="album.html?album=12"><i class="fas fa-users"></i> Table 10</a>
-                    <a href="album.html?album=15"><i class="fas fa-rose"></i> 18 Roses</a>
-                    <a href="album.html?album=16"><i class="fas fa-candle-holder"></i> 18 Candles</a>
-                    <a href="album.html?album=17"><i class="fas fa-money-bill"></i> 18 Blue Bills</a>
-                    <a href="album.html?album=18"><i class="fas fa-gift"></i> 18 Treasures</a>
-                    <a href="album.html?album=19"><i class="fas fa-glass-cheers"></i> 18 Shots</a>
-                </div>
+    <a href="album.html?album=1"><i class="fas fa-crown"></i> VIP 1</a>
+    <a href="album.html?album=2"><i class="fas fa-star"></i> VIP 2</a>
+    <a href="album.html?album=3"><i class="fas fa-table"></i> Table 1</a>
+    <a href="album.html?album=4"><i class="fas fa-table"></i> Table 2</a>
+    <a href="album.html?album=5"><i class="fas fa-table"></i> Table 3</a>
+    <a href="album.html?album=6"><i class="fas fa-table"></i> Table 4</a>
+    <a href="album.html?album=7"><i class="fas fa-table"></i> Table 5</a>
+    <a href="album.html?album=8"><i class="fas fa-table"></i> Table 6</a>
+    <a href="album.html?album=9"><i class="fas fa-table"></i> Table 7</a>
+    <a href="album.html?album=10"><i class="fas fa-table"></i> Table 8</a>
+    <a href="album.html?album=11"><i class="fas fa-table"></i> Table 9</a>
+    <a href="album.html?album=12"><i class="fas fa-table"></i> Table 10</a>
+    <a href="album.html?album=13"><i class="fas fa-rose"></i> 18 Roses</a>
+    <a href="album.html?album=14"><i class="fas fa-candle-holder"></i> 18 Candles</a>
+    <a href="album.html?album=15"><i class="fas fa-money-bill"></i> 18 Blue Bills</a>
+    <a href="album.html?album=16"><i class="fas fa-gift"></i> 18 Treasures</a>
+    <a href="album.html?album=17"><i class="fas fa-glass-cheers"></i> 18 Shots</a>
+</div>
+
             </div>
             <a href="debut-video.html">
                 <i class="fas fa-video"></i> Featured Album
@@ -1048,11 +1114,25 @@
     const storage = getStorage(app);
 
     const albumsList = {
-        1: 'Table 1', 2: 'Table 2', 3: 'Table 3', 4: 'Table 4', 5: 'Table 5',
-        6: 'Table 6', 7: 'Table 7', 8: 'Table 8', 9: 'Table 9', 10: 'Table 10',
-        11: 'Table 11', 12: 'Table 12', 13: 'Table 13', 14: 'Table 14',
-        15: '18 Roses', 16: '18 Candles', 17: '18 Blue Bills', 18: '18 Treasures', 19: '18 Shots'
-    };
+    1: 'VIP 1', 
+    2: 'VIP 2', 
+    3: 'Table 1', 
+    4: 'Table 2', 
+    5: 'Table 3', 
+    6: 'Table 4', 
+    7: 'Table 5',
+    8: 'Table 6', 
+    9: 'Table 7', 
+    10: 'Table 8', 
+    11: 'Table 9', 
+    12: 'Table 10',
+    13: '18 Roses', 
+    14: '18 Candles', 
+    15: '18 Blue Bills', 
+    16: '18 Treasures', 
+    17: '18 Shots'
+};
+
 
     const urlParams = new URLSearchParams(window.location.search);
     const albumId = urlParams.get('album');
@@ -1064,17 +1144,35 @@
     const albumName = albumsList[albumId] || 'Unknown Album';
 
 // Use table icon for Table albums, other icons for special albums
+// Determine icon and VIP styling
 let iconHTML = '<i class="fas fa-table"></i>';
-if (albumId >= 15) {
-    // Special albums keep their specific icons
-    if (albumId == 15) iconHTML = '<i class="fas fa-rose"></i>';
-    else if (albumId == 16) iconHTML = '<i class="fas fa-candle-holder"></i>';
-    else if (albumId == 17) iconHTML = '<i class="fas fa-money-bill"></i>';
-    else if (albumId == 18) iconHTML = '<i class="fas fa-gift"></i>';
-    else if (albumId == 19) iconHTML = '<i class="fas fa-glass-cheers"></i>';
+let vipClass = '';
+
+if (albumId == 1) {
+    iconHTML = '<i class="fas fa-crown"></i>';
+    vipClass = 'vip-gold-title';
+} else if (albumId == 2) {
+    iconHTML = '<i class="fas fa-star"></i>';
+    vipClass = 'vip-silver-title';
+} else if (albumId == 13) {
+    iconHTML = '<i class="fas fa-rose"></i>';
+} else if (albumId == 14) {
+    iconHTML = '<i class="fas fa-candle-holder"></i>';
+} else if (albumId == 15) {
+    iconHTML = '<i class="fas fa-money-bill"></i>';
+} else if (albumId == 16) {
+    iconHTML = '<i class="fas fa-gift"></i>';
+} else if (albumId == 17) {
+    iconHTML = '<i class="fas fa-glass-cheers"></i>';
 }
 
-document.getElementById('albumTitle').innerHTML = `${iconHTML} ${albumName}`;
+// Apply VIP class to title
+const titleElement = document.getElementById('albumTitle');
+titleElement.innerHTML = `${iconHTML} ${albumName}`;
+if (vipClass) {
+    titleElement.className = vipClass;
+}
+
 
     document.getElementById('uploadBtn').href = `front.html?album=${albumId}`;
     document.getElementById('uploadBtnEmpty').href = `front.html?album=${albumId}`;
@@ -1217,8 +1315,17 @@ document.getElementById('albumTitle').innerHTML = `${iconHTML} ${albumName}`;
             photoCount.textContent = `${validPhotoCount} photo${validPhotoCount !== 1 ? 's' : ''}`;
 
             photos.forEach((photo) => {
-                const photoItem = document.createElement('div');
-                photoItem.className = 'photo-item';
+    const photoItem = document.createElement('div');
+    
+    // Add VIP border class
+    if (albumId == 1) {
+        photoItem.className = 'photo-item vip-gold-border';
+    } else if (albumId == 2) {
+        photoItem.className = 'photo-item vip-silver-border';
+    } else {
+        photoItem.className = 'photo-item';
+    }
+
 
                 const isVideo = photo.type && photo.type.startsWith('video');
                 const mediaElement = isVideo 
