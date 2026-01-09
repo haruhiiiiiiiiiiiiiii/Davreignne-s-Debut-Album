@@ -821,14 +821,40 @@ const specialAlbums = [
 
     
     async function getAlbumPhotoCount(albumId) {
-        try {
-            const snapshot = await getDocs(collection(db, `albums/${albumId}/photos`));
-            return snapshot.size;
-        } catch (error) {
-            console.error(`Error counting photos for album ${albumId}:`, error);
-            return 0;
+    try {
+        // Try multiple possible paths
+        const paths = [
+            `albums/${albumId}/photos`,
+            `album-${albumId}/photos`,
+            `photos`,
+            `album${albumId}`,
+            `albums/${albumId}/images`
+        ];
+        
+        console.log(`🔍 Checking album ${albumId}...`);
+        
+        for (const path of paths) {
+            try {
+                const snapshot = await getDocs(collection(db, path));
+                const count = snapshot.size;
+                
+                if (count > 0) {
+                    console.log(`✅ Found ${count} photos in path: ${path}`);
+                    return count;
+                }
+            } catch (err) {
+                console.log(`❌ Path failed: ${path}`);
+            }
         }
+        
+        console.log(`⚠️ No photos found for album ${albumId}`);
+        return 0;
+    } catch (error) {
+        console.error(`Error counting photos for album ${albumId}:`, error);
+        return 0;
     }
+}
+
 
     async function renderAlbums() {
         const grid = document.getElementById('albumsGrid');
