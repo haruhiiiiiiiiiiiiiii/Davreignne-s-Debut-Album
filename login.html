@@ -795,52 +795,76 @@
                 <p class="login-subtitle">A Night to Remember</p>
             </div>
 
-            <!-- ✅ NEW: Registration Note -->
             <div id="registrationNote" class="registration-note">
-    <strong>🎫 Invitation Only</strong><br>
-    Your name must be on the guest list. Use your registered nickname to enter.
-</div>
-
+                <strong>🎫 Invitation Only</strong><br>
+                Your name must be on the guest list.
+            </div>
 
             <div id="errorMessage" class="error-message">
                 <i class="fas fa-exclamation-circle"></i> Please fill in all fields
             </div>
 
-            <form id="loginForm">
-                <div class="form-group">
-                    <label for="guestName">
-                        <i class="fas fa-user"></i> Guest Name
-                    </label>
-                    <input 
-                        type="text" 
-                        id="guestName" 
-                        class="form-input" 
-                        placeholder="Enter your full name (e.g., Chaeyoung Son)"
-                        required
-                        autocomplete="name"
-                    >
+            <!-- ✅ STEP 1: NAME INPUT (ALWAYS VISIBLE) -->
+            <div id="loginSection">
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="guestName">
+                            <i class="fas fa-user"></i> Guest Name
+                        </label>
+                        <input 
+                            type="text" 
+                            id="guestName" 
+                            class="form-input" 
+                            placeholder="Enter your full name (e.g., Chaeyoung Son)"
+                            required
+                            autocomplete="name"
+                        >
+                    </div>
+
+                    <button type="submit" class="login-button" id="loginBtn">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Enter Gallery
+                    </button>
+                </form>
+            </div>
+
+            <!-- ✅ STEP 2: NICKNAME SETUP (HIDDEN - SHOWS FOR FIRST-TIME USERS) -->
+            <div id="nicknameSection" style="display: none;">
+                <div style="background: rgba(255, 215, 0, 0.1); border: 2px solid #ffd700; border-radius: 15px; padding: 20px; margin-bottom: 25px; text-align: center;">
+                    <h2 style="color: #ffd700; margin-bottom: 10px; font-size: 1.5em;">
+                        <i class="fas fa-star"></i> Welcome! First Time Here?
+                    </h2>
+                    <p style="color: #e8e8e8; line-height: 1.6;">
+                        Choose a unique nickname for the gallery.<br>
+                        <strong style="color: #ffd700;">This will be your display name!</strong>
+                    </p>
                 </div>
 
-                <div class="form-group">
-                    <label for="nickname">
-                        <i class="fas fa-tag"></i> Nickname
-                    </label>
-                    <input 
-                        type="text" 
-                        id="nickname" 
-                        class="form-input" 
-                        placeholder="Enter one word (e.g., Chaeyo)"
-                        required
-                        autocomplete="off"
-                        maxlength="20"
-                    >
-                </div>
+                <form id="nicknameForm">
+                    <div class="form-group">
+                        <label for="nickname">
+                            <i class="fas fa-tag"></i> Choose Your Nickname
+                        </label>
+                        <input 
+                            type="text" 
+                            id="nickname" 
+                            class="form-input" 
+                            placeholder="Enter one word (e.g., Chaeyo)"
+                            required
+                            autocomplete="off"
+                            maxlength="20"
+                        >
+                        <small style="color: #c0c0c0; font-size: 0.85em; display: block; margin-top: 8px;">
+                            <i class="fas fa-info-circle"></i> No spaces • At least 2 characters • Must be unique
+                        </small>
+                    </div>
 
-                <button type="submit" class="login-button" id="submitBtn">
-                    <i class="fas fa-sign-in-alt"></i>
-                    Enter Gallery
-                </button>
-            </form>
+                    <button type="submit" class="login-button" id="setNicknameBtn">
+                        <i class="fas fa-check"></i>
+                        Set Nickname & Continue
+                    </button>
+                </form>
+            </div>
 
             <p class="info-text">
                 <i class="fas fa-info-circle"></i> Your nickname will be shown when you upload photos and videos
@@ -854,151 +878,149 @@
         </div>
     </footer>
 
-    <!-- ✅ UPDATED: Firebase Integration & Name-Nickname Matching -->
-   <script type="module">
-    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-    import { getFirestore, collection, query, where, getDocs, doc, updateDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getFirestore, collection, query, where, getDocs, doc, updateDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
-    const firebaseConfig = {
-        apiKey: "AIzaSyDPaMpRBwk8a10vX4CUvsolfUyn3gpec5s",
-        authDomain: "debut-photo-gallery.firebaseapp.com",
-        projectId: "debut-photo-gallery",
-        storageBucket: "debut-photo-gallery.firebasestorage.app",
-        messagingSenderId: "954052989718",
-        appId: "1:954052989718:web:8faaeeaa9aebe726f67637",
-        measurementId: "G-WQ0EW238CJ"
-    };
+        const firebaseConfig = {
+            apiKey: "AIzaSyDPaMpRBwk8a10vX4CUvsolfUyn3gpec5s",
+            authDomain: "debut-photo-gallery.firebaseapp.com",
+            projectId: "debut-photo-gallery",
+            storageBucket: "debut-photo-gallery.firebasestorage.app",
+            messagingSenderId: "954052989718",
+            appId: "1:954052989718:web:8faaeeaa9aebe726f67637",
+            measurementId: "G-WQ0EW238CJ"
+        };
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
 
-    const loginForm = document.getElementById('loginForm');
-    const nicknameForm = document.getElementById('nicknameForm');
-    const loginSection = document.getElementById('loginSection');
-    const nicknameSection = document.getElementById('nicknameSection');
-    const loginBtn = document.getElementById('loginBtn');
-    const setNicknameBtn = document.getElementById('setNicknameBtn');
+        const loginForm = document.getElementById('loginForm');
+        const nicknameForm = document.getElementById('nicknameForm');
+        const loginSection = document.getElementById('loginSection');
+        const nicknameSection = document.getElementById('nicknameSection');
+        const loginBtn = document.getElementById('loginBtn');
+        const setNicknameBtn = document.getElementById('setNicknameBtn');
 
-    let currentUserDoc = null;
+        let currentUserDoc = null;
 
-    // LOGIN FORM HANDLER
-    loginForm.addEventListener('submit', async function(e) {
-        e.preventDefault();
+        // LOGIN FORM HANDLER
+        loginForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
 
-        const guestName = document.getElementById('guestName').value.trim();
+            const guestName = document.getElementById('guestName').value.trim();
 
-        if (!guestName) {
-            alert('❌ Please enter your name');
-            return;
-        }
-
-        loginBtn.disabled = true;
-        loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Checking...';
-
-        try {
-            const q = query(collection(db, 'registeredUsers'), where('guestName', '==', guestName));
-            const querySnapshot = await getDocs(q);
-
-            if (querySnapshot.empty) {
-                alert('❌ Name not found! Please check your spelling or contact the host.');
-                loginBtn.disabled = false;
-                loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Enter Gallery';
+            if (!guestName) {
+                alert('❌ Please enter your name');
                 return;
             }
 
-            const userDoc = querySnapshot.docs[0];
-            const userData = userDoc.data();
-            currentUserDoc = userDoc;
+            loginBtn.disabled = true;
+            loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Checking...';
 
-            // CHECK IF NICKNAME IS SET
-            if (!userData.nicknameSet || !userData.nickname) {
-                // FIRST TIME LOGIN - Show nickname setup
-                loginSection.style.display = 'none';
-                nicknameSection.style.display = 'block';
-            } else {
-                // ✅ RETURNING USER - RECORD LOGIN & REDIRECT
-                const userRef = doc(db, 'registeredUsers', userDoc.id);
+            try {
+                const q = query(collection(db, 'registeredUsers'), where('guestName', '==', guestName));
+                const querySnapshot = await getDocs(q);
+
+                if (querySnapshot.empty) {
+                    alert('❌ Name not found! Please check your spelling or contact the host.');
+                    loginBtn.disabled = false;
+                    loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Enter Gallery';
+                    return;
+                }
+
+                const userDoc = querySnapshot.docs[0];
+                const userData = userDoc.data();
+                currentUserDoc = userDoc;
+
+                // CHECK IF NICKNAME IS SET
+                if (!userData.nicknameSet || !userData.nickname) {
+                    // FIRST TIME LOGIN - Show nickname setup
+                    loginSection.style.display = 'none';
+                    nicknameSection.style.display = 'block';
+                } else {
+                    // ✅ RETURNING USER - RECORD LOGIN & REDIRECT
+                    const userRef = doc(db, 'registeredUsers', userDoc.id);
+                    const currentLoginHistory = userData.loginHistory || [];
+                    currentLoginHistory.push(Date.now());
+
+                    await updateDoc(userRef, {
+                        loginHistory: currentLoginHistory,
+                        lastLoginAt: Date.now()
+                    });
+
+                    sessionStorage.setItem('userNickname', userData.nickname);
+                    sessionStorage.setItem('userFullName', userData.guestName);
+                    window.location.href = 'gallery.html';
+                }
+
+            } catch (error) {
+                alert('❌ Error: ' + error.message);
+                loginBtn.disabled = false;
+                loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Enter Gallery';
+            }
+        });
+
+        // NICKNAME FORM HANDLER (First time users)
+        nicknameForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const nickname = document.getElementById('nickname').value.trim().toLowerCase();
+
+            if (!nickname) {
+                alert('❌ Please enter a nickname');
+                return;
+            }
+
+            if (nickname.length < 2) {
+                alert('❌ Nickname must be at least 2 characters');
+                return;
+            }
+
+            if (nickname.includes(' ')) {
+                alert('❌ Nickname cannot contain spaces');
+                return;
+            }
+
+            setNicknameBtn.disabled = true;
+            setNicknameBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Setting...';
+
+            try {
+                // Check if nickname already taken
+                const q = query(collection(db, 'registeredUsers'), where('nickname', '==', nickname));
+                const existingNickname = await getDocs(q);
+
+                if (!existingNickname.empty) {
+                    alert('❌ This nickname is already taken! Please choose another.');
+                    setNicknameBtn.disabled = false;
+                    setNicknameBtn.innerHTML = '<i class="fas fa-check"></i> Set Nickname & Continue';
+                    return;
+                }
+
+                // ✅ SET NICKNAME & RECORD FIRST LOGIN
+                const userRef = doc(db, 'registeredUsers', currentUserDoc.id);
+                const userData = currentUserDoc.data();
                 const currentLoginHistory = userData.loginHistory || [];
                 currentLoginHistory.push(Date.now());
 
                 await updateDoc(userRef, {
+                    nickname: nickname,
+                    nicknameSet: true,
                     loginHistory: currentLoginHistory,
                     lastLoginAt: Date.now()
                 });
 
-                sessionStorage.setItem('userNickname', userData.nickname);
+                sessionStorage.setItem('userNickname', nickname);
                 sessionStorage.setItem('userFullName', userData.guestName);
                 window.location.href = 'gallery.html';
-            }
 
-        } catch (error) {
-            alert('❌ Error: ' + error.message);
-            loginBtn.disabled = false;
-            loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Enter Gallery';
-        }
-    });
-
-    // NICKNAME FORM HANDLER (First time users)
-    nicknameForm.addEventListener('submit', async function(e) {
-        e.preventDefault();
-
-        const nickname = document.getElementById('nickname').value.trim().toLowerCase();
-
-        if (!nickname) {
-            alert('❌ Please enter a nickname');
-            return;
-        }
-
-        if (nickname.length < 2) {
-            alert('❌ Nickname must be at least 2 characters');
-            return;
-        }
-
-        if (nickname.includes(' ')) {
-            alert('❌ Nickname cannot contain spaces');
-            return;
-        }
-
-        setNicknameBtn.disabled = true;
-        setNicknameBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Setting...';
-
-        try {
-            // Check if nickname already taken
-            const q = query(collection(db, 'registeredUsers'), where('nickname', '==', nickname));
-            const existingNickname = await getDocs(q);
-
-            if (!existingNickname.empty) {
-                alert('❌ This nickname is already taken! Please choose another.');
+            } catch (error) {
+                alert('❌ Error: ' + error.message);
                 setNicknameBtn.disabled = false;
-                setNicknameBtn.innerHTML = '<i class="fas fa-check"></i> Set Nickname';
-                return;
+                setNicknameBtn.innerHTML = '<i class="fas fa-check"></i> Set Nickname & Continue';
             }
-
-            // ✅ SET NICKNAME & RECORD FIRST LOGIN
-            const userRef = doc(db, 'registeredUsers', currentUserDoc.id);
-            const userData = currentUserDoc.data();
-            const currentLoginHistory = userData.loginHistory || [];
-            currentLoginHistory.push(Date.now());
-
-            await updateDoc(userRef, {
-                nickname: nickname,
-                nicknameSet: true,
-                loginHistory: currentLoginHistory,
-                lastLoginAt: Date.now()
-            });
-
-            sessionStorage.setItem('userNickname', nickname);
-            sessionStorage.setItem('userFullName', userData.guestName);
-            window.location.href = 'gallery.html';
-
-        } catch (error) {
-            alert('❌ Error: ' + error.message);
-            setNicknameBtn.disabled = false;
-            setNicknameBtn.innerHTML = '<i class="fas fa-check"></i> Set Nickname';
-        }
-    });
-</script>
-
-
+        });
+    </script>
 </body>
+
 </html>
