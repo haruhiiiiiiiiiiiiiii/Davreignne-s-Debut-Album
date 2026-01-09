@@ -691,24 +691,25 @@
                     <i class="fas fa-images"></i> Albums <i class="fas fa-chevron-down" style="font-size: 0.7em;"></i>
                 </button>
                 <div class="dropdown-menu">
-                    <a href="album.html?album=1"><i class="fas fa-users"></i> VIP 1</a>
-                    <a href="album.html?album=2"><i class="fas fa-users"></i> VIP 2</a>
-                    <a href="album.html?album=3"><i class="fas fa-users"></i> Table 1</a>
-                    <a href="album.html?album=4"><i class="fas fa-users"></i> Table 2</a>
-                    <a href="album.html?album=5"><i class="fas fa-users"></i> Table 3</a>
-                    <a href="album.html?album=6"><i class="fas fa-users"></i> Table 4</a>
-                    <a href="album.html?album=7"><i class="fas fa-users"></i> Table 5</a>
-                    <a href="album.html?album=8"><i class="fas fa-users"></i> Table 6</a>
-                    <a href="album.html?album=9"><i class="fas fa-users"></i> Table 7</a>
-                    <a href="album.html?album=10"><i class="fas fa-users"></i> Table 8</a>
-                    <a href="album.html?album=11"><i class="fas fa-users"></i> Table 9</a>
-                    <a href="album.html?album=12"><i class="fas fa-users"></i> Table 10</a>
-                    <a href="album.html?album=15"><i class="fas fa-rose"></i> 18 Roses</a>
-                    <a href="album.html?album=16"><i class="fas fa-candle-holder"></i> 18 Candles</a>
-                    <a href="album.html?album=17"><i class="fas fa-money-bill"></i> 18 Blue Bills</a>
-                    <a href="album.html?album=18"><i class="fas fa-gift"></i> 18 Treasures</a>
-                    <a href="album.html?album=19"><i class="fas fa-glass-cheers"></i> 18 Shots</a>
-                </div>
+    <a href="album.html?album=1"><i class="fas fa-crown"></i> VIP 1</a>
+    <a href="album.html?album=2"><i class="fas fa-star"></i> VIP 2</a>
+    <a href="album.html?album=3"><i class="fas fa-table"></i> Table 1</a>
+    <a href="album.html?album=4"><i class="fas fa-table"></i> Table 2</a>
+    <a href="album.html?album=5"><i class="fas fa-table"></i> Table 3</a>
+    <a href="album.html?album=6"><i class="fas fa-table"></i> Table 4</a>
+    <a href="album.html?album=7"><i class="fas fa-table"></i> Table 5</a>
+    <a href="album.html?album=8"><i class="fas fa-table"></i> Table 6</a>
+    <a href="album.html?album=9"><i class="fas fa-table"></i> Table 7</a>
+    <a href="album.html?album=10"><i class="fas fa-table"></i> Table 8</a>
+    <a href="album.html?album=11"><i class="fas fa-table"></i> Table 9</a>
+    <a href="album.html?album=12"><i class="fas fa-table"></i> Table 10</a>
+    <a href="album.html?album=13"><i class="fas fa-rose"></i> 18 Roses</a>
+    <a href="album.html?album=14"><i class="fas fa-candle-holder"></i> 18 Candles</a>
+    <a href="album.html?album=15"><i class="fas fa-money-bill"></i> 18 Blue Bills</a>
+    <a href="album.html?album=16"><i class="fas fa-gift"></i> 18 Treasures</a>
+    <a href="album.html?album=17"><i class="fas fa-glass-cheers"></i> 18 Shots</a>
+</div>
+
             </div>
             <a href="debut-video.html">
                 <i class="fas fa-video"></i> Featured Album
@@ -842,14 +843,25 @@
     // ============================================
     
     const albumsList = [
-        { id: 1, name: 'Table 1' }, { id: 2, name: 'Table 2' }, { id: 3, name: 'Table 3' },
-        { id: 4, name: 'Table 4' }, { id: 5, name: 'Table 5' }, { id: 6, name: 'Table 6' },
-        { id: 7, name: 'Table 7' }, { id: 8, name: 'Table 8' }, { id: 9, name: 'Table 9' },
-        { id: 10, name: 'Table 10' }, { id: 11, name: 'Table 11' }, { id: 12, name: 'Table 12' },
-        { id: 13, name: 'Table 13' }, { id: 14, name: 'Table 14' }, { id: 15, name: '18 Roses' },
-        { id: 16, name: '18 Candles' }, { id: 17, name: '18 Blue Bills' }, 
-        { id: 18, name: '18 Treasures' }, { id: 19, name: '18 Shots' }
-    ];
+    { id: 1, name: 'VIP 1' }, 
+    { id: 2, name: 'VIP 2' }, 
+    { id: 3, name: 'Table 1' }, 
+    { id: 4, name: 'Table 2' }, 
+    { id: 5, name: 'Table 3' },
+    { id: 6, name: 'Table 4' }, 
+    { id: 7, name: 'Table 5' }, 
+    { id: 8, name: 'Table 6' },
+    { id: 9, name: 'Table 7' }, 
+    { id: 10, name: 'Table 8' }, 
+    { id: 11, name: 'Table 9' }, 
+    { id: 12, name: 'Table 10' },
+    { id: 13, name: '18 Roses' },
+    { id: 14, name: '18 Candles' }, 
+    { id: 15, name: '18 Blue Bills' }, 
+    { id: 16, name: '18 Treasures' }, 
+    { id: 17, name: '18 Shots' }
+];
+
 
     const albumSelect = document.getElementById('albumSelect');
     const fileInput = document.getElementById('fileInput');
