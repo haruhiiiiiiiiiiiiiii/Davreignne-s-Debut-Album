@@ -786,11 +786,9 @@
     const submitBtn = document.getElementById('submitBtn');
     const registrationNote = document.getElementById('registrationNote');
 
-    // ✅ HELPER FUNCTIONS
     function showError(message) {
         errorMessage.innerHTML = '<i class="fas fa-exclamation-circle"></i> ' + message.replace(/\n/g, '<br>');
         errorMessage.classList.add('show');
-
         setTimeout(() => {
             errorMessage.classList.remove('show');
         }, 6000);
@@ -804,7 +802,6 @@
         loadingOverlay.innerHTML = `
             <div class="cute-loading-container">
                 <div class="loading-text">${message}</div>
-
                 <div class="progress-bar-wrapper">
                     <div class="progress-bar-container">
                         <div class="progress-bar-fill" id="progressFill"></div>
@@ -813,46 +810,41 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="loading-percentage" id="loadingPercent">0%</div>
             </div>
         `;
 
         document.body.appendChild(loadingOverlay);
 
-        // 🎬 Animate Progress - EXACTLY 5 SECONDS
         let progress = 0;
         const progressFill = document.getElementById('progressFill');
         const progressChar = document.getElementById('progressChar');
         const loadingPercent = document.getElementById('loadingPercent');
 
-        const totalTime = 5000; // 5 seconds
-        const updateInterval = 50; // Update every 50ms
-        const totalSteps = totalTime / updateInterval; // 100 steps
-        const incrementPerStep = 100 / totalSteps; // 1% per step
+        const totalTime = 5000;
+        const updateInterval = 50;
+        const totalSteps = totalTime / updateInterval;
+        const incrementPerStep = 100 / totalSteps;
 
         const interval = setInterval(() => {
             progress += incrementPerStep;
-
             if (progress >= 100) {
                 progress = 100;
                 clearInterval(interval);
             }
-
             progressFill.style.width = progress + '%';
             progressChar.style.left = progress + '%';
             loadingPercent.textContent = Math.floor(progress) + '%';
         }, updateInterval);
     }
 
-    // ✅ LOGIN FORM HANDLER
+    // ✅✅✅ UPDATED LOGIN FORM HANDLER WITH LOGIN HISTORY RECORDING ✅✅✅
     loginForm.addEventListener('submit', async function(e) {
         e.preventDefault();
 
         const guestName = guestNameInput.value.trim();
         const nickname = nicknameInput.value.trim();
 
-        // Basic validation
         if (!guestName || !nickname) {
             showError('❌ Please fill in all fields');
             return;
@@ -873,7 +865,6 @@
             return;
         }
 
-        // Disable button and show loading
         submitBtn.disabled = true;
         submitBtn.innerHTML = `
             <div style="display: inline-flex; align-items: center; gap: 10px;">
@@ -883,27 +874,24 @@
         `;
 
         try {
-            // ✅ STEP 1: CHECK IF GUEST NAME EXISTS IN DATABASE
             const usersRef = collection(db, 'registeredUsers');
             const q = query(usersRef, where('guestName', '==', guestName));
             const querySnapshot = await getDocs(q);
 
             if (querySnapshot.empty) {
-                // ❌ GUEST NAME NOT FOUND
                 showError(`❌ GUEST NOT FOUND!\n\nThe name "${guestName}" is not on the guest list.\n\n🔹 Please check your spelling\n🔹 Use your full name as registered\n🔹 Contact the host if needed`);
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Enter Gallery';
                 return;
             }
 
-            // ✅ GUEST EXISTS - CHECK NICKNAME STATUS
             const guestDoc = querySnapshot.docs[0];
             const guestData = guestDoc.data();
             const guestDocId = guestDoc.id;
+            const userDocRef = doc(db, 'registeredUsers', guestDocId);
 
             // ✅ SCENARIO 1: FIRST TIME LOGIN (NO NICKNAME SET)
             if (!guestData.nickname || guestData.nickname === null) {
-                // Check if nickname is already taken by someone else
                 const nicknameQuery = query(usersRef, where('nickname', '==', nickname));
                 const nicknameCheck = await getDocs(nicknameQuery);
 
@@ -914,36 +902,41 @@
                     return;
                 }
 
-                // ✅ SET THE NICKNAME FOR FIRST TIME
-                const guestDocRef = doc(db, 'registeredUsers', guestDocId);
-                await updateDoc(guestDocRef, {
+                // ✅✅ RECORD FIRST LOGIN WITH TIMESTAMP
+                const currentTimestamp = Date.now();
+                await updateDoc(userDocRef, {
                     nickname: nickname,
                     nicknameSet: true,
-                    nicknameSetAt: Date.now()
+                    nicknameSetAt: currentTimestamp,
+                    loginHistory: [currentTimestamp],  // ✅ First login timestamp
+                    lastLoginAt: currentTimestamp
                 });
 
-                console.log('✅ First time login - nickname set!');
-                submitBtn.innerHTML = `
-                    <div style="display: inline-flex; align-items: center; gap: 10px;">
-                        <div class="face-loading face-loading-small"></div>
-                        <span>Nickname Set!</span>
-                    </div>
-                `;
+                console.log('✅ First login recorded with timestamp');
             } 
-            // ✅ SCENARIO 2: RETURNING USER (NICKNAME ALREADY SET)
+            // ✅ SCENARIO 2: RETURNING USER
             else {
                 if (guestData.nickname !== nickname) {
-                    // ❌ WRONG NICKNAME
                     showError(`❌ INCORRECT NICKNAME!\n\nYour registered nickname is: "${guestData.nickname}"\nYou entered: "${nickname}"\n\nPlease use your correct nickname.`);
                     submitBtn.disabled = false;
                     submitBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Enter Gallery';
                     return;
                 }
 
-                console.log('✅ Returning user - nickname matches!');
+                // ✅✅ RECORD RETURNING LOGIN WITH TIMESTAMP
+                const currentTimestamp = Date.now();
+                const existingHistory = guestData.loginHistory || [];
+                existingHistory.push(currentTimestamp);
+
+                await updateDoc(userDocRef, {
+                    loginHistory: existingHistory,  // ✅ Add new login timestamp
+                    lastLoginAt: currentTimestamp
+                });
+
+                console.log('✅ Returning login recorded with timestamp');
             }
 
-            // ✅✅ LOGIN SUCCESSFUL - SAVE TO LOCALSTORAGE
+            // ✅ SAVE TO LOCALSTORAGE & REDIRECT
             const userData = {
                 guestName: guestName,
                 nickname: nickname,
@@ -959,12 +952,11 @@
                 </div>
             `;
 
-            // ✅ SHOW LOADING AND REDIRECT (5.5 SECONDS TOTAL)
             setTimeout(() => {
                 showFullLoading('Entering gallery...');
                 setTimeout(() => {
                     window.location.href = 'index.html';
-                }, 5500);  // ✅ 5.5 seconds for full animation
+                }, 5500);
             }, 500);
 
         } catch (error) {
@@ -975,21 +967,19 @@
         }
     });
 
-    // Update registration note text
+    // Update registration note
     if (registrationNote) {
         registrationNote.innerHTML = '<strong>🎫 First Time?</strong><br>Enter your registered name and choose your nickname!';
-
         setTimeout(() => {
             registrationNote.classList.add('show');
         }, 1000);
     }
 
-    // Auto-focus on first input
     window.addEventListener('DOMContentLoaded', function() {
         guestNameInput.focus();
     });
 
-    // Admin login shortcut
+    // Admin shortcut
     document.addEventListener('keydown', function(e) {
         if (e.ctrlKey && e.shiftKey && e.key === 'A') {
             const password = prompt('🔐 Enter Admin Password:');
@@ -1000,6 +990,7 @@
         }
     });
 </script>
+
 
 
 </body>
