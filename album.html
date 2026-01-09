@@ -1175,7 +1175,13 @@ if (vipClass) {
 
 
     document.getElementById('uploadBtn').href = `front.html?album=${albumId}`;
-    document.getElementById('uploadBtnEmpty').href = `front.html?album=${albumId}`;
+
+// Only set href if uploadBtnEmpty exists (from empty state)
+const uploadBtnEmpty = document.getElementById('uploadBtnEmpty');
+if (uploadBtnEmpty) {
+    uploadBtnEmpty.href = `front.html?album=${albumId}`;
+}
+
 
     // Get logged-in user's nickname
     let currentUserData = null;
