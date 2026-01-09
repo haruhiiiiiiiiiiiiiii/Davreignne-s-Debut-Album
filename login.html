@@ -616,30 +616,81 @@
 }
 
 /* 🎨 Moving Character on Progress Bar */
+/* 🎨 Moving Character on Progress Bar - PURE IMAGE, NO BORDERS */
 .progress-character {
     position: absolute;
-    top: 50%;
+    top: -20px;  /* ✅ Position to overlap the bar */
     left: 0%;
-    transform: translate(-50%, -50%);
-    width: auto;  /* ✅ Let image keep its size */
-    height: 60px;  /* ✅ Set height only, width will auto-adjust */
+    transform: translateX(-50%);
+    width: auto;
+    height: 70px;  /* ✅ Height that overlaps nicely */
     transition: left 0.3s ease;
+    z-index: 11;  /* ✅ Above the progress bar */
+    
+    /* ✅ CLEAN SHADOW ONLY - No borders, no glow */
+    filter: drop-shadow(0 8px 15px rgba(0, 0, 0, 0.4));
+    
     animation: wiggle-on-bar 0.6s ease-in-out infinite;
-    z-index: 10;
-    filter: drop-shadow(0 5px 15px rgba(255, 215, 0, 0.6));
 }
 
 .progress-character img {
     width: 100%;
     height: 100%;
     object-fit: contain;  /* ✅ Keep original aspect ratio */
+    /* ✅ NO BORDERS, NO STYLING - Pure original image */
 }
 
-
 @keyframes wiggle-on-bar {
-    0%, 100% { transform: translate(-50%, -50%) rotate(0deg); }
-    25% { transform: translate(-50%, -50%) rotate(-5deg) scale(1.05); }
-    75% { transform: translate(-50%, -50%) rotate(5deg) scale(1.05); }
+    0%, 100% { transform: translateX(-50%) rotate(0deg); }
+    25% { transform: translateX(-50%) rotate(-5deg) scale(1.05); }
+    75% { transform: translateX(-50%) rotate(5deg) scale(1.05); }
+}
+
+/* 📊 Progress Bar Container */
+.progress-bar-wrapper {
+    width: 100%;
+    position: relative;
+    padding: 30px 0;  /* ✅ Space for overlapping character */
+}
+
+.progress-bar-container {
+    width: 100%;
+    height: 35px;
+    background: rgba(0, 26, 77, 0.8);
+    border-radius: 20px;
+    border: 3px solid rgba(192, 192, 192, 0.4);
+    overflow: visible;  /* ✅ Allow character to overlap */
+    position: relative;
+    box-shadow: 
+        inset 0 4px 10px rgba(0, 0, 0, 0.5),
+        0 0 20px rgba(192, 192, 192, 0.2);
+}
+
+/* 🌊 Animated Progress Fill */
+.progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        #C0C0C0 0%,
+        #E8E8E8 25%,
+        #ffffff 50%,
+        #E8E8E8 75%,
+        #C0C0C0 100%
+    );
+    background-size: 200% 100%;
+    border-radius: 20px;
+    width: 0%;
+    transition: width 0.3s ease;
+    animation: shimmer-progress 2s linear infinite;
+    box-shadow: 
+        0 0 20px rgba(192, 192, 192, 0.6),
+        inset 0 2px 10px rgba(255, 255, 255, 0.3);
+    position: relative;
+}
+
+@keyframes shimmer-progress {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
 }
 
 /* 🔢 Percentage Text */
@@ -666,10 +717,14 @@
         gap: 25px;
     }
     
-    .progress-character {
-        height: 50px;  /* ✅ Smaller on mobile, but keeps aspect ratio */
+    .progress-bar-wrapper {
+        padding: 25px 0;
     }
-
+    
+    .progress-character {
+        top: -18px;
+        height: 60px;
+    }
     
     .loading-text {
         font-size: 1.5em;
@@ -686,15 +741,20 @@
         padding: 30px 20px;
     }
     
+    .progress-bar-wrapper {
+        padding: 20px 0;
+    }
+    
     .progress-bar-container {
         height: 30px;
     }
     
     .progress-character {
-        width: 40px;
-        height: 40px;
+        top: -15px;
+        height: 50px;
     }
 }
+
 
     </style>
 </head>
