@@ -393,6 +393,78 @@
                 padding: 20px;
             }
         }
+
+        /* SEARCH BOX */
+.search-box {
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 12px 45px 12px 45px;
+    border: 2px solid #c0c0c0;
+    border-radius: 10px;
+    font-size: 1em;
+    transition: all 0.3s;
+}
+
+.search-box input:focus {
+    border-color: #001a4d;
+    box-shadow: 0 0 10px rgba(0, 26, 77, 0.2);
+}
+
+.search-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #666;
+    pointer-events: none;
+}
+
+.clear-search {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #dc3545;
+    color: white;
+    border: none;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 0.9em;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+}
+
+.clear-search:hover {
+    background: #c82333;
+    transform: translateY(-50%) scale(1.1);
+}
+
+.clear-search.show {
+    display: flex;
+}
+
+.search-result-count {
+    color: #666;
+    font-size: 0.9em;
+    margin-top: 8px;
+    text-align: center;
+}
+
+.highlight {
+    background: yellow;
+    font-weight: bold;
+    padding: 2px 4px;
+    border-radius: 3px;
+}
+
     </style>
 </head>
 <body>
@@ -424,9 +496,22 @@
             <i class="fas fa-arrow-left"></i> Back to Login
         </button>
 
-        <div class="guest-list" id="guestList">
-            <p style="text-align: center; color: #999;">Loading guest list...</p>
-        </div>
+        <div class="search-box">
+    <i class="fas fa-search search-icon"></i>
+    <input 
+        type="text" 
+        id="searchGuests" 
+        placeholder="🔍 Search by name or nickname..." 
+        autocomplete="off"
+    >
+    <button class="clear-search" id="clearSearch" title="Clear search">×</button>
+</div>
+<div id="searchResultCount" class="search-result-count"></div>
+
+<div class="guest-list" id="guestList">
+    <p style="text-align: center; color: #999;">Loading guest list...</p>
+</div>
+
     </div>
 
     <!-- LOGIN HISTORY MODAL -->
@@ -716,7 +801,8 @@
                     return;
                 }
 
-                listContainer.innerHTML = '<h3 style="margin-bottom: 15px; color: #001a4d;">Registered Guests (' + querySnapshot.size + ')</h3>';
+listContainer.innerHTML = '<h3 id="guestListTitle" style="margin-bottom: 15px; color: #001a4d;">Registered Guests (' + querySnapshot.size + ')</h3>';
+
 
                 querySnapshot.forEach((docSnapshot) => {
                     const guest = docSnapshot.data();
@@ -764,6 +850,89 @@
                 console.error(error);
             }
         }
+// Store all guests for filtering
+let allGuests = [];
+
+// Search functionality
+const searchInput = document.getElementById('searchGuests');
+const clearSearchBtn = document.getElementById('clearSearch');
+const searchResultCount = document.getElementById('searchResultCount');
+
+searchInput.addEventListener('input', function() {
+    const searchTerm = this.value.toLowerCase().trim();
+    
+    // Show/hide clear button
+    if (searchTerm.length > 0) {
+        clearSearchBtn.classList.add('show');
+    } else {
+        clearSearchBtn.classList.remove('show');
+    }
+    
+    filterGuests(searchTerm);
+});
+
+clearSearchBtn.addEventListener('click', function() {
+    searchInput.value = '';
+    clearSearchBtn.classList.remove('show');
+    filterGuests('');
+    searchInput.focus();
+});
+
+function filterGuests(searchTerm) {
+    const guestItems = document.querySelectorAll('.guest-item');
+    let visibleCount = 0;
+    
+    guestItems.forEach(item => {
+        const guestName = item.querySelector('.guest-name').textContent.toLowerCase();
+        const guestNickname = item.querySelector('.guest-nickname').textContent.toLowerCase();
+        
+        if (guestName.includes(searchTerm) || guestNickname.includes(searchTerm)) {
+            item.style.display = 'flex';
+            visibleCount++;
+            
+            // Highlight matching text
+            if (searchTerm.length > 0) {
+                highlightText(item, searchTerm);
+            } else {
+                removeHighlight(item);
+            }
+        } else {
+            item.style.display = 'none';
+        }
+    });
+    
+    // Update result count
+    if (searchTerm.length > 0) {
+        searchResultCount.textContent = `Found ${visibleCount} guest${visibleCount !== 1 ? 's' : ''} matching "${searchTerm}"`;
+        searchResultCount.style.color = visibleCount > 0 ? '#28a745' : '#dc3545';
+    } else {
+        searchResultCount.textContent = '';
+    }
+}
+
+function highlightText(element, searchTerm) {
+    const guestName = element.querySelector('.guest-name');
+    const guestNickname = element.querySelector('.guest-nickname');
+    
+    [guestName, guestNickname].forEach(el => {
+        const text = el.textContent;
+        const regex = new RegExp(`(${searchTerm})`, 'gi');
+        const highlighted = text.replace(regex, '<span class="highlight">$1</span>');
+        
+        if (text.toLowerCase().includes(searchTerm)) {
+            el.innerHTML = highlighted;
+        }
+    });
+}
+
+function removeHighlight(element) {
+    const guestName = element.querySelector('.guest-name');
+    const guestNickname = element.querySelector('.guest-nickname');
+    
+    [guestName, guestNickname].forEach(el => {
+        el.textContent = el.textContent; // Reset to plain text
+    });
+}
 
         loadGuestList();
     </script>
