@@ -1224,43 +1224,68 @@ if (uploadBtnEmpty) {
 
     // Confirm delete
     window.confirmDelete = async function() {
-        if (!photoToDelete) return;
+    if (!photoToDelete) return;
 
-        if (!currentUser || currentUser.trim() !== photoToDelete.uploader.trim()) {
-            alert('❌ You can only delete your own photos!');
-            cancelDelete();
-            return;
-        }
+    if (!currentUser || currentUser.trim() !== photoToDelete.uploader.trim()) {
+        alert('❌ You can only delete your own photos!');
+        cancelDelete();
+        return;
+    }
 
-        const modal = document.getElementById('deleteModal');
-        const confirmBtn = modal.querySelector('.btn-confirm');
-        confirmBtn.disabled = true;
-        confirmBtn.textContent = 'Deleting...';
+    const modal = document.getElementById('deleteModal');
+    const confirmBtn = modal.querySelector('.btn-confirm');
+    confirmBtn.disabled = true;
+    confirmBtn.textContent = 'Deleting...';
 
+    try {
+        console.log('🗑️ Deleting photo:', photoToDelete.id);
+        console.log('📂 Photo URL:', photoToDelete.url);
+
+        // ✅ DELETE FROM FIRESTORE FIRST
+        await deleteDoc(doc(db, `albums/${albumId}/photos`, photoToDelete.id));
+        console.log('✅ Firestore document deleted');
+
+        // ✅ EXTRACT AND DELETE FROM STORAGE
         try {
-            await deleteDoc(doc(db, `albums/${albumId}/photos`, photoToDelete.id));
-
-            try {
-                const urlParts = photoToDelete.url.split('/o/')[1];
-                if (urlParts) {
-                    const storagePath = decodeURIComponent(urlParts.split('?')[0]);
-                    const storageRef = ref(storage, storagePath);
-                    await deleteObject(storageRef);
-                }
-            } catch (storageError) {
-                console.warn('Storage deletion warning:', storageError);
+            // Extract path from Firebase Storage URL
+            // URL format: https://firebasestorage.googleapis.com/v0/b/PROJECT/o/PATH?token=TOKEN
+            const urlObj = new URL(photoToDelete.url);
+            const pathMatch = urlObj.pathname.match(/\/o\/(.+)/);
+            
+            if (pathMatch && pathMatch[1]) {
+                // Decode the path (Firebase encodes it)
+                const encodedPath = pathMatch[1];
+                const storagePath = decodeURIComponent(encodedPath);
+                
+                console.log('📂 Extracted storage path:', storagePath);
+                
+                const storageRef = ref(storage, storagePath);
+                await deleteObject(storageRef);
+                console.log('✅ Storage file deleted');
+            } else {
+                console.warn('⚠️ Could not extract storage path from URL');
             }
-
-            cancelDelete();
-            await loadPhotos();
-            alert('✅ Photo deleted successfully!');
-
-        } catch (error) {
-            alert(`Failed to delete photo: ${error.message}`);
-            confirmBtn.disabled = false;
-            confirmBtn.textContent = 'Yes, Delete';
+        } catch (storageError) {
+            console.error('❌ Storage deletion error:', storageError);
+            console.error('Error code:', storageError.code);
+            console.error('Error message:', storageError.message);
+            
+            // Don't fail the whole operation if storage deletion fails
+            // (The Firestore entry is already deleted)
         }
-    };
+
+        cancelDelete();
+        await loadPhotos();
+        alert('✅ Photo deleted successfully!');
+
+    } catch (error) {
+        console.error('❌ Delete error:', error);
+        alert(`❌ Failed to delete photo: ${error.message}`);
+        confirmBtn.disabled = false;
+        confirmBtn.textContent = 'Yes, Delete';
+    }
+};
+
 
     // Cancel delete
     window.cancelDelete = function() {
