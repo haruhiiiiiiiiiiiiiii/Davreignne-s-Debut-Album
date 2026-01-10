@@ -1173,17 +1173,30 @@ const adminStorage = getStorage(adminApp);  // ✅ Already correct
     // ============================================
     
     function checkAdminStatus() {
-        isAdmin = sessionStorage.getItem(ADMIN_KEY) === 'true';
-        if (isAdmin) {
-            adminControls.style.display = 'block';
-            adminLoginBtn.style.display = 'none';
-            deleteSection.style.display = 'block';
-        } else {
-            adminControls.style.display = 'none';
-            adminLoginBtn.style.display = 'inline-flex';
-            deleteSection.style.display = 'none';
-        }
+    isAdmin = sessionStorage.getItem(ADMIN_KEY) === 'true';
+    
+    if (isAdmin) {
+        adminControls.style.display = 'block';
+        adminLoginBtn.style.display = 'none';
+        deleteSection.style.display = 'block';
+        
+        // ✅ Enable upload functionality
+        fileInput.disabled = false;
+        uploadArea.style.pointerEvents = 'auto';
+        uploadArea.style.opacity = '1';
+    } else {
+        adminControls.style.display = 'none';
+        adminLoginBtn.style.display = 'inline-flex';
+        deleteSection.style.display = 'none';
+        
+        // ✅ Disable upload functionality
+        fileInput.disabled = true;
+        fileInput.value = '';
+        uploadArea.style.pointerEvents = 'none';
+        uploadArea.style.opacity = '0.5';
     }
+}
+
 
     window.showAdminLogin = function() {
         document.getElementById('adminModal').classList.add('active');
@@ -1218,48 +1231,55 @@ const adminStorage = getStorage(adminApp);  // ✅ Already correct
     // 📤 UPLOAD FUNCTIONALITY
     // ============================================
     
-    uploadArea.addEventListener('click', () => {
-        fileInput.click();
-    });
-
     uploadArea.addEventListener('dragover', (e) => {
+    if (!isAdmin) {
         e.preventDefault();
         e.stopPropagation();
-        uploadArea.classList.add('drag-over');
-    });
+        showError('⛔ Only admin can upload!');
+        return;
+    }
+    e.preventDefault();
+    e.stopPropagation();
+    uploadArea.classList.add('drag-over');
+});
 
-    uploadArea.addEventListener('dragleave', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        uploadArea.classList.remove('drag-over');
-    });
+uploadArea.addEventListener('drop', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    uploadArea.classList.remove('drag-over');
+    
+    if (!isAdmin) {
+        showError('⛔ Only admin can upload!');
+        return;
+    }
+    
+    const files = e.dataTransfer.files;
+    if (files.length > 0) {
+        fileInput.files = files;
+        handleFiles();
+    }
+});
 
-    uploadArea.addEventListener('drop', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        uploadArea.classList.remove('drag-over');
-        
-        const files = e.dataTransfer.files;
-        if (files.length > 0) {
-            fileInput.files = files;
-            handleFiles();
-        }
-    });
 
     fileInput.addEventListener('change', handleFiles);
 
     async function handleFiles() {
-        if (!isAdmin) {
-            showError('Only admin can upload photos!');
-            return;
-        }
+    // ✅ STRICT ADMIN CHECK
+    if (!isAdmin) {
+        showError('⛔ Only admin can upload photos!');
+        fileInput.value = ''; // Clear the file input
+        return;
+    }
 
-        const files = Array.from(fileInput.files);
-        if (files.length === 0) return;
+    const files = Array.from(fileInput.files);
+    if (files.length === 0) return;
 
-        console.log(`\n📤 Starting upload of ${files.length} file(s)...`);
+    console.log(`\n📤 Starting upload of ${files.length} file(s)...`);
 
-        const uploaderName = 'Admin'; // Admin uploads
+    const uploaderName = 'Admin'; // Admin uploads
+    // ... rest of your upload code
+}
+
         const { storage, db, label, project } = getFirebaseInstance(uploaderName);
         console.log(`🎯 Target: ${label} Firebase (${project})`);
 
@@ -1502,41 +1522,92 @@ const adminStorage = getStorage(adminApp);  // ✅ Already correct
     }
 
     // ============================================
-    // 🗑️ DELETE PHOTO
-    // ============================================
+// 🗑️ DELETE PHOTO (FIXED)
+// ============================================
+
+window.deletePhoto = async function() {
+    if (!isAdmin) {
+        showError('Only admin can delete photos!');
+        return;
+    }
     
-    window.deletePhoto = async function() {
-        if (!isAdmin) {
-            showError('Only admin can delete photos!');
-            return;
-        }
+    if (!confirm('Are you sure you want to delete this photo?')) {
+        return;
+    }
+
+    const photo = allPhotos[currentPhotoIndex];
+    console.log(`\n🗑️ Deleting photo from ${photo.firebaseProject} Firebase...`);
+    console.log('📋 Photo data:', photo);
+
+    try {
+        // ✅ FIX 1: Extract filename from URL if storagePath doesn't exist
+        let storagePath = photo.storagePath;
         
-        if (!confirm('Are you sure you want to delete this photo?')) {
-            return;
+        if (!storagePath) {
+            console.log('⚠️ No storagePath found, extracting from URL...');
+            
+            // Extract filename from Firebase Storage URL
+            const urlParts = photo.url.split('/');
+            const filePartEncoded = urlParts[urlParts.length - 1].split('?')[0];
+            const filePart = decodeURIComponent(filePartEncoded);
+            
+            // Extract path after /o/
+            const pathMatch = filePart.match(/albums%2F\d+%2F(.+)/);
+            if (pathMatch) {
+                const fileName = pathMatch[1];
+                storagePath = `albums/${ALBUM_ID}/${fileName}`;
+                console.log('✅ Reconstructed path:', storagePath);
+            } else {
+                // Try alternative extraction
+                storagePath = `albums/${ALBUM_ID}/${filePart.split('/').pop()}`;
+                console.log('✅ Alternative path:', storagePath);
+            }
         }
 
-        const photo = allPhotos[currentPhotoIndex];
-        console.log(`\n🗑️ Deleting photo from ${photo.firebaseProject} Firebase...`);
+        console.log('📂 Using storage path:', storagePath);
 
-        try {
-            // Delete from Storage
-            const storageRef = ref(photo.sourceStorage, photo.storagePath);
-            await deleteObject(storageRef);
-            console.log('✅ Deleted from Storage');
+        // ✅ FIX 2: Ensure we use the correct storage instance
+        const storageToUse = photo.firebaseProject === 'ADMIN' ? adminStorage : userStorage;
+        const dbToUse = photo.firebaseProject === 'ADMIN' ? adminDB : userDB;
 
-            // Delete from Firestore
-            await deleteDoc(doc(photo.sourceDB, `albums/${ALBUM_ID}/photos`, photo.id));
-            console.log('✅ Deleted from Firestore');
+        console.log(`🎯 Using ${photo.firebaseProject} Firebase`);
 
-            closeLightbox();
-            await loadPhotos();
-            showSuccess('Photo deleted successfully!');
+        // Delete from Storage
+        const storageRef = ref(storageToUse, storagePath);
+        console.log('🗑️ Deleting from Storage...');
+        await deleteObject(storageRef);
+        console.log('✅ Deleted from Storage');
 
-        } catch (error) {
-            console.error('❌ Error deleting photo:', error);
-            showError('Failed to delete photo');
+        // Delete from Firestore
+        console.log('🗑️ Deleting from Firestore...');
+        await deleteDoc(doc(dbToUse, `albums/${ALBUM_ID}/photos`, photo.id));
+        console.log('✅ Deleted from Firestore');
+
+        closeLightbox();
+        await loadPhotos();
+        showSuccess('✅ Photo deleted successfully!');
+
+    } catch (error) {
+        console.error('❌ Error deleting photo:', error);
+        console.error('❌ Error details:', {
+            message: error.message,
+            code: error.code,
+            photoId: photo.id,
+            storagePath: photo.storagePath,
+            url: photo.url
+        });
+        
+        // More specific error messages
+        if (error.code === 'storage/object-not-found') {
+            showError('❌ File not found in storage. It may have been deleted already.');
+        } else if (error.code === 'permission-denied') {
+            showError('❌ Permission denied. Check Firebase rules.');
+        } else {
+            showError(`❌ Failed to delete: ${error.message}`);
         }
     }
+}
+
 
     // ============================================
     // 🎬 EVENT LISTENERS
