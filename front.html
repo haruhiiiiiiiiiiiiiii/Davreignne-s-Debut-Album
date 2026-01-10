@@ -752,16 +752,16 @@
             </div>
 
             <div class="form-group">
-                <label>Select Photos/Videos:</label>
-                <div class="file-input-wrer">
-                    <input type="file" id="fileInput" multiple accept="image/*,video/*">
-                    <label for="fileInput" class="file-input-label">
-                        <span>📁</span>
-                        <span>Choose Files</span>
-                    </label>
-                </div>
-                <div id="fileList" class="file-list" style="display: none;"></div>
-            </div>
+    <label>Select Photos/Videos:</label>
+    <div class="file-input-wrapper">  <!-- ✅ FIXED TYPO -->
+        <input type="file" id="fileInput" multiple accept="image/*,video/*">
+        <label for="fileInput" class="file-input-label">
+            <span>📁</span>
+            <span>Choose Files</span>
+        </label>
+    </div>
+    <div id="fileList" class="file-list" style="display: none;"></div>
+</div>
 
             <button type="submit" class="btn-upload" id="uploadBtn">
                 🚀 Upload Files
