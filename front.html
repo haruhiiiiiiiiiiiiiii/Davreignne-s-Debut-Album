@@ -1021,7 +1021,18 @@
                 console.log(`☁️ Uploading ${fileName} to Storage...`);
 
                 const storageRef = ref(storage, `albums/${selectedAlbumId}/${fileName}`);
-                const uploadTask = uploadBytesResumable(storageRef, fileToUpload);
+
+// ✅ ADD METADATA WITH UPLOADER NAME
+const metadata = {
+    customMetadata: {
+        uploader: userData.nickname,
+        uploadDate: new Date().toISOString(),
+        originalName: file.name
+    }
+};
+
+const uploadTask = uploadBytesResumable(storageRef, fileToUpload, metadata);
+
 
                 await new Promise((resolve, reject) => {
                     uploadTask.on('state_changed',
