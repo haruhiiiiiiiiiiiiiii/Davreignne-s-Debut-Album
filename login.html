@@ -786,6 +786,21 @@
     const submitBtn = document.getElementById('submitBtn');
     const registrationNote = document.getElementById('registrationNote');
 
+    // ✅ NEW: Function to mask nickname (show first letter + # for rest)
+    // ✅ UPDATED: Function to mask nickname (minimum 3 #'s for security)
+function maskNickname(nickname) {
+    if (!nickname || nickname.length === 0) return '???';
+    
+    if (nickname.length === 1) {
+        return '###';  // ✅ Hide single letter completely
+    }
+    
+    // For 2+ letters, show first letter + at least 3 #'s
+    const hashCount = Math.max(3, nickname.length - 1);
+    return nickname[0] + '#'.repeat(hashCount);
+}
+
+
     function showError(message) {
         errorMessage.innerHTML = '<i class="fas fa-exclamation-circle"></i> ' + message.replace(/\n/g, '<br>');
         errorMessage.classList.add('show');
@@ -838,7 +853,7 @@
         }, updateInterval);
     }
 
-    // ✅✅✅ UPDATED LOGIN FORM HANDLER WITH LOGIN HISTORY RECORDING ✅✅✅
+    // ✅✅✅ UPDATED LOGIN FORM HANDLER WITH MASKED NICKNAME ✅✅✅
     loginForm.addEventListener('submit', async function(e) {
         e.preventDefault();
 
@@ -908,16 +923,18 @@
                     nickname: nickname,
                     nicknameSet: true,
                     nicknameSetAt: currentTimestamp,
-                    loginHistory: [currentTimestamp],  // ✅ First login timestamp
+                    loginHistory: [currentTimestamp],
                     lastLoginAt: currentTimestamp
                 });
 
                 console.log('✅ First login recorded with timestamp');
             } 
-            // ✅ SCENARIO 2: RETURNING USER
+            // ✅ SCENARIO 2: RETURNING USER (WITH MASKED NICKNAME)
             else {
                 if (guestData.nickname !== nickname) {
-                    showError(`❌ INCORRECT NICKNAME!\n\nYour registered nickname is: "${guestData.nickname}"\nYou entered: "${nickname}"\n\nPlease use your correct nickname.`);
+                    // ✅✅ USE MASKED NICKNAME FOR SECURITY
+                    const maskedNickname = maskNickname(guestData.nickname);
+                    showError(`❌ INCORRECT NICKNAME!\n\nYour registered nickname starts with: "${maskedNickname}"\nYou entered: "${nickname}"\n\nPlease use your correct nickname.`);
                     submitBtn.disabled = false;
                     submitBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Enter Gallery';
                     return;
@@ -929,7 +946,7 @@
                 existingHistory.push(currentTimestamp);
 
                 await updateDoc(userDocRef, {
-                    loginHistory: existingHistory,  // ✅ Add new login timestamp
+                    loginHistory: existingHistory,
                     lastLoginAt: currentTimestamp
                 });
 
